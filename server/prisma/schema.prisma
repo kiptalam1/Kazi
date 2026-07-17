@@ -7,6 +7,36 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id           String @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String @unique
+  passwordHash String
+
+  avatar String?
+  phone  String?
+
+  emailVerified              Boolean   @default(false)
+  verificationToken          String?
+  verificationTokenExpiresAt DateTime?
+  isActive                   Boolean   @default(true)
+
+  roles UserRole[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserRole {
+  id     String @id @default(uuid())
+  userId String
+  role   Role
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, role])
+}
+
 enum Role {
   GUEST
   PLATFORM_ADMIN
