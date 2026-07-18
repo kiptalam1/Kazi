@@ -25,7 +25,7 @@ export class RegisterDto {
   lastName!: string;
 
   @IsNotEmpty({ message: 'Email is required' })
-  @IsEmail()
+  @IsEmail(undefined, { message: 'Enter a valid email' })
   email!: string;
 
   @IsNotEmpty({ message: 'Password is required' })

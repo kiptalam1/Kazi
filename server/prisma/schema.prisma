@@ -32,10 +32,9 @@ model User {
 }
 
 model UserRole {
-  id     String @id @default(uuid())
   userId String
   role   Role
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, role])
 }

@@ -9,7 +9,7 @@ import { UsersService } from '../users/users.service.js';
 import { PrismaService } from '../prisma.service.js';
 import bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto.js';
-import type { Role } from '../generated/prisma/client.js';
+import { Role } from '../generated/prisma/client.js';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -98,6 +98,11 @@ export class AuthService {
         passwordHash: passwordHashed,
         avatar: registerDto.avatar || null,
         phone: registerDto.phone || null,
+        roles: {
+          create: {
+            role: Role.CANDIDATE,
+          },
+        },
       },
     });
 
