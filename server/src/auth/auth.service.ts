@@ -4,6 +4,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import type { Response } from 'express';
 import { RegisterDto } from './dto/register.dto.js';
 import { UsersService } from '../users/users.service.js';
 import { PrismaService } from '../prisma.service.js';
@@ -21,8 +22,22 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) { }
+  // logout user.
+  async logout(id: string) {
+    await this.usersService.updateUser({
+      where: { id },
+      data: {
+        refreshTokenHash: null,
+      }
+    })
+    return {
+      message: 'Logged out successfully',
+    }
+  }
 
-  async login(loginDto: LoginDto) {
+
+  // login user;
+  async login(res: Response, loginDto: LoginDto) {
     const existsUser = await this.usersService.findByEmail(loginDto.email);
     if (!existsUser) {
       throw new UnauthorizedException('Invalid email or password')
@@ -46,14 +61,14 @@ export class AuthService {
 
     // user and password correct, issue tokens;
     const roles = existsUser.roles.map(({ role }) => role)
-    const tokens = await this.generateTokens(
+    const { accessToken, refreshToken } = await this.generateTokens(
       existsUser.id,
       existsUser.email,
       roles,
     );
 
     // hash and store refreshToken;
-    const refreshHash = await this.hashRefreshToken(tokens.refreshToken);
+    const refreshHash = await this.hashRefreshToken(refreshToken);
 
     await this.usersService.updateUser({
       where: { id: existsUser.id },
@@ -63,9 +78,12 @@ export class AuthService {
       },
     });
 
+    // add refresh to cookie;
+    this.setTokensCookie(res, refreshToken, accessToken)
+
     return {
       message: 'Logged in successfully',
-      accessToken: tokens.accessToken,
+      // accessToken: accessToken,
       data: {
         id: existsUser.id,
         email: existsUser.email,
@@ -84,7 +102,7 @@ export class AuthService {
     const existsUser = await this.usersService.findByEmail(registerDto.email);
     if (existsUser) {
       throw new BadRequestException(
-        'A user with this email already exists. Try another one',
+        'A user with this email already exists',
       );
     }
 
@@ -150,5 +168,30 @@ export class AuthService {
   }
   private async hashRefreshToken(token: string) {
     return await bcrypt.hash(token, 12);
+  }
+  // add refresh token to cookie.
+  private setTokensCookie(
+    res: Response,
+    refreshToken: string,
+    accessToken: string,
+  ) {
+    const ACCESS_TOKEN_MAX_AGE = 15 * 60 * 1000;
+    const REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
+    const commonOptions = {
+      secure: process.env.NODE_ENV == "production",
+      sameSite: "lax" as const,
+      httpOnly: true,
+      partitioned: true,
+      path: '/',
+    }
+    res.cookie('refresh_token', refreshToken, {
+      ...commonOptions,
+      maxAge: REFRESH_TOKEN_MAX_AGE,
+    });
+    res.cookie('access_token', accessToken, {
+      ...commonOptions,
+      maxAge: ACCESS_TOKEN_MAX_AGE,
+    });
+
   }
 }
