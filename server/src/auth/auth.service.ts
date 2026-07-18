@@ -74,6 +74,7 @@ export class AuthService {
         roles,
         avatar: existsUser.avatar,
         phone: existsUser.phone,
+        isActive: existsUser.isActive,
         lastLoginAt: existsUser.lastLoginAt,
       },
     };

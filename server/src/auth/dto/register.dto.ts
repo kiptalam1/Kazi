@@ -34,9 +34,9 @@ export class RegisterDto {
   password!: string;
 
   @IsOptional()
-  avatar!: string;
+  avatar!: string | null;
 
   @IsOptional()
   @IsString({ message: 'Enter a valid phone number' })
-  phone!: string;
+  phone!: string | null;
 }
