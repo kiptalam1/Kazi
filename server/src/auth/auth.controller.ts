@@ -1,16 +1,32 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
 import type { Response, Request } from 'express';
 import { AuthService } from './auth.service.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
-import { ApiCookieAuth, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
-import { UserRegisteredResponse, UserLoginResponse } from '../users/dto/user-response.dto.js';
+import {
+  ApiCookieAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
+import {
+  UserRegisteredResponse,
+  UserLoginResponse,
+} from '../users/dto/user-response.dto.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 
 @Controller('api/v1/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   // login user.
   @Public()
@@ -20,8 +36,7 @@ export class AuthController {
   })
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  login(@Body() loginDto: LoginDto,
-    @Res({ passthrough: true }) res: Response) {
+  login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
     return this.authService.login(res, loginDto);
   }
 
@@ -39,7 +54,7 @@ export class AuthController {
   // logout user.
   @Post('logout')
   @ApiOkResponse({
-    description: 'Logged out successfully'
+    description: 'Logged out successfully',
   })
   @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
@@ -60,8 +75,22 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async refreshTokens(
     @Req() req: Request,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
   ) {
     await this.authService.refreshTokens(req, res);
+  }
+
+  // get authenticated user;
+  @Get('me')
+  @ApiOkResponse({
+    type: UserLoginResponse,
+  })
+  @ApiCookieAuth('refresh_token')
+  @HttpCode(HttpStatus.OK)
+  async me(
+    @CurrentUser('id')
+    id: string,
+  ) {
+    return await this.authService.me(id);
   }
 }
