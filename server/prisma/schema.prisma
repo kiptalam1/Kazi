@@ -27,9 +27,9 @@ model User {
   refreshTokenHash String?
   lastLoginAt      DateTime?
 
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  candidates Candidate?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  candidate Candidate?
 }
 
 model Candidate {
@@ -44,7 +44,7 @@ model Candidate {
   education         String[]
   experienceLevel   ExperienceLevel?
   currentJobTitle   String?
-  salaryExpectation String?
+  salaryExpectation Int?
   availability      String?
   linkedinUrl       String?
   githubUrl         String?

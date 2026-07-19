@@ -9,6 +9,21 @@ export class CandidatesService {
     private prisma: PrismaService,
   ) { }
 
+  // update candidate fields.
+  async updateCandidateFields() { }
+
+  // update candidate .
+  async updateByUserId(
+    userId: string,
+    dto: Prisma.CandidateUpdateInput,
+  ) {
+    return await this.prisma.candidate.update({
+      where: { userId },
+      data: dto,
+    });
+  }
+
+  // get one candidate;
   async candidate(
     candidateWhereUniqueInput: Prisma.CandidateWhereUniqueInput
   ) {

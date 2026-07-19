@@ -23,7 +23,7 @@ export class UsersService {
         avatar: user.avatar,
         phone: user.phone,
         isActive: user.isActive,
-        candidate: user.candidates,
+        candidate: user.candidate,
         lastLoginAt: user.lastLoginAt,
       },
     };
@@ -35,7 +35,7 @@ export class UsersService {
       where: { email },
       include: {
         roles: true,
-        candidates: true,
+        candidate: true,
       },
     });
   }
@@ -46,7 +46,7 @@ export class UsersService {
       where: { id },
       include: {
         roles: true,
-        candidates: true,
+        candidate: true,
       },
     });
   }
