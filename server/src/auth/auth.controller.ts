@@ -1,9 +1,9 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Res, } from '@nestjs/common';
-import type { Response } from 'express';
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, } from '@nestjs/common';
+import type { Response, Request } from 'express';
 import { AuthService } from './auth.service.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { UserRegisteredResponse, UserLoginResponse } from '../users/dto/user-response.dto.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
@@ -41,7 +41,7 @@ export class AuthController {
   @ApiOkResponse({
     description: 'Logged out successfully'
   })
-  @ApiBearerAuth()
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   // @UseGuards(AuthGuard)
   logout(
@@ -51,5 +51,17 @@ export class AuthController {
     res.clearCookie('access_token');
     res.clearCookie('refresh_token');
     return this.authService.logout(userId);
+  }
+
+  // refresh and rotate tokens
+  @Post('refresh-tokens')
+  @ApiOkResponse({ description: 'Success' })
+  @ApiCookieAuth('refresh_token')
+  @HttpCode(HttpStatus.OK)
+  async refreshTokens(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    await this.authService.refreshTokens(req, res);
   }
 }
