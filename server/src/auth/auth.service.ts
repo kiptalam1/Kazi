@@ -144,7 +144,7 @@ export class AuthService {
         phone: existsUser.phone,
         isActive: existsUser.isActive,
         lastLoginAt: existsUser.lastLoginAt,
-        candidates: existsUser.candidates,
+        candidate: existsUser.candidates,
       },
     };
   }

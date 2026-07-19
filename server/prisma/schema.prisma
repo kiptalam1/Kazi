@@ -27,19 +27,22 @@ model User {
   refreshTokenHash String?
   lastLoginAt      DateTime?
 
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  candidates Candidate[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  candidates Candidate?
 }
 
 model Candidate {
-  id                String  @id @default(uuid())
-  userId            String
-  user              User    @relation(fields: [userId], references: [id])
+  id                String           @id @default(uuid())
+  userId            String           @unique
+  user              User             @relation(fields: [userId], references: [id])
   headline          String?
   bio               String?
   location          String?
-  experienceLevel   String?
+  skills            String[]
+  experience        String[]
+  education         String[]
+  experienceLevel   ExperienceLevel?
   currentJobTitle   String?
   salaryExpectation String?
   availability      String?
@@ -47,6 +50,9 @@ model Candidate {
   githubUrl         String?
   portfolioUrl      String?
   resumeUrl         String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
 model UserRole {
@@ -63,4 +69,13 @@ enum Role {
   COMPANY_ADMIN
   RECRUITER
   CANDIDATE
+}
+
+enum ExperienceLevel {
+  INTERN
+  APPRENTICE
+  JUNIOR
+  MID
+  SENIOR
+  LEAD
 }
