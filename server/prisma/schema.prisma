@@ -27,8 +27,26 @@ model User {
   refreshTokenHash String?
   lastLoginAt      DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  candidates Candidate[]
+}
+
+model Candidate {
+  id                String  @id @default(uuid())
+  userId            String
+  user              User    @relation(fields: [userId], references: [id])
+  headline          String?
+  bio               String?
+  location          String?
+  experienceLevel   String?
+  currentJobTitle   String?
+  salaryExpectation String?
+  availability      String?
+  linkedinUrl       String?
+  githubUrl         String?
+  portfolioUrl      String?
+  resumeUrl         String?
 }
 
 model UserRole {
