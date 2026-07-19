@@ -5,12 +5,8 @@ import type { Prisma } from '../generated/prisma/client.js';
 @Injectable()
 export class CandidatesService {
   constructor(
-    // private usersService: UsersService,
     private prisma: PrismaService,
   ) { }
-
-  // update candidate fields.
-  async updateCandidateFields() { }
 
   // update candidate .
   async updateByUserId(
@@ -34,8 +30,8 @@ export class CandidatesService {
           select: {
             firstName: true,
             lastName: true,
-            email: true,
-            phone: true,
+            // email: true,
+            // phone: true,
             avatar: true,
             roles: {
               select: { role: true, },
