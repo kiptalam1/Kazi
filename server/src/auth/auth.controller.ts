@@ -69,8 +69,11 @@ export class AuthController {
   }
 
   // refresh and rotate tokens
+  @Public() // to skip jwtauthguard and user refresh_token authentication instead
   @Post('refresh-tokens')
-  @ApiOkResponse({ description: 'Success' })
+  @ApiOkResponse({
+    description: 'Tokens refreshed successfully',
+  })
   @ApiCookieAuth('refresh_token')
   @HttpCode(HttpStatus.OK)
   async refreshTokens(
