@@ -22,29 +22,6 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) { }
-
-  // my profile
-  async me(id: string) {
-    const user = await this.usersService.findById(id);
-    if (!user) {
-      throw new UnauthorizedException('Unauthorized');
-    }
-    const roles = user.roles.map((r) => r.role);
-    return {
-      data: {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        roles,
-        avatar: user.avatar,
-        phone: user.phone,
-        isActive: user.isActive,
-        lastLoginAt: user.lastLoginAt,
-      },
-    };
-  }
-
   // refresh accesstoken.
   async refreshTokens(req: Request, res: Response) {
     const refreshToken = req.cookies?.refresh_token as string;
@@ -167,6 +144,7 @@ export class AuthService {
         phone: existsUser.phone,
         isActive: existsUser.isActive,
         lastLoginAt: existsUser.lastLoginAt,
+        candidate: existsUser.candidates,
       },
     };
   }
@@ -180,20 +158,30 @@ export class AuthService {
     // hash user's password
     const passwordHashed = await this.hashPassword(registerDto.password);
 
-    const newRegisteredUser = await this.prisma.user.create({
-      data: {
-        email: registerDto.email,
-        firstName: registerDto.firstName,
-        lastName: registerDto.lastName,
-        passwordHash: passwordHashed,
-        avatar: registerDto.avatar || null,
-        phone: registerDto.phone || null,
-        roles: {
-          create: {
-            role: Role.CANDIDATE,
+    const newRegisteredUser = await this.prisma.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          email: registerDto.email,
+          firstName: registerDto.firstName,
+          lastName: registerDto.lastName,
+          passwordHash: passwordHashed,
+          avatar: registerDto.avatar || null,
+          phone: registerDto.phone || null,
+          roles: {
+            create: {
+              role: Role.CANDIDATE,
+            },
           },
         },
-      },
+      });
+
+      await tx.candidate.create({
+        data: {
+          userId: user.id,
+        },
+      });
+
+      return user;
     });
 
     const { passwordHash: _passwordHash, ...results } = newRegisteredUser;

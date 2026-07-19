@@ -1,10 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
 import type { Prisma, User } from '../generated/prisma/client.js';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
+
+  // my profile
+  async me(id: string) {
+    const user = await this.findById(id);
+    if (!user) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+    const roles = user.roles.map((r) => r.role);
+    return {
+      data: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        roles,
+        avatar: user.avatar,
+        phone: user.phone,
+        isActive: user.isActive,
+        candidate: user.candidates,
+        lastLoginAt: user.lastLoginAt,
+      },
+    };
+  }
 
   // find user with email
   async findByEmail(email: string) {
@@ -12,6 +35,7 @@ export class UsersService {
       where: { email },
       include: {
         roles: true,
+        candidates: true,
       },
     });
   }
@@ -22,6 +46,7 @@ export class UsersService {
       where: { id },
       include: {
         roles: true,
+        candidates: true,
       },
     });
   }

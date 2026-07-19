@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -26,7 +25,7 @@ import { Public } from '../common/decorators/public.decorator.js';
 
 @Controller('api/v1/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   // login user.
   @Public()
@@ -83,17 +82,4 @@ export class AuthController {
     await this.authService.refreshTokens(req, res);
   }
 
-  // get authenticated user;
-  @Get('me')
-  @ApiOkResponse({
-    type: UserLoginResponse,
-  })
-  @ApiCookieAuth('refresh_token')
-  @HttpCode(HttpStatus.OK)
-  async me(
-    @CurrentUser('id')
-    id: string,
-  ) {
-    return await this.authService.me(id);
-  }
 }

@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module.js';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
+import { CandidatesModule } from './candidates/candidates.module.js';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    CandidatesModule,
   ],
   controllers: [AppController],
   providers: [
@@ -24,4 +26,4 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
