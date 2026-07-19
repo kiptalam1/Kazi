@@ -21,20 +21,41 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) { }
+  ) {}
+
+  // my profile
+  async me(id: string) {
+    const user = await this.usersService.findById(id);
+    if (!user) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+    const roles = user.roles.map((r) => r.role);
+    return {
+      data: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        roles,
+        avatar: user.avatar,
+        phone: user.phone,
+        isActive: user.isActive,
+        lastLoginAt: user.lastLoginAt,
+      },
+    };
+  }
 
   // refresh accesstoken.
   async refreshTokens(req: Request, res: Response) {
-    const refreshToken = req.cookies?.refresh_token;
+    const refreshToken = req.cookies?.refresh_token as string;
     if (!refreshToken) {
       throw new UnauthorizedException('Unauthorized');
     }
-    let payload: {
+    const payload: {
       sub: string;
       email: string;
-      roles: Role[]
-    };
-    payload = await this.jwtService.verifyAsync(refreshToken, {
+      roles: Role[];
+    } = await this.jwtService.verifyAsync(refreshToken, {
       secret: this.configService.getOrThrow('JWT_REFRESH_SECRET'),
     });
 
@@ -43,7 +64,10 @@ export class AuthService {
       throw new UnauthorizedException('Unauthorized');
     }
     // compare refresh tokens;
-    const isRefreshMatch = await bcrypt.compare(refreshToken, user.refreshTokenHash);
+    const isRefreshMatch = await bcrypt.compare(
+      refreshToken,
+      user.refreshTokenHash,
+    );
     if (!isRefreshMatch) {
       throw new UnauthorizedException('Unauthorized');
     }
@@ -56,10 +80,10 @@ export class AuthService {
       where: { id: user.id },
       data: {
         refreshTokenHash: refreshHash,
-      }
+      },
     });
     // attach new tokens to cookies
-    this.setTokensCookie(res, tokens.refreshToken, tokens.accessToken)
+    this.setTokensCookie(res, tokens.refreshToken, tokens.accessToken);
   }
 
   // logout user.
@@ -68,19 +92,18 @@ export class AuthService {
       where: { id },
       data: {
         refreshTokenHash: null,
-      }
-    })
+      },
+    });
     return {
       message: 'Logged out successfully',
-    }
+    };
   }
-
 
   // login user;
   async login(res: Response, loginDto: LoginDto) {
     const existsUser = await this.usersService.findByEmail(loginDto.email);
     if (!existsUser) {
-      throw new UnauthorizedException('Invalid email or password')
+      throw new UnauthorizedException('Invalid email or password');
     }
     // check if password provided is correct
     const isPasswordMatch = await this.verifyPassword(
@@ -95,12 +118,12 @@ export class AuthService {
     }
     if (!existsUser.emailVerified) {
       throw new UnauthorizedException(
-        'Please verify your email before signing in.'
+        'Please verify your email before signing in.',
       );
     }
 
     // user and password correct, issue tokens;
-    const roles = existsUser.roles.map(({ role }) => role)
+    const roles = existsUser.roles.map(({ role }) => role);
     const { accessToken, refreshToken } = await this.generateTokens(
       existsUser.id,
       existsUser.email,
@@ -119,7 +142,7 @@ export class AuthService {
     });
 
     // add refresh to cookie;
-    this.setTokensCookie(res, refreshToken, accessToken)
+    this.setTokensCookie(res, refreshToken, accessToken);
 
     return {
       message: 'Logged in successfully',
@@ -141,9 +164,7 @@ export class AuthService {
   async register(registerDto: RegisterDto) {
     const existsUser = await this.usersService.findByEmail(registerDto.email);
     if (existsUser) {
-      throw new BadRequestException(
-        'A user with this email already exists',
-      );
+      throw new BadRequestException('A user with this email already exists');
     }
 
     // hash user's password
@@ -218,12 +239,12 @@ export class AuthService {
     const ACCESS_TOKEN_MAX_AGE = 15 * 60 * 1000;
     const REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
     const commonOptions = {
-      secure: process.env.NODE_ENV == "production",
-      sameSite: "lax" as const,
+      secure: process.env.NODE_ENV == 'production',
+      sameSite: 'lax' as const,
       httpOnly: true,
       partitioned: true,
       path: '/',
-    }
+    };
     res.cookie('refresh_token', refreshToken, {
       ...commonOptions,
       maxAge: REFRESH_TOKEN_MAX_AGE,
@@ -232,6 +253,5 @@ export class AuthService {
       ...commonOptions,
       maxAge: ACCESS_TOKEN_MAX_AGE,
     });
-
   }
 }

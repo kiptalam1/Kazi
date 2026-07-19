@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Role } from "../../generated/prisma/enums.js"
+import { ApiProperty } from '@nestjs/swagger';
+import { Role } from '../../generated/prisma/enums.js';
 
 export class UserLoginResponse {
   id!: string;
@@ -9,8 +9,8 @@ export class UserLoginResponse {
   @ApiProperty({ enum: Role, isArray: true })
   roles!: Role[];
   avatar!: string | null;
-  phone!: string | null
-  isActive!: boolean
+  phone!: string | null;
+  isActive!: boolean;
   lastLoginAt!: Date | null;
 }
 
@@ -22,13 +22,13 @@ export class UserRegisteredResponse {
   @ApiProperty({ enum: Role, isArray: true })
   roles!: Role[];
   avatar!: string | null;
-  phone!: string | null
+  phone!: string | null;
   isActive!: boolean;
   lastLoginAt!: Date | null;
   emailVerified!: boolean;
   verificationToken!: string | null;
   verificationTokenExpiresAt!: Date | null;
-  refreshTokenHash!: string | null
+  refreshTokenHash!: string | null;
   createdAt!: Date;
   updatedAt!: Date;
 }

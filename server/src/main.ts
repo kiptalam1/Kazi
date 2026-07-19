@@ -1,7 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module.js';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule, type SwaggerDocumentOptions } from '@nestjs/swagger';
+import {
+  DocumentBuilder,
+  SwaggerModule,
+  type SwaggerDocumentOptions,
+} from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 // import cors from 'cors';
 
@@ -19,7 +23,7 @@ async function bootstrap() {
   app.enableCors({
     origin: 'http://localhost:3000/api',
     credentials: true,
-  })
+  });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('KAZI')
@@ -31,18 +35,19 @@ async function bootstrap() {
 
   const options: SwaggerDocumentOptions = {
     autoTagControllers: true,
-    operationIdFactory: (_controllerkey: string,
-      methodKey: string) => methodKey
+    operationIdFactory: (_controllerkey: string, methodKey: string) =>
+      methodKey,
   };
 
-  const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig, options);
+  const documentFactory = () =>
+    SwaggerModule.createDocument(app, swaggerConfig, options);
   SwaggerModule.setup('api/v1', app, documentFactory, {
     swaggerOptions: {
       persistAuthorization: true,
       withCredentials: true,
-    }
+    },
   });
 
   await app.listen(process.env.PORT ?? 3000);
 }
-bootstrap();
+void bootstrap();
