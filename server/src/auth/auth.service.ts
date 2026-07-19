@@ -21,7 +21,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) {}
+  ) { }
 
   // my profile
   async me(id: string) {
@@ -51,13 +51,19 @@ export class AuthService {
     if (!refreshToken) {
       throw new UnauthorizedException('Unauthorized');
     }
-    const payload: {
+
+    let payload: {
       sub: string;
       email: string;
       roles: Role[];
-    } = await this.jwtService.verifyAsync(refreshToken, {
-      secret: this.configService.getOrThrow('JWT_REFRESH_SECRET'),
-    });
+    };
+    try {
+      payload = await this.jwtService.verifyAsync(refreshToken, {
+        secret: this.configService.getOrThrow('JWT_REFRESH_SECRET'),
+      });
+    } catch {
+      throw new UnauthorizedException();
+    }
 
     const user = await this.usersService.findById(payload.sub);
     if (!user || !user.refreshTokenHash) {
@@ -84,6 +90,10 @@ export class AuthService {
     });
     // attach new tokens to cookies
     this.setTokensCookie(res, tokens.refreshToken, tokens.accessToken);
+
+    return {
+      message: 'Tokens refreshed successfully',
+    };
   }
 
   // logout user.
