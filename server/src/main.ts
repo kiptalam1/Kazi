@@ -3,6 +3,7 @@ import { AppModule } from './app.module.js';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule, type SwaggerDocumentOptions } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
+// import cors from 'cors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,13 +16,17 @@ async function bootstrap() {
   );
 
   app.use(cookieParser());
+  app.enableCors({
+    origin: 'http://localhost:3000/api',
+    credentials: true,
+  })
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('KAZI')
     .setDescription('The Kazi API description')
     .setVersion('1.0')
     .addTag('Kazi')
-    .addBearerAuth()
+    .addCookieAuth('refresh_token')
     .build();
 
   const options: SwaggerDocumentOptions = {
@@ -31,7 +36,12 @@ async function bootstrap() {
   };
 
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig, options);
-  SwaggerModule.setup('api/v1', app, documentFactory);
+  SwaggerModule.setup('api/v1', app, documentFactory, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      withCredentials: true,
+    }
+  });
 
   await app.listen(process.env.PORT ?? 3000);
 }

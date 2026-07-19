@@ -4,7 +4,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import type { Response } from 'express';
+import type { Response, Request } from 'express';
 import { RegisterDto } from './dto/register.dto.js';
 import { UsersService } from '../users/users.service.js';
 import { PrismaService } from '../prisma.service.js';
@@ -22,6 +22,46 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) { }
+
+  // refresh accesstoken.
+  async refreshTokens(req: Request, res: Response) {
+    const refreshToken = req.cookies?.refresh_token;
+    if (!refreshToken) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+    let payload: {
+      sub: string;
+      email: string;
+      roles: Role[]
+    };
+    payload = await this.jwtService.verifyAsync(refreshToken, {
+      secret: this.configService.getOrThrow('JWT_REFRESH_SECRET'),
+    });
+
+    const user = await this.usersService.findById(payload.sub);
+    if (!user || !user.refreshTokenHash) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+    // compare refresh tokens;
+    const isRefreshMatch = await bcrypt.compare(refreshToken, user.refreshTokenHash);
+    if (!isRefreshMatch) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+    // generate new tokens;
+    const roles = user.roles.map((r) => r.role);
+    const tokens = await this.generateTokens(user.id, user.email, roles);
+    // hash refresh token and update db;
+    const refreshHash = await this.hashRefreshToken(tokens.refreshToken);
+    await this.usersService.updateUser({
+      where: { id: user.id },
+      data: {
+        refreshTokenHash: refreshHash,
+      }
+    });
+    // attach new tokens to cookies
+    this.setTokensCookie(res, tokens.refreshToken, tokens.accessToken)
+  }
+
   // logout user.
   async logout(id: string) {
     await this.usersService.updateUser({
