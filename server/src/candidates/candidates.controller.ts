@@ -1,13 +1,26 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Query } from '@nestjs/common';
 import { CandidatesService } from './candidates.service.js';
 import { CandidateUpdateDto } from './dto/update-candidate.dto.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import type { CurrentUserInterface } from '../common/interface/current-user.interface.js';
+import { ApiOkResponse } from '@nestjs/swagger';
+import { GetAllCandidatesResponseDto } from './dto/candidate-response.dto.js';
+import { GetCandidateQueryDto } from './dto/query.dto.js';
 
 @Controller('api/v1/candidates')
 export class CandidatesController {
   constructor(private readonly candidatesService: CandidatesService) { }
 
+  //get all candidates 
+  @Get()
+  @ApiOkResponse({
+    type: GetAllCandidatesResponseDto,
+  })
+  async findAll(
+    @Query()
+    query: GetCandidateQueryDto) {
+    return this.candidatesService.candidates(query);
+  }
 
   // update candidate fields;
   @Patch('me')
