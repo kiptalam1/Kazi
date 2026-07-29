@@ -32,3 +32,19 @@ export class UserRegisteredResponse {
   createdAt!: Date;
   updatedAt!: Date;
 }
+
+export class UserDto {
+  id!: string;
+  firstName!: string;
+  lastName!: string;
+  email!: string;
+  avatar!: string | null;
+  phone!: string | null;
+  emailVerified!: boolean;
+  isActive!: boolean;
+  @ApiProperty({ enum: Role, isArray: true })
+  roles!: Role[];
+  lastLoginAt!: Date | null;
+  createdAt!: Date;
+  updatedAt!: Date;
+}
