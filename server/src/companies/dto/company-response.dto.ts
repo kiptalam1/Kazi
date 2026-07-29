@@ -5,6 +5,7 @@ import { UserDto } from "../../users/dto/user-response.dto.js";
 export class CompanyDto {
   id!: string;
   name!: string;
+  slug!: string;
   description!: string | null;
   website!: string | null;
   industry!: string | null;
@@ -12,14 +13,9 @@ export class CompanyDto {
   logoUrl!: string | null;
   createdAt!: Date;
   updatedAt!: Date;
-  @ApiProperty({
-    type: () => CompanyMemberDto,
-    isArray: true,
-  })
-  companyMembers!: CompanyMemberDto[];
 }
 
-class CompanyMemberDto {
+export class CompanyMemberDto {
   id!: string;
   userId!: string;
   user!: UserDto;
@@ -30,4 +26,11 @@ class CompanyMemberDto {
   })
   role!: CompanyRole;
   joinedAt!: Date;
+}
+export class companyDetailsDto extends CompanyDto {
+  @ApiProperty({
+    type: () => CompanyMemberDto,
+    isArray: true,
+  })
+  companyMembers!: CompanyMemberDto[];
 }
