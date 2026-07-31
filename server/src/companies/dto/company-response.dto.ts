@@ -34,3 +34,18 @@ export class companyDetailsDto extends CompanyDto {
   })
   companyMembers!: CompanyMemberDto[];
 }
+
+export class Meta {
+  page!: number;
+  limit!: number;
+  total!: number;
+  totalPages!: number;
+}
+
+export class GetAllCompaniesResponseDto {
+  @ApiProperty({ type: [CompanyDto] })
+  data!: CompanyDto[];
+
+  @ApiProperty({ type: Meta })
+  meta!: Meta;
+}
