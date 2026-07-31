@@ -1,16 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import slugify from 'slugify';
 import { PrismaService } from '../prisma.service.js';
 import { CreateCompanyDto } from './dto/create-company.dto.js';
 import { CompanyRole, Role } from '../generated/prisma/enums.js';
-import type { GetCompanyQueryDto } from './dto/candidate-query.dto.js';
-import type { Prisma } from '../generated/prisma/client.js';
+import { GetCompanyQueryDto } from './dto/candidate-query.dto.js';
+import { Prisma } from '../generated/prisma/client.js';
+import { UpdateCompanyDto } from './dto/update-company.dto.js';
 
 @Injectable()
 export class CompaniesService {
   constructor(
     private prisma: PrismaService,
   ) { }
+  // update company;
+  async update(id: string, updateDto: UpdateCompanyDto) {
+    const company = await this.getById(id);
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+    const updated = await this.prisma.company.update({
+      where: { id: company.id },
+      data: updateDto,
+    });
+
+    return {
+      message: 'Fields updated successfully',
+      data: updated,
+    };
+  }
+
   // get company by id;
   async getById(id: string) {
     return await this.prisma.company.findUnique({

@@ -1,14 +1,25 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Query, } from '@nestjs/common';
 import { CompaniesService } from './companies.service.js';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { CompanyDto, GetAllCompaniesResponseDto } from './dto/company-response.dto.js';
 import { CreateCompanyDto } from './dto/create-company.dto.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { GetCompanyQueryDto } from './dto/candidate-query.dto.js';
+import { UpdateCompanyDto } from './dto/update-company.dto.js';
 
 @Controller('/api/v1/companies')
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) { }
+
+  // update company;
+  @Patch('update/:id')
+  @ApiOkResponse({ type: CompanyDto })
+  async update(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+    @Body() updateDto: UpdateCompanyDto) {
+    return await this.companiesService.update(id, updateDto);
+  }
 
   // create company;
   @Post('create')
