@@ -11,6 +11,15 @@ import { UpdateCompanyDto } from './dto/update-company.dto.js';
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) { }
 
+  // get a single company;
+  @Get(':slug')
+  @ApiOkResponse({ type: CompanyDto })
+  async getOne(
+    @Param('slug')
+    slug: string) {
+    return await this.companiesService.findOne(slug);
+  }
+
   // update company;
   @Patch('update/:id')
   @ApiOkResponse({ type: CompanyDto })

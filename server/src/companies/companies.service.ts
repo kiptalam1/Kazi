@@ -12,6 +12,17 @@ export class CompaniesService {
   constructor(
     private prisma: PrismaService,
   ) { }
+  // fetch one ;
+  async findOne(slug: string) {
+    const company = await this.getBySlug(slug);
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+    return {
+      data: company,
+    };
+  }
+
   // update company;
   async update(id: string, updateDto: UpdateCompanyDto) {
     const company = await this.getById(id);
