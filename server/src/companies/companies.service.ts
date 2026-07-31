@@ -9,6 +9,13 @@ export class CompaniesService {
   constructor(
     private prisma: PrismaService,
   ) { }
+  // get company by id;
+  async getById(id: string) {
+    return await this.prisma.company.findUnique({
+      where: { id },
+    });
+  }
+
   // get company by slug;
   async getBySlug(slug: string) {
     return await this.prisma.company.findUnique({
