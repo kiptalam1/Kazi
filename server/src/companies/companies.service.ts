@@ -3,6 +3,8 @@ import slugify from 'slugify';
 import { PrismaService } from '../prisma.service.js';
 import { CreateCompanyDto } from './dto/create-company.dto.js';
 import { CompanyRole, Role } from '../generated/prisma/enums.js';
+import type { GetCompanyQueryDto } from './dto/candidate-query.dto.js';
+import type { Prisma } from '../generated/prisma/client.js';
 
 @Injectable()
 export class CompaniesService {
@@ -26,8 +28,33 @@ export class CompaniesService {
   }
 
   // get all companies;
-  async findAll() {
-    return await this.prisma.company.findMany();
+  async findAll(query: GetCompanyQueryDto) {
+    const { page, limit, search } = query;
+    const skip = (page - 1) * limit;
+    const where: Prisma.CompanyWhereInput = search ? {
+      name: {
+        contains: search,
+        mode: "insensitive",
+      },
+    } : {}
+    const [data, total] = await this.prisma.$transaction([
+      this.prisma.company.findMany({
+        where,
+        skip,
+        take: limit,
+      }),
+      this.prisma.company.count({ where }),
+    ]);
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   // create a company;
