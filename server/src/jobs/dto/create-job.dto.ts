@@ -56,5 +56,6 @@ export class CreateJobDto {
     enum: JobStatus,
     enumName: 'JobStatus'
   })
-  status!: JobStatus;
+  @IsOptional()
+  status?: JobStatus;
 }

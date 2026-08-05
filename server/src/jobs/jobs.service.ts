@@ -20,37 +20,26 @@ export class JobsService {
     if (!company) {
       throw new NotFoundException('Company not found');
     }
-    const member = await this.prisma.companyMember.findUnique({
-      where: {
-        companyId_userId: {
-          userId,
-          companyId: company.id,
-        },
-      },
-    });
-
+    const member = await this.isCompanyMember(userId, company.id);
     if (!member) {
       throw new ForbiddenException('You are not a member of this company.');
     }
-
-    const allowedRoles: CompanyRole[] = [
-      CompanyRole.COMPANY_ADMIN,
-      CompanyRole.HIRING_MANAGER,
-      CompanyRole.RECRUITER,
-    ];
-
-    const allowed = allowedRoles.includes(member.role);
+    const allowed = this.canCompleteOperation(member.role);
     if (!allowed) {
       throw new ForbiddenException('Permission denied.');
     }
-
-    return await this.prisma.job.create({
+    const jobCreated = await this.prisma.job.create({
       data: {
         ...createJobDto,
         companyId: company.id,
         createdById: userId,
       },
     });
+
+    return {
+      message: 'Job created successfully',
+      data: jobCreated,
+    };
   }
 
   // get all jobs;
@@ -127,9 +116,8 @@ export class JobsService {
         }
       }
     });
-
     if (!job) {
-      throw new NotFoundException('Not found');
+      throw new NotFoundException('Job not found');
     }
     return job;
   }
@@ -141,25 +129,11 @@ export class JobsService {
     updateJobDto: UpdateJobDto
   ) {
     const job = await this.findById(jobId);
-    const member = await this.prisma.companyMember.findUnique({
-      where: {
-        companyId_userId: {
-          companyId: job.companyId,
-          userId,
-        },
-      },
-    });
-
+    const member = await this.isCompanyMember(userId, job.companyId);
     if (!member) {
       throw new ForbiddenException('You are not a member of this company.');
     }
-    const allowedRoles: CompanyRole[] = [
-      CompanyRole.RECRUITER,
-      CompanyRole.COMPANY_ADMIN,
-      CompanyRole.HIRING_MANAGER,
-    ];
-
-    const allowed = allowedRoles.includes(member.role);
+    const allowed = this.canCompleteOperation(member.role);
     if (!allowed) {
       throw new ForbiddenException('Permission denied.');
     }
@@ -185,7 +159,50 @@ export class JobsService {
     };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} job`;
+  // delete job posting;
+  async remove(
+    userId: string,
+    jobId: string,
+  ) {
+    const job = await this.findById(jobId);
+    const member = await this.isCompanyMember(userId, job.companyId);
+    if (!member) {
+      throw new ForbiddenException('Your are not a member of this company.');
+    }
+    const allowed = this.canCompleteOperation(member.role);
+    if (!allowed) {
+      throw new ForbiddenException('Permission denied.');
+    }
+    const deletedJob = await this.prisma.job.delete({
+      where: { id: jobId },
+    });
+
+    return {
+      message: 'Job deleted successfully',
+      data: deletedJob,
+    };
   }
+
+  // helper to check if current user is a member;
+  private async isCompanyMember(userId: string, companyId: string) {
+    return await this.prisma.companyMember.findUnique({
+      where: {
+        companyId_userId: {
+          companyId,
+          userId,
+        },
+      },
+    });
+  }
+
+  // helper to check if user can perform operation;
+  private canCompleteOperation(role: CompanyRole) {
+    const allowedRoles: CompanyRole[] = [
+      CompanyRole.RECRUITER,
+      CompanyRole.COMPANY_ADMIN,
+      CompanyRole.HIRING_MANAGER,
+    ];
+    return allowedRoles.includes(role);
+  }
+
 }
