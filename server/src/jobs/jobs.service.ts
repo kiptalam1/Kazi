@@ -112,7 +112,7 @@ export class JobsService {
 
   // get job by id;
   async findById(id: string) {
-    return await this.prisma.job.findUnique({
+    const job = await this.prisma.job.findUnique({
       where: { id },
       include: {
         company: {
@@ -125,6 +125,13 @@ export class JobsService {
         }
       }
     });
+
+    if (!job) {
+      throw new NotFoundException('Not found');
+    }
+    return {
+      data: job,
+    };
   }
 
   update(id: number, updateJobDto: UpdateJobDto) {
