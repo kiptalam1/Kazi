@@ -13,6 +13,8 @@ export class JobsService {
     private prisma: PrismaService,
     private companyService: CompaniesService,
   ) { }
+
+  // create a new job;
   async create(userId: string, slug: string, createJobDto: CreateJobDto) {
     const company = await this.companyService.getBySlug(slug);
     if (!company) {
@@ -34,10 +36,10 @@ export class JobsService {
     const allowedRoles: CompanyRole[] = [
       CompanyRole.COMPANY_ADMIN,
       CompanyRole.HIRING_MANAGER,
-      CompanyRole.RECRUITER]
+      CompanyRole.RECRUITER,
+    ];
 
     const allowed = allowedRoles.includes(member.role);
-
     if (!allowed) {
       throw new ForbiddenException('Permission denied.');
     }
@@ -47,10 +49,11 @@ export class JobsService {
         ...createJobDto,
         companyId: company.id,
         createdById: userId,
-      }
+      },
     });
   }
 
+  // get all jobs;
   async findAll(queryDto: GetQueryDto) {
     const { page, experienceLevel, limit, search, order, sortBy, isRemote, companySlug } = queryDto;
     const skip = (page - 1) * limit;
@@ -82,8 +85,17 @@ export class JobsService {
         take: limit,
         skip,
         orderBy,
+        include: {
+          company: {
+            select: {
+              id: true,
+              name: true,
+              logoUrl: true,
+              slug: true,
+            },
+          },
+        },
       }),
-
       this.prisma.job.count({ where })
     ]
     );
@@ -98,9 +110,21 @@ export class JobsService {
     };
   };
 
-
-  findOne(id: number) {
-    return `This action returns a #${id} job`;
+  // get job by id;
+  async findById(id: string) {
+    return await this.prisma.job.findUnique({
+      where: { id },
+      include: {
+        company: {
+          select: {
+            id: true,
+            name: true,
+            logoUrl: true,
+            slug: true,
+          }
+        }
+      }
+    });
   }
 
   update(id: number, updateJobDto: UpdateJobDto) {
