@@ -3,8 +3,7 @@ Auth ✅
 Users 
 Companies ✅
 Candidates ✅
-Jobs
-Recruiters
+Jobs ✅
 Applications
 Skills
 Bookmarks
@@ -14,27 +13,28 @@ Notifications
 Analytics
 Admin
 Audit Logs
+Recruiters
 
 # Major Features
 ## Authentication
-Register
-Login
-Logout
-Refresh tokens
+Register ✅
+Login ✅
+Logout ✅
+Refresh tokens ✅
 Email verification
 Forgot password
 Reset password
 ## Companies
-Create company
-Edit company profile
+Create company ✅
+Edit company profile ✅
 Invite recruiters
 Company verification
 ## Jobs
-CRUD
-Search
-Filtering
-Pagination
-Draft/Published/Closed status
+CRUD ✅
+Search ✅
+Filtering ✅
+Pagination ✅
+Draft/Published/Closed status ✅
 ## Applications
 Apply to jobs
 Upload CV
@@ -52,7 +52,7 @@ Messages
 Job status updates
 Email notifications
 ## Candidate
-Profile
+Profile ✅
 Experience
 Education
 Skills
@@ -97,7 +97,7 @@ Testing
 RBAC ✅
 Pagination ✅
 Filtering ✅
-Sorting
+Sorting ✅
 Global exception handling
 Global response interceptor
 Request validation
