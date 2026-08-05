@@ -41,11 +41,16 @@ export class JobsController {
   }
 
   // update job fields;
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
-    return this.jobsService.update(+id, updateJobDto);
+  @Patch('jobs/:jobId')
+  update(
+    @CurrentUser('id') userId: string,
+    @Param('jobId', ParseUUIDPipe) jobId: string,
+    @Body() updateJobDto: UpdateJobDto
+  ) {
+    return this.jobsService.update(userId, jobId, updateJobDto);
   }
 
+  // delete job;
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.jobsService.remove(+id);

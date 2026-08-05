@@ -1,5 +1,5 @@
 import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min, MinLength } from "class-validator";
-import { ExperienceLevel } from "../../generated/prisma/enums.js";
+import { ExperienceLevel, JobStatus } from "../../generated/prisma/enums.js";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateJobDto {
@@ -49,10 +49,12 @@ export class CreateJobDto {
   @ApiProperty({ default: false })
   isRemote!: boolean;
 
-  // @IsEnum(JobStatus)
-  // @ApiProperty({
-  //   enum: JobStatus,
-  //   enumName: 'JobStatus'
-  // })
-  // status!: JobStatus;
+  @IsEnum(JobStatus, {
+    message: `Status must be one of: ${Object.values(JobStatus).join(', ')}`
+  })
+  @ApiProperty({
+    enum: JobStatus,
+    enumName: 'JobStatus'
+  })
+  status!: JobStatus;
 }
