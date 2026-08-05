@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { JobsService } from './jobs.service.js';
 import { CreateJobDto } from './dto/create-job.dto.js';
 import { UpdateJobDto } from './dto/update-job.dto.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
+import { GetQueryDto } from '../common/dto/query.dto.js';
 
 
 @Controller('api/v1')
@@ -18,9 +19,10 @@ export class JobsController {
     return await this.jobsService.create(userId, slug, createJobDto);
   }
 
-  @Get()
-  findAll() {
-    return this.jobsService.findAll();
+  @Get('jobs')
+  async findAll(
+    @Query() queryDto: GetQueryDto) {
+    return await this.jobsService.findAll(queryDto);
   }
 
   @Get(':id')
