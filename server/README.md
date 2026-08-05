@@ -1,10 +1,10 @@
 # Core Modules
-Auth
-Users
-Companies
-Recruiters
-Candidates
+Auth ✅
+Users 
+Companies ✅
+Candidates ✅
 Jobs
+Recruiters
 Applications
 Skills
 Bookmarks
@@ -71,64 +71,64 @@ Moderation
 Platform analytics
 
 # NestJS Concepts to Learn
-Modules
-Controllers
-Services
-Dependency Injection
-DTOs
-Validation Pipes
-Guards
-Middleware
+Modules ✅
+Controllers ✅
+Services ✅
+Dependency Injection ✅
+DTOs ✅
+Validation Pipes ✅
+Guards ✅
+Exception Filters ✅
+JWT ✅
+Custom Decorators ✅
+Role-Based Access Control ✅
+Swagger ✅
 Interceptors
-Exception Filters
-Custom Decorators
+Middleware
 Custom Providers
-Dynamic Modules
 Passport
-JWT
-Role-Based Access Control
+Dynamic Modules
 WebSockets
 Event Emitter
 BullMQ
 Cron Jobs
 Testing
-Swagger
 # Backend Practices
-RBAC
+RBAC ✅
+Pagination ✅
+Filtering ✅
+Sorting
 Global exception handling
 Global response interceptor
 Request validation
 Request logging
 Audit logging
-Pagination
-Filtering
-Sorting
 Transactions
 Soft deletes
 Environment configuration
 Database seeding
-Migrations
+Migrations ✅
 API versioning
 # Security
-HttpOnly cookies
-JWT access tokens
-JWT refresh tokens
-Password hashing
+HttpOnly cookies ✅
+JWT access tokens ✅
+JWT refresh tokens ✅
+Password hashing ✅
 Email verification
 CSRF considerations
 Rate limiting
 Helmet
-CORS
-Input validation
+CORS ✅
+Input validation ✅
 Authorization policies
 # Milestones
 ## Milestone 1 — Foundation
-Project setup
-Prisma
-PostgreSQL
-Authentication
-Swagger
-Global guards
+Project setup ✅
+Prisma ✅
+PostgreSQL ✅
+Authentication ✅
+Swagger ✅
+Global guards ✅
 Global exception filter
 Global response interceptor
 ## Milestone 2 — Users
@@ -137,8 +137,8 @@ User management
 File uploads
 Avatar support
 ## Milestone 3 — Companies
-Company creation
-Company profiles
+Company creation ✅
+Company profiles ✅
 Recruiter invitations
 Company administration
 ## Milestone 4 — Jobs
