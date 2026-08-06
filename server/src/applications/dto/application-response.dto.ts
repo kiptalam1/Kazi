@@ -13,9 +13,37 @@ export class ApplicationDataDto {
 
   @ApiProperty()
   createdAt!: Date;
+
+  @ApiProperty()
+  updatedAt?: Date;
 }
 
-export class ApplicationResponse {
+export class ApplicationCreatedResponse {
   message!: string;
   data!: ApplicationDataDto;
+}
+
+class UpdatedApplicationDto {
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty({
+    enum: ApplicationStatus,
+    enumName: 'ApplicationStatus',
+  })
+  status!: ApplicationStatus;
+
+  @ApiProperty({ nullable: true })
+  employerNotes!: string | null;
+
+  @ApiProperty()
+  reviewedAt!: Date | null;
+
+  @ApiProperty()
+  updatedAt!: Date;
+}
+
+export class ApplicationStatusUpdatedResponse {
+  message!: string;
+  data!: UpdatedApplicationDto;
 }
