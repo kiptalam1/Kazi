@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException, } from '@nestjs/common';
 import { CreateJobDto } from './dto/create-job.dto.js';
 import { UpdateJobDto } from './dto/update-job.dto.js';
-import { CompanyRole, JobStatus } from '../generated/prisma/enums.js';
+import { JobStatus } from '../generated/prisma/enums.js';
 import { CompaniesService } from '../companies/companies.service.js';
 import { PrismaService } from '../prisma.service.js';
 import { GetQueryDto } from '../common/dto/query.dto.js';
@@ -26,7 +26,7 @@ export class JobsService {
     if (!member) {
       throw new ForbiddenException('You are not a member of this company.');
     }
-    const allowed = this.canCompleteOperation(member.role);
+    const allowed = this.companyMembersService.canManageOperations(member.role);
     if (!allowed) {
       throw new ForbiddenException('Permission denied.');
     }
@@ -135,7 +135,7 @@ export class JobsService {
     if (!member) {
       throw new ForbiddenException('You are not a member of this company.');
     }
-    const allowed = this.canCompleteOperation(member.role);
+    const allowed = this.companyMembersService.canManageOperations(member.role);
     if (!allowed) {
       throw new ForbiddenException('Permission denied.');
     }
@@ -171,7 +171,7 @@ export class JobsService {
     if (!member) {
       throw new ForbiddenException('Your are not a member of this company.');
     }
-    const allowed = this.canCompleteOperation(member.role);
+    const allowed = this.companyMembersService.canManageOperations(member.role);
     if (!allowed) {
       throw new ForbiddenException('Permission denied.');
     }
@@ -184,15 +184,4 @@ export class JobsService {
       data: deletedJob,
     };
   }
-
-  // helper to check if user can perform operation;
-  private canCompleteOperation(role: CompanyRole) {
-    const allowedRoles: CompanyRole[] = [
-      CompanyRole.RECRUITER,
-      CompanyRole.COMPANY_ADMIN,
-      CompanyRole.HIRING_MANAGER,
-    ];
-    return allowedRoles.includes(role);
-  }
-
 }
