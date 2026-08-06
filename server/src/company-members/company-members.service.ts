@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
+import { CompanyRole } from '../generated/prisma/enums.js';
 
 @Injectable()
 export class CompanyMembersService {
@@ -20,4 +21,14 @@ export class CompanyMembersService {
         },
       });
   }
+
+  canManageOperations(role: CompanyRole) {
+    const allowedRoles: CompanyRole[] = [
+      CompanyRole.RECRUITER,
+      CompanyRole.COMPANY_ADMIN,
+      CompanyRole.HIRING_MANAGER,
+    ];
+    return allowedRoles.includes(role);
+  }
+
 }
