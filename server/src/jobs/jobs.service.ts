@@ -6,12 +6,14 @@ import { CompaniesService } from '../companies/companies.service.js';
 import { PrismaService } from '../prisma.service.js';
 import { GetQueryDto } from '../common/dto/query.dto.js';
 import { Prisma } from '../generated/prisma/client.js';
+import { CompanyMembersService } from '../company-members/company-members.service.js';
 
 @Injectable()
 export class JobsService {
   constructor(
     private prisma: PrismaService,
     private companyService: CompaniesService,
+    private readonly companyMembersService: CompanyMembersService,
   ) { }
 
   // create a new job;
@@ -20,7 +22,7 @@ export class JobsService {
     if (!company) {
       throw new NotFoundException('Company not found');
     }
-    const member = await this.isCompanyMember(userId, company.id);
+    const member = await this.companyMembersService.getMember(userId, company.id);
     if (!member) {
       throw new ForbiddenException('You are not a member of this company.');
     }
@@ -129,7 +131,7 @@ export class JobsService {
     updateJobDto: UpdateJobDto
   ) {
     const job = await this.findById(jobId);
-    const member = await this.isCompanyMember(userId, job.companyId);
+    const member = await this.companyMembersService.getMember(userId, job.companyId);
     if (!member) {
       throw new ForbiddenException('You are not a member of this company.');
     }
@@ -165,7 +167,7 @@ export class JobsService {
     jobId: string,
   ) {
     const job = await this.findById(jobId);
-    const member = await this.isCompanyMember(userId, job.companyId);
+    const member = await this.companyMembersService.getMember(userId, job.companyId);
     if (!member) {
       throw new ForbiddenException('Your are not a member of this company.');
     }
@@ -181,18 +183,6 @@ export class JobsService {
       message: 'Job deleted successfully',
       data: deletedJob,
     };
-  }
-
-  // helper to check if current user is a member;
-  private async isCompanyMember(userId: string, companyId: string) {
-    return await this.prisma.companyMember.findUnique({
-      where: {
-        companyId_userId: {
-          companyId,
-          userId,
-        },
-      },
-    });
   }
 
   // helper to check if user can perform operation;
