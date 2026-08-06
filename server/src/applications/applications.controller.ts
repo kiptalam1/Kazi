@@ -1,15 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { ApplicationsService } from './applications.service.js';
 import { CreateApplicationDto } from './dto/create-application.dto.js';
 import { UpdateApplicationDto } from './dto/update-application.dto.js';
+import { ApiOkResponse } from '@nestjs/swagger';
+import { ApplicationResponse } from './dto/application-response.dto.js';
+import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 
-@Controller('applications')
+@Controller('api/v1/applications')
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) { }
 
-  @Post()
-  create(@Body() createApplicationDto: CreateApplicationDto) {
-    return this.applicationsService.create(createApplicationDto);
+  @Post('jobs/:jobId')
+  @ApiOkResponse({ type: ApplicationResponse })
+  async create(
+    @CurrentUser('id') userId: string,
+    @Param('jobId', ParseUUIDPipe) jobId: string,
+    @Body() createApplicationDto: CreateApplicationDto): Promise<ApplicationResponse> {
+    return await this.applicationsService.create(userId, jobId, createApplicationDto);
   }
 
   @Get()

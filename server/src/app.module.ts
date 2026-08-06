@@ -9,7 +9,8 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
 import { CandidatesModule } from './candidates/candidates.module.js';
 import { CompaniesModule } from './companies/companies.module.js';
 import { JobsModule } from './jobs/jobs.module.js';
-import { ApplicationsModule } from './applications/applications.module';
+import { ApplicationsModule } from './applications/applications.module.js';
+import { CompanyMembersService } from './company-members/company-members.service.js';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ApplicationsModule } from './applications/applications.module';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    CompanyMembersService,
   ],
 })
 export class AppModule { }
