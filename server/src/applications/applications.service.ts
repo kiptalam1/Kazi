@@ -28,8 +28,11 @@ export class ApplicationsService {
       throw new NotFoundException('candidate profile not found');
     }
 
-    // check if job exists;
+    // check if job exists and is open;
     const job = await this.jobsService.findById(jobId);
+    if (job.status === 'CLOSED') {
+      throw new ForbiddenException('No longer accepting applications.');
+    }
 
     // ensure user is not a member of company;
     const member = await this.companyMembersService.getMember(user.id, job.companyId);
