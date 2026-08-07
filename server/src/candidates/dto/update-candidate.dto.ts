@@ -1,6 +1,6 @@
-import { IsArray, IsEnum, IsOptional, IsString } from "class-validator";
-import { ExperienceLevel } from "../../generated/prisma/enums.js";
-import { ApiProperty } from "@nestjs/swagger";
+import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
+import { ExperienceLevel } from '../../generated/prisma/enums.js';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CandidateUpdateDto {
   @IsOptional()

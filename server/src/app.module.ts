@@ -34,4 +34,4 @@ import { CompanyMembersService } from './company-members/company-members.service
     CompanyMembersService,
   ],
 })
-export class AppModule { }
+export class AppModule {}

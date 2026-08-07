@@ -1,9 +1,15 @@
-import { IsNotEmpty, IsOptional, IsString, IsUrl, MinLength } from "class-validator";
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUrl,
+  MinLength,
+} from 'class-validator';
 
 export class CreateCompanyDto {
   @IsNotEmpty()
   @IsString()
-  @MinLength(3, { message: "Name must be at least 3 characters long" })
+  @MinLength(3, { message: 'Name must be at least 3 characters long' })
   name!: string;
 
   @IsString()
@@ -17,7 +23,7 @@ export class CreateCompanyDto {
 
   @IsString()
   @IsOptional()
-  industry!: string
+  industry!: string;
 
   @IsString()
   @IsOptional()

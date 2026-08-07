@@ -1,6 +1,6 @@
-import { ApiProperty, } from "@nestjs/swagger";
-import { CompanyRole } from "../../generated/prisma/enums.js";
-import { UserDto } from "../../users/dto/user-response.dto.js";
+import { ApiProperty } from '@nestjs/swagger';
+import { CompanyRole } from '../../generated/prisma/enums.js';
+import { UserDto } from '../../users/dto/user-response.dto.js';
 
 export class CompanyDto {
   id!: string;
@@ -22,7 +22,7 @@ export class CompanyMemberDto {
   companyId!: string;
   @ApiProperty({
     enum: CompanyRole,
-    enumName: "CompanyRole",
+    enumName: 'CompanyRole',
   })
   role!: CompanyRole;
   joinedAt!: Date;

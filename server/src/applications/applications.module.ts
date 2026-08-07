@@ -9,6 +9,13 @@ import { CompanyMembersService } from '../company-members/company-members.servic
 
 @Module({
   controllers: [ApplicationsController],
-  providers: [ApplicationsService, PrismaService, UsersService, JobsService, CompaniesService, CompanyMembersService],
+  providers: [
+    ApplicationsService,
+    PrismaService,
+    UsersService,
+    JobsService,
+    CompaniesService,
+    CompanyMembersService,
+  ],
 })
-export class ApplicationsModule { }
+export class ApplicationsModule {}

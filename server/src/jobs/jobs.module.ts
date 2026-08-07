@@ -7,6 +7,11 @@ import { CompanyMembersService } from '../company-members/company-members.servic
 
 @Module({
   controllers: [JobsController],
-  providers: [JobsService, CompaniesService, PrismaService, CompanyMembersService],
+  providers: [
+    JobsService,
+    CompaniesService,
+    PrismaService,
+    CompanyMembersService,
+  ],
 })
-export class JobsModule { }
+export class JobsModule {}

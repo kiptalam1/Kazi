@@ -25,7 +25,7 @@ import { Public } from '../common/decorators/public.decorator.js';
 
 @Controller('api/v1/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   // login user.
   @Public()
@@ -81,5 +81,4 @@ export class AuthController {
   ) {
     await this.authService.refreshTokens(req, res);
   }
-
 }

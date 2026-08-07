@@ -5,32 +5,32 @@ import { GetCandidateQueryDto } from './dto/query.dto.js';
 
 @Injectable()
 export class CandidatesService {
-  constructor(
-    private prisma: PrismaService,
-  ) { }
+  constructor(private prisma: PrismaService) {}
 
-  // get all candidates 
+  // get all candidates
   async candidates(query: GetCandidateQueryDto) {
     const { page, limit, search } = query;
     const skip = (page - 1) * limit;
-    const where: Prisma.CandidateWhereInput = search ? {
-      user: {
-        OR: [{
-          firstName: {
-            contains: search,
-            mode: 'insensitive',
+    const where: Prisma.CandidateWhereInput = search
+      ? {
+          user: {
+            OR: [
+              {
+                firstName: {
+                  contains: search,
+                  mode: 'insensitive',
+                },
+              },
+              {
+                lastName: {
+                  contains: search,
+                  mode: 'insensitive',
+                },
+              },
+            ],
           },
-        },
-        {
-          lastName: {
-            contains: search,
-            mode: 'insensitive',
-          },
-        },
-        ],
-      },
-    }
-      : {}
+        }
+      : {};
     const [data, total] = await this.prisma.$transaction([
       this.prisma.candidate.findMany({
         where,
@@ -66,10 +66,7 @@ export class CandidatesService {
   }
 
   // update candidate .
-  async updateByUserId(
-    userId: string,
-    dto: Prisma.CandidateUpdateInput,
-  ) {
+  async updateByUserId(userId: string, dto: Prisma.CandidateUpdateInput) {
     return await this.prisma.candidate.update({
       where: { userId },
       data: dto,
@@ -77,9 +74,7 @@ export class CandidatesService {
   }
 
   // get one candidate;
-  async candidate(
-    candidateWhereUniqueInput: Prisma.CandidateWhereUniqueInput
-  ) {
+  async candidate(candidateWhereUniqueInput: Prisma.CandidateWhereUniqueInput) {
     const candidate = await this.prisma.candidate.findUnique({
       where: candidateWhereUniqueInput,
       include: {
@@ -91,7 +86,7 @@ export class CandidatesService {
             // phone: true,
             avatar: true,
             roles: {
-              select: { role: true, },
+              select: { role: true },
             },
           },
         },

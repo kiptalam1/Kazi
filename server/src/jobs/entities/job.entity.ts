@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { ExperienceLevel, JobStatus } from "../../generated/prisma/enums.js";
+import { ApiProperty } from '@nestjs/swagger';
+import { ExperienceLevel, JobStatus } from '../../generated/prisma/enums.js';
 
 export class Job {
   id!: string;
@@ -10,7 +10,7 @@ export class Job {
 
   @ApiProperty({
     enumName: 'ExperienceLevel',
-    enum: ExperienceLevel
+    enum: ExperienceLevel,
   })
   experienceLevel!: ExperienceLevel;
 
@@ -22,7 +22,7 @@ export class Job {
 
   @ApiProperty({
     enum: JobStatus,
-    enumName: 'JobStatus'
+    enumName: 'JobStatus',
   })
   status!: JobStatus;
 

@@ -9,9 +9,7 @@ import { UpdateCompanyDto } from './dto/update-company.dto.js';
 
 @Injectable()
 export class CompaniesService {
-  constructor(
-    private prisma: PrismaService,
-  ) { }
+  constructor(private prisma: PrismaService) {}
   // fetch one ;
   async findOne(slug: string) {
     const company = await this.getBySlug(slug);
@@ -60,12 +58,14 @@ export class CompaniesService {
   async findAll(query: GetCompanyQueryDto) {
     const { page, limit, search } = query;
     const skip = (page - 1) * limit;
-    const where: Prisma.CompanyWhereInput = search ? {
-      name: {
-        contains: search,
-        mode: "insensitive",
-      },
-    } : {}
+    const where: Prisma.CompanyWhereInput = search
+      ? {
+          name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        }
+      : {};
     const [data, total] = await this.prisma.$transaction([
       this.prisma.company.findMany({
         where,

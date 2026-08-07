@@ -6,7 +6,7 @@ import { UserLoginResponse } from './dto/user-response.dto.js';
 
 @Controller('api/v1/users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   // get authenticated user;
   @Get('me')
@@ -21,5 +21,4 @@ export class UsersController {
   ) {
     return await this.usersService.me(id);
   }
-
 }

@@ -1,4 +1,10 @@
-import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateApplicationDto } from './dto/create-application.dto.js';
 import { UpdateApplicationStatusDto } from './dto/update-application.dto.js';
 import { PrismaService } from '../prisma.service.js';
@@ -14,10 +20,14 @@ export class ApplicationsService {
     private readonly usersService: UsersService,
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
-  ) { }
+  ) {}
 
   // apply to a job;
-  async create(userId: string, jobId: string, createApplicationDto: CreateApplicationDto) {
+  async create(
+    userId: string,
+    jobId: string,
+    createApplicationDto: CreateApplicationDto,
+  ) {
     // get user and its candidate fields;
     const user = await this.usersService.findById(userId);
     if (!user) {
@@ -36,7 +46,10 @@ export class ApplicationsService {
     }
 
     // ensure user is not a member of company;
-    const member = await this.companyMembersService.getMember(user.id, job.companyId);
+    const member = await this.companyMembersService.getMember(
+      user.id,
+      job.companyId,
+    );
     if (member) {
       throw new ForbiddenException('You are already a member of this company.');
     }
@@ -89,7 +102,7 @@ export class ApplicationsService {
   async updateStatus(
     userId: string,
     applicationId: string,
-    updateApplicationStatusDto: UpdateApplicationStatusDto
+    updateApplicationStatusDto: UpdateApplicationStatusDto,
   ) {
     // check if application exists;
     const application = await this.prisma.application.findUnique({
@@ -110,22 +123,30 @@ export class ApplicationsService {
     }
 
     //check membership;
-    const member = await this.companyMembersService.getMember(userId, application.job.companyId);
+    const member = await this.companyMembersService.getMember(
+      userId,
+      application.job.companyId,
+    );
 
     if (!member) {
       throw new ForbiddenException('Permission denied.');
     }
 
     // only allowed can update status;
-    const allowedRoles = this.companyMembersService.canManageOperations(member.role);
+    const allowedRoles = this.companyMembersService.canManageOperations(
+      member.role,
+    );
     if (!allowedRoles) {
       throw new ForbiddenException('Permission denied.');
     }
 
     // do nothing if fields are the same;
-    const statusChanged = updateApplicationStatusDto.status !== undefined && updateApplicationStatusDto.status !== application.status;
+    const statusChanged =
+      updateApplicationStatusDto.status !== undefined &&
+      updateApplicationStatusDto.status !== application.status;
 
-    const notesChanged = updateApplicationStatusDto.employerNotes !== undefined &&
+    const notesChanged =
+      updateApplicationStatusDto.employerNotes !== undefined &&
       updateApplicationStatusDto.employerNotes !== application.employerNotes;
 
     if (!statusChanged && !notesChanged) {
@@ -142,17 +163,16 @@ export class ApplicationsService {
     }
 
     // now update
-    const appUpdated = await this.prisma.
-      application.update({
-        where: {
-          id: applicationId,
-        },
-        data: {
-          status: updateApplicationStatusDto.status,
-          employerNotes: updateApplicationStatusDto.employerNotes,
-          reviewedAt: new Date(),
-        },
-      });
+    const appUpdated = await this.prisma.application.update({
+      where: {
+        id: applicationId,
+      },
+      data: {
+        status: updateApplicationStatusDto.status,
+        employerNotes: updateApplicationStatusDto.employerNotes,
+        reviewedAt: new Date(),
+      },
+    });
 
     return {
       message: 'Application updated successfully',
@@ -167,14 +187,10 @@ export class ApplicationsService {
   }
 
   // withdraw application;
-  async withdraw(
-    userId: string,
-    applicationId: string,
-  ) {
-
+  async withdraw(userId: string, applicationId: string) {
     const candidate = await this.prisma.candidate.findUnique({
       where: { userId },
-      select: { id: true, },
+      select: { id: true },
     });
     if (!candidate) {
       throw new NotFoundException('Candidate profile not found.');
@@ -191,9 +207,12 @@ export class ApplicationsService {
     }
     // deny if rejected or hired;
     if (
-      application.status === ApplicationStatus.REJECTED || application.status === ApplicationStatus.HIRED
+      application.status === ApplicationStatus.REJECTED ||
+      application.status === ApplicationStatus.HIRED
     ) {
-      throw new BadRequestException(`You have already been ${application.status.toLowerCase()}`);
+      throw new BadRequestException(
+        `You have already been ${application.status.toLowerCase()}`,
+      );
     }
     const appWithdrawn = await this.prisma.application.update({
       where: { id: application.id },

@@ -1,7 +1,19 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Query, } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CompaniesService } from './companies.service.js';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { CompanyDto, GetAllCompaniesResponseDto } from './dto/company-response.dto.js';
+import {
+  CompanyDto,
+  GetAllCompaniesResponseDto,
+} from './dto/company-response.dto.js';
 import { CreateCompanyDto } from './dto/create-company.dto.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { GetCompanyQueryDto } from './dto/candidate-query.dto.js';
@@ -9,14 +21,15 @@ import { UpdateCompanyDto } from './dto/update-company.dto.js';
 
 @Controller('/api/v1/companies')
 export class CompaniesController {
-  constructor(private readonly companiesService: CompaniesService) { }
+  constructor(private readonly companiesService: CompaniesService) {}
 
   // get a single company;
   @Get(':slug')
   @ApiOkResponse({ type: CompanyDto })
   async getOne(
     @Param('slug')
-    slug: string) {
+    slug: string,
+  ) {
     return await this.companiesService.findOne(slug);
   }
 
@@ -26,7 +39,8 @@ export class CompaniesController {
   async update(
     @Param('id', ParseUUIDPipe)
     id: string,
-    @Body() updateDto: UpdateCompanyDto) {
+    @Body() updateDto: UpdateCompanyDto,
+  ) {
     return await this.companiesService.update(id, updateDto);
   }
 
@@ -34,8 +48,8 @@ export class CompaniesController {
   @Post('create')
   @ApiOkResponse({ type: CompanyDto })
   async create(
-    @Body() createDto: CreateCompanyDto
-    , @CurrentUser('id') userId: string
+    @Body() createDto: CreateCompanyDto,
+    @CurrentUser('id') userId: string,
   ) {
     return await this.companiesService.create(userId, createDto);
   }
@@ -44,7 +58,7 @@ export class CompaniesController {
   @ApiOkResponse({ type: GetAllCompaniesResponseDto, isArray: true })
   async findAll(
     @Query()
-    query: GetCompanyQueryDto
+    query: GetCompanyQueryDto,
   ) {
     return await this.companiesService.findAll(query);
   }

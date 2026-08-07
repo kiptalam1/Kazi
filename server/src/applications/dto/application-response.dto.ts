@@ -1,5 +1,5 @@
-import { ApplicationStatus } from "../../generated/prisma/enums.js";
-import { ApiProperty } from "@nestjs/swagger";
+import { ApplicationStatus } from '../../generated/prisma/enums.js';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class ApplicationDataDto {
   @ApiProperty()

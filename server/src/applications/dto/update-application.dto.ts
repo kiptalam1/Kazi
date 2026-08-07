@@ -3,8 +3,7 @@ import { CreateApplicationDto } from './create-application.dto.js';
 import { ApplicationStatus } from '../../generated/prisma/enums.js';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 
-export class UpdateApplicationDto extends PartialType(CreateApplicationDto) {
-}
+export class UpdateApplicationDto extends PartialType(CreateApplicationDto) {}
 
 export class UpdateApplicationStatusDto {
   @ApiProperty({
