@@ -15,9 +15,11 @@ import { ApplicationStatus } from '../generated/prisma/enums.js';
 import { CandidatesService } from '../candidates/candidates.service.js';
 import {
   CandidateApplicationApiResponse,
+  EmployerApplicationsResponseDto,
   QueryDto,
 } from './dto/application-response.dto.js';
-import type { Prisma } from '../generated/prisma/client.js';
+import { Prisma } from '../generated/prisma/client.js';
+import { GetQueryDto } from '../common/dto/query.dto.js';
 
 @Injectable()
 export class ApplicationsService {
@@ -27,7 +29,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) {}
+  ) { }
 
   // apply to a job;
   async create(
@@ -294,6 +296,96 @@ export class ApplicationsService {
         createdAt: appWithdrawn.createdAt,
         updatedAt: appWithdrawn.updatedAt,
         jobId: appWithdrawn.jobId,
+      },
+    };
+  }
+
+  // employer get all candidates job applications;
+  async getAllApplicationsByJob(
+    userId: string,
+    jobId: string,
+    query: GetQueryDto,
+  ): Promise<EmployerApplicationsResponseDto> {
+    const { page, limit, status, search } = query;
+    const skip = (page - 1) * limit;
+    const where: Prisma.ApplicationWhereInput = { jobId };
+    if (status) {
+      where.status = status;
+    }
+    if (search) {
+      where.candidate = {
+        user: {
+          OR: [
+            {
+              firstName: {
+                contains: search,
+                mode: 'insensitive',
+              }
+            },
+            {
+              lastName: {
+                contains: search,
+                mode: 'insensitive',
+              },
+            }]
+        },
+      };
+    }
+    const job = await this.jobsService.findById(jobId);
+    const member = await this.companyMembersService.getMember(
+      userId,
+      job.companyId,
+    );
+    if (!member) {
+      throw new ForbiddenException('Permission denied.');
+    }
+    const allowed = this.companyMembersService.canManageOperations(member.role);
+    if (!allowed) {
+      throw new ForbiddenException('Permission denied.');
+    }
+
+    const [applications, total] = await this.prisma.$transaction([
+      this.prisma.application.findMany({
+        where,
+        take: limit,
+        skip,
+        select: {
+          id: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true,
+          reviewedAt: true,
+          coverLetter: true,
+          candidate: {
+            select: {
+              id: true,
+              headline: true,
+              currentJobTitle: true,
+              experienceLevel: true,
+              user: {
+                select: {
+                  firstName: true,
+                  lastName: true,
+                  email: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+      this.prisma.application.count({ where }),
+    ]);
+
+    return {
+      data: applications,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
       },
     };
   }

@@ -19,12 +19,14 @@ import {
   ApplicationStatusUpdatedResponse,
   ApplicationWithdrawnResponse,
   CandidateApplicationApiResponse,
+  EmployerApplicationsResponseDto,
   QueryDto,
 } from './dto/application-response.dto.js';
+import { GetQueryDto } from '../common/dto/query.dto.js';
 
 @Controller('api/v1/applications')
 export class ApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) {}
+  constructor(private readonly applicationsService: ApplicationsService) { }
 
   // apply for a job
   @ApiOperation({
@@ -58,6 +60,26 @@ export class ApplicationsController {
     @Query() query: QueryDto,
   ): Promise<CandidateApplicationApiResponse> {
     return this.applicationsService.findCandidateApplications(userId, query);
+  }
+
+  // Employer fetch all job applications per job;
+  @ApiOperation({
+    summary: 'Employer fetch all candidates applications per job',
+  })
+  @ApiOkResponse({
+    type: EmployerApplicationsResponseDto
+  })
+  @Get('jobs/:jobId/applications')
+  async getAllApplicationsByJob(
+    @CurrentUser('id') userId: string,
+    @Param('jobId') jobId: string,
+    @Query() query: GetQueryDto,
+  ): Promise<EmployerApplicationsResponseDto> {
+    return await this.applicationsService.getAllApplicationsByJob(
+      userId,
+      jobId,
+      query,
+    );
   }
 
   // fetch single application

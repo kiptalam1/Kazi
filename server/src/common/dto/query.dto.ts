@@ -9,7 +9,11 @@ import {
   IsIn,
   IsEnum,
 } from 'class-validator';
-import { ExperienceLevel } from '../../generated/prisma/enums.js';
+import {
+  ApplicationStatus,
+  ExperienceLevel,
+} from '../../generated/prisma/enums.js';
+
 export class GetQueryDto {
   @Type(() => Number)
   @IsOptional()
@@ -27,6 +31,12 @@ export class GetQueryDto {
   @IsOptional()
   @IsString()
   search?: string;
+
+  @IsOptional()
+  @IsEnum(ApplicationStatus, {
+    message: `status must be one of ${Object.values(ApplicationStatus).join(', ')}`,
+  })
+  status?: ApplicationStatus;
 
   @IsOptional()
   @IsBoolean()
