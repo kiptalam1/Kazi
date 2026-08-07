@@ -24,7 +24,7 @@ import {
 
 @Controller('api/v1/applications')
 export class ApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) { }
+  constructor(private readonly applicationsService: ApplicationsService) {}
 
   // apply for a job
   @ApiOperation({

@@ -13,7 +13,10 @@ import { JobsService } from '../jobs/jobs.service.js';
 import { CompanyMembersService } from '../company-members/company-members.service.js';
 import { ApplicationStatus } from '../generated/prisma/enums.js';
 import { CandidatesService } from '../candidates/candidates.service.js';
-import { CandidateApplicationApiResponse, QueryDto } from './dto/application-response.dto.js';
+import {
+  CandidateApplicationApiResponse,
+  QueryDto,
+} from './dto/application-response.dto.js';
 import type { Prisma } from '../generated/prisma/client.js';
 
 @Injectable()
@@ -24,7 +27,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) { }
+  ) {}
 
   // apply to a job;
   async create(
@@ -89,7 +92,10 @@ export class ApplicationsService {
   }
 
   // return all of the candidate's job applications;
-  async findCandidateApplications(userId: string, query: QueryDto): Promise<CandidateApplicationApiResponse> {
+  async findCandidateApplications(
+    userId: string,
+    query: QueryDto,
+  ): Promise<CandidateApplicationApiResponse> {
     const { page, limit } = query;
     const skip = (page - 1) * limit;
 
