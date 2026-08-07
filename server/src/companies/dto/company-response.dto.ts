@@ -1,6 +1,7 @@
-import { ApiProperty, } from "@nestjs/swagger";
-import { CompanyRole } from "../../generated/prisma/enums.js";
-import { UserDto } from "../../users/dto/user-response.dto.js";
+import { ApiProperty } from '@nestjs/swagger';
+import { CompanyRole } from '../../generated/prisma/enums.js';
+import { UserDto } from '../../users/dto/user-response.dto.js';
+import { Meta } from '../../common/dto/meta.dto.js';
 
 export class CompanyDto {
   id!: string;
@@ -22,7 +23,7 @@ export class CompanyMemberDto {
   companyId!: string;
   @ApiProperty({
     enum: CompanyRole,
-    enumName: "CompanyRole",
+    enumName: 'CompanyRole',
   })
   role!: CompanyRole;
   joinedAt!: Date;
@@ -33,13 +34,6 @@ export class companyDetailsDto extends CompanyDto {
     isArray: true,
   })
   companyMembers!: CompanyMemberDto[];
-}
-
-export class Meta {
-  page!: number;
-  limit!: number;
-  total!: number;
-  totalPages!: number;
 }
 
 export class GetAllCompaniesResponseDto {

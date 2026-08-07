@@ -1,4 +1,4 @@
-import { ExperienceLevel, JobStatus } from "../../generated/prisma/enums.js";
+import { ExperienceLevel, JobStatus } from '../../generated/prisma/enums.js';
 
 export class JobResponseDto {
   id!: string;
@@ -20,5 +20,5 @@ export class JobResponseDto {
     name: string;
     logoUrl: string | null;
     slug: string;
-  }
+  };
 }

@@ -4,7 +4,7 @@ import type { Prisma, User } from '../generated/prisma/client.js';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   // my profile
   async me(id: string) {

@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException, } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateJobDto } from './dto/create-job.dto.js';
 import { UpdateJobDto } from './dto/update-job.dto.js';
 import { JobStatus } from '../generated/prisma/enums.js';
@@ -14,7 +18,7 @@ export class JobsService {
     private prisma: PrismaService,
     private companyService: CompaniesService,
     private readonly companyMembersService: CompanyMembersService,
-  ) { }
+  ) {}
 
   // create a new job;
   async create(userId: string, slug: string, createJobDto: CreateJobDto) {
@@ -22,7 +26,10 @@ export class JobsService {
     if (!company) {
       throw new NotFoundException('Company not found');
     }
-    const member = await this.companyMembersService.getMember(userId, company.id);
+    const member = await this.companyMembersService.getMember(
+      userId,
+      company.id,
+    );
     if (!member) {
       throw new ForbiddenException('You are not a member of this company.');
     }
@@ -46,14 +53,23 @@ export class JobsService {
 
   // get all jobs;
   async findAll(queryDto: GetQueryDto) {
-    const { page, experienceLevel, limit, search, order, sortBy, isRemote, companySlug } = queryDto;
+    const {
+      page,
+      experienceLevel,
+      limit,
+      search,
+      order,
+      sortBy,
+      isRemote,
+      companySlug,
+    } = queryDto;
     const skip = (page - 1) * limit;
     const where: Prisma.JobWhereInput = {
       status: JobStatus.PUBLISHED,
     };
     if (search) {
       where.title = {
-        mode: "insensitive",
+        mode: 'insensitive',
         contains: search,
       };
     }
@@ -89,9 +105,8 @@ export class JobsService {
           },
         },
       }),
-      this.prisma.job.count({ where })
-    ]
-    );
+      this.prisma.job.count({ where }),
+    ]);
     return {
       data: jobs,
       meta: {
@@ -101,7 +116,7 @@ export class JobsService {
         totalPages: Math.ceil(total / limit),
       },
     };
-  };
+  }
 
   // get job by id;
   async findById(id: string) {
@@ -114,9 +129,9 @@ export class JobsService {
             name: true,
             logoUrl: true,
             slug: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
     if (!job) {
       throw new NotFoundException('Job not found');
@@ -125,13 +140,12 @@ export class JobsService {
   }
 
   // update job fields;
-  async update(
-    userId: string,
-    jobId: string,
-    updateJobDto: UpdateJobDto
-  ) {
+  async update(userId: string, jobId: string, updateJobDto: UpdateJobDto) {
     const job = await this.findById(jobId);
-    const member = await this.companyMembersService.getMember(userId, job.companyId);
+    const member = await this.companyMembersService.getMember(
+      userId,
+      job.companyId,
+    );
     if (!member) {
       throw new ForbiddenException('You are not a member of this company.');
     }
@@ -162,12 +176,12 @@ export class JobsService {
   }
 
   // delete job posting;
-  async remove(
-    userId: string,
-    jobId: string,
-  ) {
+  async remove(userId: string, jobId: string) {
     const job = await this.findById(jobId);
-    const member = await this.companyMembersService.getMember(userId, job.companyId);
+    const member = await this.companyMembersService.getMember(
+      userId,
+      job.companyId,
+    );
     if (!member) {
       throw new ForbiddenException('Your are not a member of this company.');
     }

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Query,
+} from '@nestjs/common';
 import { CandidatesService } from './candidates.service.js';
 import { CandidateUpdateDto } from './dto/update-candidate.dto.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
@@ -9,16 +17,17 @@ import { GetCandidateQueryDto } from './dto/query.dto.js';
 
 @Controller('api/v1/candidates')
 export class CandidatesController {
-  constructor(private readonly candidatesService: CandidatesService) { }
+  constructor(private readonly candidatesService: CandidatesService) {}
 
-  //get all candidates 
+  //get all candidates
   @Get()
   @ApiOkResponse({
     type: GetAllCandidatesResponseDto,
   })
   async findAll(
     @Query()
-    query: GetCandidateQueryDto) {
+    query: GetCandidateQueryDto,
+  ) {
     return this.candidatesService.candidates(query);
   }
 
@@ -28,14 +37,15 @@ export class CandidatesController {
     @CurrentUser() user: CurrentUserInterface,
     @Body() dto: CandidateUpdateDto,
   ) {
-    return await this.candidatesService.updateByUserId(user.id, dto)
+    return await this.candidatesService.updateByUserId(user.id, dto);
   }
 
   // fetch a candidate by candidate-id
   @Get(':id')
   async findOneCandidate(
     @Param('id', ParseUUIDPipe)
-    id: string) {
+    id: string,
+  ) {
     return await this.candidatesService.candidate({ id });
   }
 }

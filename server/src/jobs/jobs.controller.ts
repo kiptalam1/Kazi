@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe, } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { JobsService } from './jobs.service.js';
 import { CreateJobDto } from './dto/create-job.dto.js';
 import { UpdateJobDto } from './dto/update-job.dto.js';
@@ -7,17 +17,16 @@ import { GetQueryDto } from '../common/dto/query.dto.js';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { JobResponseDto } from './dto/job-response.dto.js';
 
-
 @Controller('api/v1')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService) { }
+  constructor(private readonly jobsService: JobsService) {}
 
   // create company;
   @Post('companies/:slug/jobs')
   async create(
     @CurrentUser('id') userId: string,
     @Param('slug') slug: string,
-    @Body() createJobDto: CreateJobDto
+    @Body() createJobDto: CreateJobDto,
   ) {
     return await this.jobsService.create(userId, slug, createJobDto);
   }
@@ -28,8 +37,7 @@ export class JobsController {
     type: JobResponseDto,
     isArray: true,
   })
-  async findAll(
-    @Query() queryDto: GetQueryDto) {
+  async findAll(@Query() queryDto: GetQueryDto) {
     return await this.jobsService.findAll(queryDto);
   }
 
@@ -45,7 +53,7 @@ export class JobsController {
   update(
     @CurrentUser('id') userId: string,
     @Param('jobId', ParseUUIDPipe) jobId: string,
-    @Body() updateJobDto: UpdateJobDto
+    @Body() updateJobDto: UpdateJobDto,
   ) {
     return this.jobsService.update(userId, jobId, updateJobDto);
   }
@@ -55,7 +63,7 @@ export class JobsController {
   // @HttpCode(HttpStatus.NO_CONTENT)
   async remove(
     @CurrentUser('id') userId: string,
-    @Param('id', ParseUUIDPipe) jobId: string
+    @Param('id', ParseUUIDPipe) jobId: string,
   ) {
     return this.jobsService.remove(userId, jobId);
   }

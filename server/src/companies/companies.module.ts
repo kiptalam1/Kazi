@@ -7,4 +7,4 @@ import { PrismaService } from '../prisma.service.js';
   controllers: [CompaniesController],
   providers: [CompaniesService, PrismaService],
 })
-export class CompaniesModule { }
+export class CompaniesModule {}

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ExperienceLevel } from '../../generated/prisma/enums.js';
+import { Meta } from '../../common/dto/meta.dto.js';
 
 export class CandidateRoleDto {
   role!: string;
@@ -41,13 +42,6 @@ export class CandidateDto {
 
   @ApiProperty({ type: CandidateUserDto })
   user!: CandidateUserDto;
-}
-
-export class Meta {
-  page!: number;
-  limit!: number;
-  total!: number;
-  totalPages!: number;
 }
 
 export class GetAllCandidatesResponseDto {

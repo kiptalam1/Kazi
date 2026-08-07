@@ -1,10 +1,23 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateApplicationDto } from './dto/create-application.dto.js';
 import { UpdateApplicationStatusDto } from './dto/update-application.dto.js';
 import { PrismaService } from '../prisma.service.js';
 import { UsersService } from '../users/users.service.js';
 import { JobsService } from '../jobs/jobs.service.js';
 import { CompanyMembersService } from '../company-members/company-members.service.js';
+import { ApplicationStatus } from '../generated/prisma/enums.js';
+import { CandidatesService } from '../candidates/candidates.service.js';
+import {
+  CandidateApplicationApiResponse,
+  QueryDto,
+} from './dto/application-response.dto.js';
+import type { Prisma } from '../generated/prisma/client.js';
 
 @Injectable()
 export class ApplicationsService {
@@ -13,10 +26,15 @@ export class ApplicationsService {
     private readonly usersService: UsersService,
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
-  ) { }
+    private readonly candidatesService: CandidatesService,
+  ) {}
 
   // apply to a job;
-  async create(userId: string, jobId: string, createApplicationDto: CreateApplicationDto) {
+  async create(
+    userId: string,
+    jobId: string,
+    createApplicationDto: CreateApplicationDto,
+  ) {
     // get user and its candidate fields;
     const user = await this.usersService.findById(userId);
     if (!user) {
@@ -35,7 +53,10 @@ export class ApplicationsService {
     }
 
     // ensure user is not a member of company;
-    const member = await this.companyMembersService.getMember(user.id, job.companyId);
+    const member = await this.companyMembersService.getMember(
+      user.id,
+      job.companyId,
+    );
     if (member) {
       throw new ForbiddenException('You are already a member of this company.');
     }
@@ -70,19 +91,83 @@ export class ApplicationsService {
     };
   }
 
-  findAll() {
-    return `This action returns all applications`;
+  // return all of the candidate's job applications;
+  async findCandidateApplications(
+    userId: string,
+    query: QueryDto,
+  ): Promise<CandidateApplicationApiResponse> {
+    const { page, limit } = query;
+    const skip = (page - 1) * limit;
+
+    const candidate = await this.candidatesService.findByUserId(userId);
+
+    const where: Prisma.ApplicationWhereInput = {
+      candidateId: candidate.id,
+    };
+    if (query.status) {
+      where.status = query.status;
+    }
+    const [applications, total] = await this.prisma.$transaction([
+      this.prisma.application.findMany({
+        where,
+        take: limit,
+        skip,
+        select: {
+          id: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true,
+          reviewedAt: true,
+          coverLetter: true,
+          job: {
+            select: {
+              id: true,
+              title: true,
+              location: true,
+              isRemote: true,
+              status: true,
+              company: {
+                select: {
+                  id: true,
+                  name: true,
+                  logoUrl: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+      this.prisma.application.count({ where }),
+    ]);
+    return {
+      data: applications,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} application`;
+  async findById(applicationId: string) {
+    const application = await this.prisma.application.findUnique({
+      where: { id: applicationId },
+    });
+    if (!application) {
+      throw new NotFoundException('Application not found.');
+    }
+    return application;
   }
 
   // employer update application status;
   async updateStatus(
     userId: string,
     applicationId: string,
-    updateApplicationStatusDto: UpdateApplicationStatusDto
+    updateApplicationStatusDto: UpdateApplicationStatusDto,
   ) {
     // check if application exists;
     const application = await this.prisma.application.findUnique({
@@ -103,22 +188,30 @@ export class ApplicationsService {
     }
 
     //check membership;
-    const member = await this.companyMembersService.getMember(userId, application.job.companyId);
+    const member = await this.companyMembersService.getMember(
+      userId,
+      application.job.companyId,
+    );
 
     if (!member) {
       throw new ForbiddenException('Permission denied.');
     }
 
     // only allowed can update status;
-    const allowedRoles = this.companyMembersService.canManageOperations(member.role);
+    const allowedRoles = this.companyMembersService.canManageOperations(
+      member.role,
+    );
     if (!allowedRoles) {
       throw new ForbiddenException('Permission denied.');
     }
 
     // do nothing if fields are the same;
-    const statusChanged = updateApplicationStatusDto.status !== undefined && updateApplicationStatusDto.status !== application.status;
+    const statusChanged =
+      updateApplicationStatusDto.status !== undefined &&
+      updateApplicationStatusDto.status !== application.status;
 
-    const notesChanged = updateApplicationStatusDto.employerNotes !== undefined &&
+    const notesChanged =
+      updateApplicationStatusDto.employerNotes !== undefined &&
       updateApplicationStatusDto.employerNotes !== application.employerNotes;
 
     if (!statusChanged && !notesChanged) {
@@ -135,17 +228,16 @@ export class ApplicationsService {
     }
 
     // now update
-    const appUpdated = await this.prisma.
-      application.update({
-        where: {
-          id: applicationId,
-        },
-        data: {
-          status: updateApplicationStatusDto.status,
-          employerNotes: updateApplicationStatusDto.employerNotes,
-          reviewedAt: new Date(),
-        },
-      });
+    const appUpdated = await this.prisma.application.update({
+      where: {
+        id: applicationId,
+      },
+      data: {
+        status: updateApplicationStatusDto.status,
+        employerNotes: updateApplicationStatusDto.employerNotes,
+        reviewedAt: new Date(),
+      },
+    });
 
     return {
       message: 'Application updated successfully',
@@ -155,6 +247,53 @@ export class ApplicationsService {
         updatedAt: appUpdated.updatedAt,
         reviewedAt: appUpdated.reviewedAt,
         employerNotes: appUpdated.employerNotes,
+      },
+    };
+  }
+
+  // withdraw application;
+  async withdraw(userId: string, applicationId: string) {
+    const candidate = await this.prisma.candidate.findUnique({
+      where: { userId },
+      select: { id: true },
+    });
+    if (!candidate) {
+      throw new NotFoundException('Candidate profile not found.');
+    }
+    const application = await this.findById(applicationId);
+
+    // check if application is mine;
+    if (application.candidateId !== candidate.id) {
+      throw new ForbiddenException('Permission denied.');
+    }
+    // check if application is already withdrawn;
+    if (application.status === ApplicationStatus.WITHDRAWN) {
+      throw new BadRequestException('Application has already been withdrawn');
+    }
+    // deny if rejected or hired;
+    if (
+      application.status === ApplicationStatus.REJECTED ||
+      application.status === ApplicationStatus.HIRED
+    ) {
+      throw new BadRequestException(
+        `You have already been ${application.status.toLowerCase()}`,
+      );
+    }
+    const appWithdrawn = await this.prisma.application.update({
+      where: { id: application.id },
+      data: {
+        status: ApplicationStatus.WITHDRAWN,
+      },
+    });
+
+    return {
+      message: 'Application withdrawn successfully',
+      data: {
+        id: appWithdrawn.id,
+        status: appWithdrawn.status,
+        createdAt: appWithdrawn.createdAt,
+        updatedAt: appWithdrawn.updatedAt,
+        jobId: appWithdrawn.jobId,
       },
     };
   }

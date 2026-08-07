@@ -1,5 +1,14 @@
 import { Transform, Type } from 'class-transformer';
-import { IsOptional, IsInt, Min, Max, IsString, IsBoolean, IsIn, IsEnum } from 'class-validator';
+import {
+  IsOptional,
+  IsInt,
+  Min,
+  Max,
+  IsString,
+  IsBoolean,
+  IsIn,
+  IsEnum,
+} from 'class-validator';
 import { ExperienceLevel } from '../../generated/prisma/enums.js';
 export class GetQueryDto {
   @Type(() => Number)
@@ -21,10 +30,9 @@ export class GetQueryDto {
 
   @IsOptional()
   @IsBoolean()
-  @Transform(({ value }) =>
-    value === 'true' ? true :
-      value === 'false' ? false :
-        value)
+  @Transform(({ value }: { value: string }) =>
+    value === 'true' ? true : value === 'false' ? false : value,
+  )
   isRemote?: boolean;
 
   @IsOptional()
