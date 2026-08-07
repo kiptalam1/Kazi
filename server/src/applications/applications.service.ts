@@ -1,10 +1,11 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateApplicationDto } from './dto/create-application.dto.js';
 import { UpdateApplicationStatusDto } from './dto/update-application.dto.js';
 import { PrismaService } from '../prisma.service.js';
 import { UsersService } from '../users/users.service.js';
 import { JobsService } from '../jobs/jobs.service.js';
 import { CompanyMembersService } from '../company-members/company-members.service.js';
+import { ApplicationStatus } from '../generated/prisma/enums.js';
 
 @Injectable()
 export class ApplicationsService {
@@ -74,8 +75,14 @@ export class ApplicationsService {
     return `This action returns all applications`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} application`;
+  async findById(applicationId: string) {
+    const application = await this.prisma.application.findUnique({
+      where: { id: applicationId },
+    });
+    if (!application) {
+      throw new NotFoundException('Application not found.');
+    }
+    return application;
   }
 
   // employer update application status;
@@ -155,6 +162,54 @@ export class ApplicationsService {
         updatedAt: appUpdated.updatedAt,
         reviewedAt: appUpdated.reviewedAt,
         employerNotes: appUpdated.employerNotes,
+      },
+    };
+  }
+
+  // withdraw application;
+  async withdraw(
+    userId: string,
+    applicationId: string,
+  ) {
+
+    const candidate = await this.prisma.candidate.findUnique({
+      where: { userId },
+      select: { id: true, },
+    });
+    if (!candidate) {
+      throw new NotFoundException('Candidate profile not found.');
+    }
+    const application = await this.findById(applicationId);
+
+    // check if application is mine;
+    if (application.candidateId !== candidate.id) {
+      throw new ForbiddenException('Permission denied.');
+    }
+    // check if application is already withdrawn;
+    if (application.status === ApplicationStatus.WITHDRAWN) {
+      throw new BadRequestException('Application has already been withdrawn');
+    }
+    // deny if rejected or hired;
+    if (
+      application.status === ApplicationStatus.REJECTED || application.status === ApplicationStatus.HIRED
+    ) {
+      throw new BadRequestException(`You have already been ${application.status.toLowerCase()}`);
+    }
+    const appWithdrawn = await this.prisma.application.update({
+      where: { id: application.id },
+      data: {
+        status: ApplicationStatus.WITHDRAWN,
+      },
+    });
+
+    return {
+      message: 'Application withdrawn successfully',
+      data: {
+        id: appWithdrawn.id,
+        status: appWithdrawn.status,
+        createdAt: appWithdrawn.createdAt,
+        updatedAt: appWithdrawn.updatedAt,
+        jobId: appWithdrawn.jobId,
       },
     };
   }

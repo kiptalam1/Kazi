@@ -19,7 +19,9 @@ export class ApplicationDataDto {
 }
 
 export class ApplicationCreatedResponse {
+  @ApiProperty()
   message!: string;
+  @ApiProperty({ type: () => ApplicationDataDto })
   data!: ApplicationDataDto;
 }
 
@@ -44,6 +46,28 @@ class UpdatedApplicationDto {
 }
 
 export class ApplicationStatusUpdatedResponse {
+  @ApiProperty()
   message!: string;
+  @ApiProperty({ type: () => UpdatedApplicationDto })
   data!: UpdatedApplicationDto;
+}
+
+class WithdrawnApplicationDto {
+  id!: string;
+
+  @ApiProperty({
+    enum: ApplicationStatus,
+    enumName: 'ApplicationStatus',
+  })
+  status!: ApplicationStatus;
+  createdAt!: Date;
+  updatedAt!: Date;
+  jobId!: string;
+}
+
+export class ApplicationWithdrawnResponse {
+  @ApiProperty()
+  message!: string;
+  @ApiProperty({ type: () => WithdrawnApplicationDto })
+  data!: WithdrawnApplicationDto;
 }
