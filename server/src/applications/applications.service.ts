@@ -12,6 +12,9 @@ import { UsersService } from '../users/users.service.js';
 import { JobsService } from '../jobs/jobs.service.js';
 import { CompanyMembersService } from '../company-members/company-members.service.js';
 import { ApplicationStatus } from '../generated/prisma/enums.js';
+import { CandidatesService } from '../candidates/candidates.service.js';
+import { CandidateApplicationApiResponse, QueryDto } from './dto/application-response.dto.js';
+import type { Prisma } from '../generated/prisma/client.js';
 
 @Injectable()
 export class ApplicationsService {
@@ -20,7 +23,8 @@ export class ApplicationsService {
     private readonly usersService: UsersService,
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
-  ) {}
+    private readonly candidatesService: CandidatesService,
+  ) { }
 
   // apply to a job;
   async create(
@@ -84,8 +88,63 @@ export class ApplicationsService {
     };
   }
 
-  findAll() {
-    return `This action returns all applications`;
+  // return all of the candidate's job applications;
+  async findCandidateApplications(userId: string, query: QueryDto): Promise<CandidateApplicationApiResponse> {
+    const { page, limit } = query;
+    const skip = (page - 1) * limit;
+
+    const candidate = await this.candidatesService.findByUserId(userId);
+
+    const where: Prisma.ApplicationWhereInput = {
+      candidateId: candidate.id,
+    };
+    if (query.status) {
+      where.status = query.status;
+    }
+    const [applications, total] = await this.prisma.$transaction([
+      this.prisma.application.findMany({
+        where,
+        take: limit,
+        skip,
+        select: {
+          id: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true,
+          reviewedAt: true,
+          coverLetter: true,
+          job: {
+            select: {
+              id: true,
+              title: true,
+              location: true,
+              isRemote: true,
+              status: true,
+              company: {
+                select: {
+                  id: true,
+                  name: true,
+                  logoUrl: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+      this.prisma.application.count({ where }),
+    ]);
+    return {
+      data: applications,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findById(applicationId: string) {

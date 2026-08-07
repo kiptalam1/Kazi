@@ -1,5 +1,8 @@
-import { ApplicationStatus } from '../../generated/prisma/enums.js';
+import { Type } from 'class-transformer';
+import { ApplicationStatus, JobStatus } from '../../generated/prisma/enums.js';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
+import { Meta } from '../../common/dto/meta.dto.js';
 
 export class ApplicationDataDto {
   @ApiProperty()
@@ -70,4 +73,64 @@ export class ApplicationWithdrawnResponse {
   message!: string;
   @ApiProperty({ type: () => WithdrawnApplicationDto })
   data!: WithdrawnApplicationDto;
+}
+export class QueryDto {
+  @Type(() => Number)
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  page = 1;
+
+  @Type(() => Number)
+  @IsOptional()
+  @Min(1)
+  @Max(100)
+  @IsInt()
+  limit = 10;
+
+  @IsOptional()
+  @IsEnum(ApplicationStatus, {
+    message: `status must be one of ${Object.values(ApplicationStatus).join(', ')}`,
+  })
+  status?: ApplicationStatus;
+}
+
+class Company {
+  id!: string;
+  name!: string;
+  logoUrl?: string | null;
+}
+
+class Job {
+  id!: string;
+  title!: string;
+  location?: string | null;
+  isRemote!: boolean;
+  @ApiProperty({ enum: JobStatus, enumName: 'JobStatus' })
+  status!: JobStatus;
+  @ApiProperty({ type: () => Company })
+  company!: Company;
+}
+
+class CandidateApplication {
+  id!: string;
+
+  @ApiProperty({ type: () => ApplicationStatus })
+  status!: ApplicationStatus;
+  createdAt!: Date;
+  updatedAt!: Date;
+  reviewedAt?: Date | null;
+  coverLetter?: string | null;
+
+  @ApiProperty({ type: () => Job })
+  job!: Job;
+}
+
+export class CandidateApplicationApiResponse {
+  @ApiProperty({ type: () => CandidateApplication, isArray: true })
+  data!: CandidateApplication[];
+  @ApiProperty({
+    type: () => Meta,
+  })
+  meta!: Meta;
 }

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { ApplicationsService } from './applications.service.js';
 import { CreateApplicationDto } from './dto/create-application.dto.js';
@@ -17,12 +18,15 @@ import {
   ApplicationCreatedResponse,
   ApplicationStatusUpdatedResponse,
   ApplicationWithdrawnResponse,
+  CandidateApplicationApiResponse,
+  QueryDto,
 } from './dto/application-response.dto.js';
 
 @Controller('api/v1/applications')
 export class ApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) {}
+  constructor(private readonly applicationsService: ApplicationsService) { }
 
+  // apply for a job
   @ApiOperation({
     summary: 'candidate make a job application',
   })
@@ -40,10 +44,20 @@ export class ApplicationsController {
     );
   }
 
-  // fetch all applications;
-  @Get()
-  findAll() {
-    return this.applicationsService.findAll();
+  // fetch all the candidate's own applications;
+  @ApiOperation({
+    summary: "Fetch candidate's own applications",
+  })
+  @ApiOkResponse({
+    type: CandidateApplicationApiResponse,
+    isArray: true,
+  })
+  @Get('me')
+  async findCandidateApplications(
+    @CurrentUser('id') userId: string,
+    @Query() query: QueryDto,
+  ): Promise<CandidateApplicationApiResponse> {
+    return this.applicationsService.findCandidateApplications(userId, query);
   }
 
   // fetch single application

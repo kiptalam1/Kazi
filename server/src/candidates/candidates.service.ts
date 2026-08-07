@@ -94,11 +94,27 @@ export class CandidatesService {
     });
 
     if (!candidate) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Candidate profile not found');
     }
 
     return {
       data: candidate,
     };
+  }
+
+  // find candidate by user Id;
+  async findByUserId(userId: string) {
+    const candidate = await this.prisma.candidate.findUnique({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (!candidate) {
+      throw new NotFoundException('Candidate profile not found');
+    }
+    return candidate;
   }
 }
