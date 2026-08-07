@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { ApplicationStatus, JobStatus } from '../../generated/prisma/enums.js';
+import { ApplicationStatus, ExperienceLevel, JobStatus } from '../../generated/prisma/enums.js';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
 import { Meta } from '../../common/dto/meta.dto.js';
@@ -132,5 +132,71 @@ export class CandidateApplicationApiResponse {
   @ApiProperty({
     type: () => Meta,
   })
+  meta!: Meta;
+}
+
+class CandidateUserDto {
+  @ApiProperty()
+  firstName!: string;
+
+  @ApiProperty()
+  lastName!: string;
+
+  @ApiProperty()
+  email!: string;
+}
+
+class CandidateSummaryDto {
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty({ nullable: true })
+  headline!: string | null;
+
+  @ApiProperty({ nullable: true })
+  currentJobTitle!: string | null;
+
+  @ApiProperty({
+    enum: ExperienceLevel,
+    enumName: 'ExperienceLevel',
+  })
+  experienceLevel?: ExperienceLevel | null;
+
+  @ApiProperty({ type: () => CandidateUserDto })
+  user!: CandidateUserDto;
+}
+
+export class EmployerApplicationDto {
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty({
+    enum: ApplicationStatus,
+    enumName: 'ApplicationStatus',
+  })
+  status!: ApplicationStatus;
+
+  @ApiProperty({ nullable: true })
+  coverLetter!: string | null;
+
+  @ApiProperty({ nullable: true })
+  reviewedAt!: Date | null;
+
+  @ApiProperty()
+  createdAt!: Date;
+
+  @ApiProperty()
+  updatedAt!: Date;
+
+  @ApiProperty({ type: () => CandidateSummaryDto })
+  candidate!: CandidateSummaryDto;
+}
+
+
+export class EmployerApplicationsResponseDto {
+  @ApiProperty({ type: [EmployerApplicationDto] })
+  data!: EmployerApplicationDto[];
+
+  @ApiProperty({ type: () => Meta })
   meta!: Meta;
 }
