@@ -42,7 +42,6 @@ model Candidate {
   bio               String?
   location          String?
   skills            String[]
-  experience        String[]
   education         String[]
   experienceLevel   ExperienceLevel?
   currentJobTitle   String?
@@ -56,6 +55,7 @@ model Candidate {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   applications Application[]
+  experiences  Experience[]
 }
 
 model Company {
@@ -181,4 +181,35 @@ enum CompanyRole {
   RECRUITER
   HIRING_MANAGER
   MEMBER
+}
+
+model Experience {
+  id          String    @id @default(uuid())
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  jobTitle    String
+  companyName String
+  location    String?
+
+  employmentType EmploymentType?
+
+  startDate DateTime
+  endDate   DateTime?
+  isCurrent Boolean   @default(false)
+
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  APPRENTICESHIP
+  FREELANCE
+  VOLUNTEER
 }

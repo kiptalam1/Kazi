@@ -11,6 +11,7 @@ import { CompaniesModule } from './companies/companies.module.js';
 import { JobsModule } from './jobs/jobs.module.js';
 import { ApplicationsModule } from './applications/applications.module.js';
 import { CompanyMembersService } from './company-members/company-members.service.js';
+import { ExperienceModule } from './experience/experience.module.js';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CompanyMembersService } from './company-members/company-members.service
     CompaniesModule,
     JobsModule,
     ApplicationsModule,
+    ExperienceModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,11 +1,14 @@
 # Core Modules
 Auth ✅
-Users 
+Users 🟡
 Companies ✅
-Candidates ✅
+Candidates 🟡
+ - profile (Create, Update) ✅
+ - experiences (create, update, delete) ✅
+ - education 
+ - skills 
 Jobs ✅
-Applications
-Skills
+Applications 🟡
 Bookmarks
 Uploads
 Messaging
@@ -36,11 +39,11 @@ Filtering ✅
 Pagination ✅
 Draft/Published/Closed status ✅
 ## Applications
-Apply to jobs
+Apply to jobs ✅
 Upload CV
 Cover letters
 Application timeline
-Withdraw application
+Withdraw application ✅
 ## Messaging
 Candidate ↔ Recruiter chat
 Real-time messaging
@@ -53,15 +56,15 @@ Job status updates
 Email notifications
 ## Candidate
 Profile ✅
-Experience
-Education
+Experience ✅
+Education 🟡
 Skills
 Resume
 Portfolio links
 ## Company Dashboard
 Manage recruiters
-Manage jobs
-View applicants
+Manage jobs ✅
+View applicants ✅
 Analytics
 ## Admin
 Manage users
@@ -114,12 +117,12 @@ HttpOnly cookies ✅
 JWT access tokens ✅
 JWT refresh tokens ✅
 Password hashing ✅
-Email verification
-CSRF considerations
-Rate limiting
-Helmet
 CORS ✅
 Input validation ✅
+CSRF considerations
+Email verification
+Rate limiting
+Helmet
 Authorization policies
 # Milestones
 ## Milestone 1 — Foundation
@@ -142,15 +145,15 @@ Company profiles ✅
 Recruiter invitations
 Company administration
 ## Milestone 4 — Jobs
-Job CRUD
-Search
-Filters
-Pagination
+Job CRUD ✅
+Search ✅
+Filters ✅
+Pagination ✅
 Bookmarks
 ## Milestone 5 — Applications
-Apply for jobs
+Apply for jobs ✅
 Resume uploads
-Application status workflow
+Application status workflow 🟡
 Recruiter review tools
 ## Milestone 6 — Communication
 WebSocket messaging
@@ -197,3 +200,42 @@ Automated testing.
 Containerized deployment.
 CI/CD automation.
 A polished frontend integrated with a scalable backend.
+
+## *TODO*
+1. Finish Candidates
+→ experience ✅
+ - add new experience ✅
+ - update experience ✅
+ - delete experience ✅
+→ education 
+ - add education 🟡
+ - update education 🟡
+ - delete education 🟡
+→ skills
+→ portfolio
+→ resume structure
+
+2. Finish Applications
+→ CV upload
+→ cover letter
+→ application timeline
+→ robust status transitions
+
+3. Finish Company recruitment
+→ recruiter invitations
+→ recruiter/company permissions
+
+4. Bookmarks
+
+5. Upload infrastructure
+
+6. Global API infrastructure
+→ response interceptor
+→ logging
+→ configuration
+→ security hardening
+
+7. Testing
+
+8. Then Messaging + Notifications
+
