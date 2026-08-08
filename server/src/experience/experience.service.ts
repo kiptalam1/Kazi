@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateExperienceDto } from './dto/create-experience.dto.js';
 import { CandidatesService } from '../candidates/candidates.service.js';
 import { PrismaService } from '../prisma.service.js';
-import { CreatedExperienceApiResponse } from './dto/responses/created-experience-response.dto.js';
+import { UpdateExperienceDto } from './dto/update-experience.dto.js';
+import { ExperienceApiResponse } from './dto/responses/experience-response.dto.js';
 
 @Injectable()
 export class ExperienceService {
@@ -15,7 +16,7 @@ export class ExperienceService {
   async addExperience(
     userId: string,
     data: CreateExperienceDto,
-  ): Promise<CreatedExperienceApiResponse> {
+  ): Promise<ExperienceApiResponse> {
     const candidate = await this.candidatesService.findByUserId(userId);
 
     const newExperience = await this.prisma.experience.create({
@@ -40,6 +41,44 @@ export class ExperienceService {
 
     return {
       message: 'Experience added successfully',
+      data: result,
+    };
+  }
+
+  // update experience;
+  async updateExperience(
+    userId: string,
+    experienceId: string,
+    data: UpdateExperienceDto,
+  ): Promise<ExperienceApiResponse> {
+    const candidate = await this.candidatesService.findByUserId(userId);
+
+    const experience = await this.prisma.experience.findFirst({
+      where: {
+        id: experienceId,
+        candidateId: candidate.id,
+      },
+    });
+
+    if (!experience) {
+      throw new NotFoundException('Experience not found.');
+    }
+
+    const updatedExperience = await this.prisma.experience.update({
+      where: {
+        id: experienceId,
+      },
+      data,
+    });
+
+    const {
+      createdAt: _createdAt,
+      updatedAt: _updatedAt,
+      ...result
+    } = updatedExperience;
+
+    return {
+      message: 'Experience updated successfully',
       data: result,
     };
   }
