@@ -1,11 +1,14 @@
 # Core Modules
 Auth ✅
-Users 
+Users 🟡
 Companies ✅
-Candidates ✅
+Candidates 🟡
+ - profile (Create, Update) ✅
+ - experiences ✅
+ - education 
+ - skills 
 Jobs ✅
-Applications ✅
-Skills
+Applications 🟡
 Bookmarks
 Uploads
 Messaging
@@ -53,7 +56,7 @@ Job status updates
 Email notifications
 ## Candidate
 Profile ✅
-Experience
+Experience 🟡
 Education
 Skills
 Resume
@@ -201,7 +204,10 @@ A polished frontend integrated with a scalable backend.
 ## *TODO*
 1. Finish Candidates
 → experience
-→ education
+ - add new experience ✅
+ - update experience 🟡
+ - delete experience 🟡🟡
+→ education 
 → skills
 → portfolio
 → resume structure
