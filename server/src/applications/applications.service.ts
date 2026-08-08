@@ -17,6 +17,7 @@ import {
   CandidateApplicationApiResponse,
   EmployerApplicationsResponseDto,
   QueryDto,
+  SingleCandidateApplicationResponseDto,
 } from './dto/application-response.dto.js';
 import { Prisma } from '../generated/prisma/client.js';
 import { GetQueryDto } from '../common/dto/query.dto.js';
@@ -30,6 +31,48 @@ export class ApplicationsService {
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
   ) { }
+
+  // fetch candidate single application;
+  async findSingleCandidateApplication(
+    userId: string,
+    applicationId: string): Promise<SingleCandidateApplicationResponseDto> {
+    const candidate = await this.candidatesService.findByUserId(userId);
+    const application = await this.prisma.application.findUnique({
+      where: {
+        id: applicationId,
+        candidateId: candidate.id,
+      },
+      select: {
+        id: true,
+        coverLetter: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        reviewedAt: true,
+        job: {
+          select: {
+            id: true,
+            status: true,
+            createdAt: true,
+            title: true,
+            location: true,
+            company: {
+              select: {
+                id: true,
+                name: true,
+                logoUrl: true,
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!application) {
+      throw new NotFoundException('Application not found.');
+    }
+    return application;
+  }
 
   // apply to a job;
   async create(

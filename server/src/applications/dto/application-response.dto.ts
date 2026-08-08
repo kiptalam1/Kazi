@@ -200,3 +200,26 @@ export class EmployerApplicationsResponseDto {
   @ApiProperty({ type: () => Meta })
   meta!: Meta;
 }
+
+class CandidateJob {
+  id!: string;
+  @ApiProperty({ type: () => JobStatus })
+  status!: JobStatus;
+  createdAt!: Date;
+  title!: string;
+  location?: string | null;
+  @ApiProperty({ type: () => Company })
+  company!: Company;
+}
+
+export class SingleCandidateApplicationResponseDto {
+  id!: string;
+  coverLetter?: string | null;
+  @ApiProperty({ type: () => ApplicationStatus })
+  status!: ApplicationStatus;
+  createdAt!: Date;
+  updatedAt!: Date;
+  reviewedAt?: Date | null;
+  @ApiProperty({ type: () => CandidateJob })
+  job!: CandidateJob;
+}

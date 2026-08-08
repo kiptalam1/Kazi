@@ -12,7 +12,7 @@ import {
 import { ApplicationsService } from './applications.service.js';
 import { CreateApplicationDto } from './dto/create-application.dto.js';
 import { UpdateApplicationStatusDto } from './dto/update-application.dto.js';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, } from '@nestjs/swagger';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import {
   ApplicationCreatedResponse,
@@ -21,12 +21,28 @@ import {
   CandidateApplicationApiResponse,
   EmployerApplicationsResponseDto,
   QueryDto,
+  SingleCandidateApplicationResponseDto,
 } from './dto/application-response.dto.js';
 import { GetQueryDto } from '../common/dto/query.dto.js';
 
 @Controller('api/v1/applications')
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) { }
+
+  // candidate fetch their single application;
+  @ApiOperation({
+    summary: "candidate fetch their single application"
+  })
+  @ApiOkResponse({
+    type: SingleCandidateApplicationResponseDto
+  })
+  @Get(':applicationId')
+  async findSingleCandidateApplication(
+    @CurrentUser('id') userId: string,
+    @Param('applicationId', ParseUUIDPipe) applicationId: string,
+  ): Promise<SingleCandidateApplicationResponseDto> {
+    return await this.applicationsService.findSingleCandidateApplication(userId, applicationId);
+  }
 
   // apply for a job
   @ApiOperation({
@@ -80,15 +96,6 @@ export class ApplicationsController {
       jobId,
       query,
     );
-  }
-
-  // fetch single application
-  @ApiOperation({
-    summary: 'Fetch single application',
-  })
-  @Get(':applicationId')
-  async findOneById(@Param('applicationId') applicationId: string) {
-    return await this.applicationsService.findById(applicationId);
   }
 
   // update candidate's application status;
