@@ -20,13 +20,51 @@ import {
   ApplicationWithdrawnResponse,
   CandidateApplicationApiResponse,
   EmployerApplicationsResponseDto,
+  EmployerFetchSingleApplicationResponseDto,
   QueryDto,
+  SingleCandidateApplicationResponseDto,
 } from './dto/application-response.dto.js';
 import { GetQueryDto } from '../common/dto/query.dto.js';
 
 @Controller('api/v1/applications')
 export class ApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) { }
+  constructor(private readonly applicationsService: ApplicationsService) {}
+
+  // employer fetch a candidate application;
+  @Get('employer/:applicationId')
+  @ApiOperation({
+    summary: 'Employer fetch single application for a candidate',
+  })
+  @ApiOkResponse({
+    type: EmployerFetchSingleApplicationResponseDto,
+  })
+  async employerFetchSingleApplication(
+    @CurrentUser('id') userId: string,
+    @Param('applicationId', ParseUUIDPipe) applicationId: string,
+  ): Promise<EmployerFetchSingleApplicationResponseDto> {
+    return await this.applicationsService.employerFetchSingleApplication(
+      userId,
+      applicationId,
+    );
+  }
+
+  // candidate fetch their single application;
+  @ApiOperation({
+    summary: 'candidate fetch their single application',
+  })
+  @ApiOkResponse({
+    type: SingleCandidateApplicationResponseDto,
+  })
+  @Get(':applicationId')
+  async findSingleCandidateApplication(
+    @CurrentUser('id') userId: string,
+    @Param('applicationId', ParseUUIDPipe) applicationId: string,
+  ): Promise<SingleCandidateApplicationResponseDto> {
+    return await this.applicationsService.findSingleCandidateApplication(
+      userId,
+      applicationId,
+    );
+  }
 
   // apply for a job
   @ApiOperation({
@@ -67,7 +105,7 @@ export class ApplicationsController {
     summary: 'Employer fetch all candidates applications per job',
   })
   @ApiOkResponse({
-    type: EmployerApplicationsResponseDto
+    type: EmployerApplicationsResponseDto,
   })
   @Get('jobs/:jobId/applications')
   async getAllApplicationsByJob(
@@ -80,15 +118,6 @@ export class ApplicationsController {
       jobId,
       query,
     );
-  }
-
-  // fetch single application
-  @ApiOperation({
-    summary: 'Fetch single application',
-  })
-  @Get(':applicationId')
-  async findOneById(@Param('applicationId') applicationId: string) {
-    return await this.applicationsService.findById(applicationId);
   }
 
   // update candidate's application status;

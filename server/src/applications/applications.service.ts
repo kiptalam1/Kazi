@@ -16,7 +16,9 @@ import { CandidatesService } from '../candidates/candidates.service.js';
 import {
   CandidateApplicationApiResponse,
   EmployerApplicationsResponseDto,
+  EmployerFetchSingleApplicationResponseDto,
   QueryDto,
+  SingleCandidateApplicationResponseDto,
 } from './dto/application-response.dto.js';
 import { Prisma } from '../generated/prisma/client.js';
 import { GetQueryDto } from '../common/dto/query.dto.js';
@@ -29,7 +31,125 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) { }
+  ) {}
+
+  // employer fetch single application;
+  async employerFetchSingleApplication(
+    userId: string,
+    applicationId: string,
+  ): Promise<EmployerFetchSingleApplicationResponseDto> {
+    const application = await this.prisma.application.findUnique({
+      where: {
+        id: applicationId,
+      },
+      select: {
+        id: true,
+        coverLetter: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        reviewedAt: true,
+        job: {
+          select: {
+            id: true,
+            title: true,
+            status: true,
+            companyId: true,
+            createdAt: true,
+            experienceLevel: true,
+          },
+        },
+        candidate: {
+          select: {
+            id: true,
+            currentJobTitle: true,
+            bio: true,
+            headline: true,
+            location: true,
+            githubUrl: true,
+            linkedinUrl: true,
+            experienceLevel: true,
+            availability: true,
+            portfolioUrl: true,
+            education: true,
+            resumeUrl: true,
+            skills: true,
+            salaryExpectation: true,
+            user: {
+              select: {
+                firstName: true,
+                lastName: true,
+                avatar: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!application) {
+      throw new NotFoundException('Application not found.');
+    }
+
+    const member = await this.companyMembersService.getMember(
+      userId,
+      application.job.companyId,
+    );
+    if (!member) {
+      throw new ForbiddenException('Permission denied.');
+    }
+    const allowed = this.companyMembersService.canManageOperations(member.role);
+
+    if (!allowed) {
+      throw new ForbiddenException('Permission denied.');
+    }
+
+    return application;
+  }
+
+  // fetch candidate single application;
+  async findSingleCandidateApplication(
+    userId: string,
+    applicationId: string,
+  ): Promise<SingleCandidateApplicationResponseDto> {
+    const candidate = await this.candidatesService.findByUserId(userId);
+    const application = await this.prisma.application.findUnique({
+      where: {
+        id: applicationId,
+        candidateId: candidate.id,
+      },
+      select: {
+        id: true,
+        coverLetter: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        reviewedAt: true,
+        job: {
+          select: {
+            id: true,
+            status: true,
+            createdAt: true,
+            title: true,
+            location: true,
+            company: {
+              select: {
+                id: true,
+                name: true,
+                logoUrl: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!application) {
+      throw new NotFoundException('Application not found.');
+    }
+    return application;
+  }
 
   // apply to a job;
   async create(
@@ -320,14 +440,15 @@ export class ApplicationsService {
               firstName: {
                 contains: search,
                 mode: 'insensitive',
-              }
+              },
             },
             {
               lastName: {
                 contains: search,
                 mode: 'insensitive',
               },
-            }]
+            },
+          ],
         },
       };
     }
