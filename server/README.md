@@ -4,7 +4,7 @@ Users 🟡
 Companies ✅
 Candidates 🟡
  - profile (Create, Update) ✅
- - experiences ✅
+ - experiences (create, update, delete) ✅
  - education 
  - skills 
 Jobs ✅
@@ -56,8 +56,8 @@ Job status updates
 Email notifications
 ## Candidate
 Profile ✅
-Experience 🟡
-Education
+Experience ✅
+Education 🟡
 Skills
 Resume
 Portfolio links
@@ -153,7 +153,7 @@ Bookmarks
 ## Milestone 5 — Applications
 Apply for jobs ✅
 Resume uploads
-Application status workflow
+Application status workflow 🟡
 Recruiter review tools
 ## Milestone 6 — Communication
 WebSocket messaging
@@ -203,11 +203,14 @@ A polished frontend integrated with a scalable backend.
 
 ## *TODO*
 1. Finish Candidates
-→ experience
+→ experience ✅
  - add new experience ✅
- - update experience 🟡
- - delete experience 🟡🟡
+ - update experience ✅
+ - delete experience ✅
 → education 
+ - add education 🟡
+ - update education 🟡
+ - delete education 🟡
 → skills
 → portfolio
 → resume structure

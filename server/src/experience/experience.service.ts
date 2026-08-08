@@ -10,7 +10,7 @@ export class ExperienceService {
   constructor(
     private readonly candidatesService: CandidatesService,
     private readonly prisma: PrismaService,
-  ) {}
+  ) { }
 
   // add experience
   async addExperience(
@@ -81,5 +81,29 @@ export class ExperienceService {
       message: 'Experience updated successfully',
       data: result,
     };
+  }
+
+
+  // delete experience 
+  async removeExperience(
+    userId: string,
+    experienceId: string,
+  ) {
+    const candidate = await this.candidatesService.findByUserId(userId);
+
+    const experience = await this.prisma.experience.findFirst({
+      where: {
+        id: experienceId,
+        candidateId: candidate.id,
+      }
+    });
+
+    if (!experience) {
+      throw new NotFoundException('Experience not found');
+    }
+
+    await this.prisma.experience.delete({
+      where: { id: experienceId },
+    });
   }
 }

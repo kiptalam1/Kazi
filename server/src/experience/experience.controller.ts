@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
   Param,
@@ -13,6 +14,7 @@ import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { CreateExperienceDto } from './dto/create-experience.dto.js';
 import {
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
@@ -21,7 +23,7 @@ import { ExperienceApiResponse } from './dto/responses/experience-response.dto.j
 
 @Controller('api/v1/candidates/me/experiences')
 export class ExperienceController {
-  constructor(private readonly experienceService: ExperienceService) {}
+  constructor(private readonly experienceService: ExperienceService) { }
 
   // add Experience
   @ApiOperation({
@@ -58,4 +60,24 @@ export class ExperienceController {
       data,
     );
   }
+
+  // remove experience 
+  @ApiOperation({
+    summary: "Candidate delete experience",
+  })
+  @ApiNoContentResponse({
+    description: "Experience deleted successfully",
+  })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(':experienceId')
+  async deleteExperience(
+    @CurrentUser('id') userId: string,
+    @Param('experienceId') experienceId: string,
+  ) {
+    return await this.experienceService.removeExperience(
+      userId,
+      experienceId,
+    );
+  }
+
 }
