@@ -12,7 +12,7 @@ import {
 import { ApplicationsService } from './applications.service.js';
 import { CreateApplicationDto } from './dto/create-application.dto.js';
 import { UpdateApplicationStatusDto } from './dto/update-application.dto.js';
-import { ApiOkResponse, ApiOperation, } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import {
   ApplicationCreatedResponse,
@@ -20,6 +20,7 @@ import {
   ApplicationWithdrawnResponse,
   CandidateApplicationApiResponse,
   EmployerApplicationsResponseDto,
+  EmployerFetchSingleApplicationResponseDto,
   QueryDto,
   SingleCandidateApplicationResponseDto,
 } from './dto/application-response.dto.js';
@@ -27,21 +28,42 @@ import { GetQueryDto } from '../common/dto/query.dto.js';
 
 @Controller('api/v1/applications')
 export class ApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) { }
+  constructor(private readonly applicationsService: ApplicationsService) {}
+
+  // employer fetch a candidate application;
+  @Get('employer/:applicationId')
+  @ApiOperation({
+    summary: 'Employer fetch single application for a candidate',
+  })
+  @ApiOkResponse({
+    type: EmployerFetchSingleApplicationResponseDto,
+  })
+  async employerFetchSingleApplication(
+    @CurrentUser('id') userId: string,
+    @Param('applicationId', ParseUUIDPipe) applicationId: string,
+  ): Promise<EmployerFetchSingleApplicationResponseDto> {
+    return await this.applicationsService.employerFetchSingleApplication(
+      userId,
+      applicationId,
+    );
+  }
 
   // candidate fetch their single application;
   @ApiOperation({
-    summary: "candidate fetch their single application"
+    summary: 'candidate fetch their single application',
   })
   @ApiOkResponse({
-    type: SingleCandidateApplicationResponseDto
+    type: SingleCandidateApplicationResponseDto,
   })
   @Get(':applicationId')
   async findSingleCandidateApplication(
     @CurrentUser('id') userId: string,
     @Param('applicationId', ParseUUIDPipe) applicationId: string,
   ): Promise<SingleCandidateApplicationResponseDto> {
-    return await this.applicationsService.findSingleCandidateApplication(userId, applicationId);
+    return await this.applicationsService.findSingleCandidateApplication(
+      userId,
+      applicationId,
+    );
   }
 
   // apply for a job
@@ -83,7 +105,7 @@ export class ApplicationsController {
     summary: 'Employer fetch all candidates applications per job',
   })
   @ApiOkResponse({
-    type: EmployerApplicationsResponseDto
+    type: EmployerApplicationsResponseDto,
   })
   @Get('jobs/:jobId/applications')
   async getAllApplicationsByJob(

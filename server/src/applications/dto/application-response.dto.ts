@@ -1,5 +1,9 @@
 import { Type } from 'class-transformer';
-import { ApplicationStatus, ExperienceLevel, JobStatus } from '../../generated/prisma/enums.js';
+import {
+  ApplicationStatus,
+  ExperienceLevel,
+  JobStatus,
+} from '../../generated/prisma/enums.js';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
 import { Meta } from '../../common/dto/meta.dto.js';
@@ -192,7 +196,6 @@ export class EmployerApplicationDto {
   candidate!: CandidateSummaryDto;
 }
 
-
 export class EmployerApplicationsResponseDto {
   @ApiProperty({ type: [EmployerApplicationDto] })
   data!: EmployerApplicationDto[];
@@ -222,4 +225,124 @@ export class SingleCandidateApplicationResponseDto {
   reviewedAt?: Date | null;
   @ApiProperty({ type: () => CandidateJob })
   job!: CandidateJob;
+}
+
+export class EmployerApplicationCandidateUserDto {
+  @ApiProperty()
+  firstName!: string;
+
+  @ApiProperty()
+  lastName!: string;
+
+  @ApiProperty()
+  avatar!: string | null;
+
+  @ApiProperty()
+  email!: string;
+}
+
+export class EmployerApplicationCandidateDto {
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty({ nullable: true })
+  currentJobTitle!: string | null;
+
+  @ApiProperty({ nullable: true })
+  bio!: string | null;
+
+  @ApiProperty({ nullable: true })
+  headline!: string | null;
+
+  @ApiProperty({ nullable: true })
+  location!: string | null;
+
+  @ApiProperty({ nullable: true })
+  githubUrl!: string | null;
+
+  @ApiProperty({ nullable: true })
+  linkedinUrl!: string | null;
+
+  @ApiProperty({
+    type: () => ExperienceLevel,
+  })
+  experienceLevel!: ExperienceLevel | null;
+
+  @ApiProperty()
+  availability!: string | null;
+
+  @ApiProperty({ nullable: true })
+  portfolioUrl!: string | null;
+
+  @ApiProperty({ nullable: true })
+  education!: string[] | null;
+
+  @ApiProperty({ nullable: true })
+  resumeUrl!: string | null;
+
+  @ApiProperty({ type: [String] })
+  skills!: string[] | null;
+
+  @ApiProperty({ nullable: true })
+  salaryExpectation!: number | null;
+
+  @ApiProperty({
+    type: () => EmployerApplicationCandidateUserDto,
+  })
+  user!: EmployerApplicationCandidateUserDto;
+}
+
+export class EmployerApplicationJobDto {
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty()
+  title!: string;
+
+  @ApiProperty({
+    type: () => JobStatus,
+  })
+  status!: JobStatus;
+
+  @ApiProperty()
+  companyId!: string;
+
+  @ApiProperty()
+  createdAt!: Date;
+
+  @ApiProperty({
+    type: () => ExperienceLevel,
+    nullable: true,
+  })
+  experienceLevel!: ExperienceLevel | null;
+}
+
+export class EmployerFetchSingleApplicationResponseDto {
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty({ nullable: true })
+  coverLetter!: string | null;
+
+  @ApiProperty()
+  status!: string;
+
+  @ApiProperty()
+  createdAt!: Date;
+
+  @ApiProperty()
+  updatedAt!: Date;
+
+  @ApiProperty({ nullable: true })
+  reviewedAt!: Date | null;
+
+  @ApiProperty({
+    type: () => EmployerApplicationJobDto,
+  })
+  job!: EmployerApplicationJobDto;
+
+  @ApiProperty({
+    type: () => EmployerApplicationCandidateDto,
+  })
+  candidate!: EmployerApplicationCandidateDto;
 }
