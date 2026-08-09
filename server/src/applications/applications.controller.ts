@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
@@ -153,11 +152,5 @@ export class ApplicationsController {
     @Param('applicationId') applicationId: string,
   ): Promise<ApplicationWithdrawnResponse> {
     return this.applicationsService.withdraw(userId, applicationId);
-  }
-
-  // delete;
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.applicationsService.remove(+id);
   }
 }

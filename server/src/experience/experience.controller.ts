@@ -23,7 +23,7 @@ import { ExperienceApiResponse } from './dto/responses/experience-response.dto.j
 
 @Controller('api/v1/candidates/me/experiences')
 export class ExperienceController {
-  constructor(private readonly experienceService: ExperienceService) { }
+  constructor(private readonly experienceService: ExperienceService) {}
 
   // add Experience
   @ApiOperation({
@@ -61,12 +61,12 @@ export class ExperienceController {
     );
   }
 
-  // remove experience 
+  // remove experience
   @ApiOperation({
-    summary: "Candidate delete experience",
+    summary: 'Candidate delete experience',
   })
   @ApiNoContentResponse({
-    description: "Experience deleted successfully",
+    description: 'Experience deleted successfully',
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':experienceId')
@@ -74,10 +74,6 @@ export class ExperienceController {
     @CurrentUser('id') userId: string,
     @Param('experienceId') experienceId: string,
   ) {
-    return await this.experienceService.removeExperience(
-      userId,
-      experienceId,
-    );
+    return await this.experienceService.removeExperience(userId, experienceId);
   }
-
 }

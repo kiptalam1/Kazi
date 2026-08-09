@@ -12,6 +12,7 @@ import { JobsModule } from './jobs/jobs.module.js';
 import { ApplicationsModule } from './applications/applications.module.js';
 import { CompanyMembersService } from './company-members/company-members.service.js';
 import { ExperienceModule } from './experience/experience.module.js';
+import { EducationModule } from './education/education.module.js';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ExperienceModule } from './experience/experience.module.js';
     JobsModule,
     ApplicationsModule,
     ExperienceModule,
+    EducationModule,
   ],
   controllers: [AppController],
   providers: [
