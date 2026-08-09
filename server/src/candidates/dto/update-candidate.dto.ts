@@ -21,16 +21,6 @@ export class CandidateUpdateDto {
   skills!: string[];
 
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  experience!: string[];
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  education!: string[];
-
-  @IsOptional()
   @IsEnum(ExperienceLevel)
   @ApiProperty({ enum: ExperienceLevel })
   experienceLevel!: ExperienceLevel;
