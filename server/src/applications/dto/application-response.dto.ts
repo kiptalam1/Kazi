@@ -7,6 +7,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
 import { Meta } from '../../common/dto/meta.dto.js';
+import { CreatedEducationDto } from '../../education/dto/education-response.dto.js';
 
 export class ApplicationDataDto {
   @ApiProperty()
@@ -274,8 +275,8 @@ export class EmployerApplicationCandidateDto {
   @ApiProperty({ nullable: true })
   portfolioUrl!: string | null;
 
-  @ApiProperty({ nullable: true })
-  education!: string[] | null;
+  @ApiProperty({ type: [CreatedEducationDto] })
+  education!: CreatedEducationDto[];
 
   @ApiProperty({ nullable: true })
   resumeUrl!: string | null;

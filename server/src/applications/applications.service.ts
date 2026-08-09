@@ -71,7 +71,16 @@ export class ApplicationsService {
             experienceLevel: true,
             availability: true,
             portfolioUrl: true,
-            education: true,
+            education: {
+              select: {
+                id: true,
+                schoolName: true,
+                fieldOfStudy: true,
+                startDate: true,
+                endDate: true,
+                qualification: true,
+              },
+            },
             resumeUrl: true,
             skills: true,
             salaryExpectation: true,
