@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
@@ -28,7 +27,7 @@ import { GetQueryDto } from '../common/dto/query.dto.js';
 
 @Controller('api/v1/applications')
 export class ApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) {}
+  constructor(private readonly applicationsService: ApplicationsService) { }
 
   // employer fetch a candidate application;
   @Get('employer/:applicationId')
@@ -155,9 +154,4 @@ export class ApplicationsController {
     return this.applicationsService.withdraw(userId, applicationId);
   }
 
-  // delete;
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.applicationsService.remove(+id);
-  }
 }

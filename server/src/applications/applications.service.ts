@@ -31,7 +31,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) {}
+  ) { }
 
   // employer fetch single application;
   async employerFetchSingleApplication(
@@ -520,7 +520,4 @@ export class ApplicationsService {
     };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} application`;
-  }
 }
