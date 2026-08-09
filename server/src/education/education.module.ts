@@ -8,4 +8,4 @@ import { CandidatesService } from '../candidates/candidates.service.js';
   controllers: [EducationController],
   providers: [EducationService, PrismaService, CandidatesService],
 })
-export class EducationModule {}
+export class EducationModule { }

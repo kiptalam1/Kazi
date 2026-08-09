@@ -11,7 +11,7 @@ export class CreatedEducationDto {
   endDate?: Date | null;
 }
 
-export class EducationCreatedApiResponse {
+export class EducationApiResponse {
   message!: string;
   @ApiProperty({ type: () => CreatedEducationDto })
   data!: CreatedEducationDto;

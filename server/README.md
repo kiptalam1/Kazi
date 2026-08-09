@@ -5,8 +5,8 @@ Companies ✅
 Candidates 🟡
  - profile (Create, Update) ✅
  - experiences (create, update, delete) ✅
- - education 
- - skills 
+ - education (create, update, delete) 
+ - skills ✅
 Jobs ✅
 Applications 🟡
 Bookmarks
@@ -208,10 +208,10 @@ A polished frontend integrated with a scalable backend.
  - update experience ✅
  - delete experience ✅
 → education 
- - add education 🟡
- - update education 🟡
+ - add education ✅
+ - update education ✅
  - delete education 🟡
-→ skills
+→ skills ✅
 → portfolio
 → resume structure
 
