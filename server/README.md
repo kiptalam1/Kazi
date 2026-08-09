@@ -2,11 +2,11 @@
 Auth ✅
 Users 🟡
 Companies ✅
-Candidates 🟡
+Candidates ✅
  - profile (Create, Update) ✅
  - experiences (create, update, delete) ✅
- - education (create, update, delete) 
- - skills ✅
+ - education (create, update, delete) ✅
+ - skills (simple array) ✅
 Jobs ✅
 Applications 🟡
 Bookmarks
@@ -57,8 +57,8 @@ Email notifications
 ## Candidate
 Profile ✅
 Experience ✅
-Education 🟡
-Skills
+Education ✅
+Skills ✅
 Resume
 Portfolio links
 ## Company Dashboard
@@ -207,10 +207,10 @@ A polished frontend integrated with a scalable backend.
  - add new experience ✅
  - update experience ✅
  - delete experience ✅
-→ education 
+→ education ✅
  - add education ✅
  - update education ✅
- - delete education 🟡
+ - delete education ✅
 → skills ✅
 → portfolio
 → resume structure

@@ -1,8 +1,18 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { EducationService } from './education.service.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import {
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
@@ -12,7 +22,7 @@ import { UpdateEducationDto } from './dto/update-education.dto.js';
 
 @Controller('api/v1/candidates/me/education')
 export class EducationController {
-  constructor(private readonly educationService: EducationService) { }
+  constructor(private readonly educationService: EducationService) {}
 
   // add education
   @ApiCreatedResponse({
@@ -49,5 +59,21 @@ export class EducationController {
       educationId,
       data,
     );
+  }
+
+  // remove education;
+  @ApiOperation({
+    summary: 'Candidate remove education',
+  })
+  @ApiNoContentResponse({
+    summary: 'Education removed successfully',
+  })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(':educaionId')
+  async deleteEducation(
+    @CurrentUser('id') userId: string,
+    @Param('educationId') educationId: string,
+  ) {
+    return await this.educationService.removeEducation(userId, educationId);
   }
 }

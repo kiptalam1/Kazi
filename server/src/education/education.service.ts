@@ -10,7 +10,7 @@ export class EducationService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly candidatesService: CandidatesService,
-  ) { }
+  ) {}
 
   // add education
   async addEducation(
@@ -78,5 +78,39 @@ export class EducationService {
         endDate: updatedEducation.endDate,
       },
     };
+  }
+
+  // remove education
+  async removeEducation(userId: string, educationId: string) {
+    const candidate = await this.candidatesService.findByUserId(userId);
+
+    const education = await this.findCandidateEducation(
+      educationId,
+      candidate.id,
+    );
+
+    await this.prisma.education.delete({
+      where: { id: education.id },
+    });
+  }
+
+  // helpers
+  private async findCandidateEducation(
+    educationId: string,
+    candidateId: string,
+  ) {
+    const education = await this.prisma.education.findFirst({
+      where: {
+        id: educationId,
+        candidateId,
+      },
+      select: { id: true },
+    });
+
+    if (!education) {
+      throw new NotFoundException('Education not found.');
+    }
+
+    return education;
   }
 }
