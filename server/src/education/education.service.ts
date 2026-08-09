@@ -51,19 +51,13 @@ export class EducationService {
   ): Promise<EducationApiResponse> {
     const candidate = await this.candidatesService.findByUserId(userId);
 
-    const education = await this.prisma.education.findFirst({
-      where: {
-        id: educationId,
-        candidateId: candidate.id,
-      },
-    });
-
-    if (!education) {
-      throw new NotFoundException('Education not found.');
-    }
+    const education = await this.findCandidateEducation(
+      educationId,
+      candidate.id,
+    );
 
     const updatedEducation = await this.prisma.education.update({
-      where: { id: educationId },
+      where: { id: education.id },
       data,
     });
 
