@@ -20,7 +20,7 @@ export class UsersService {
         firstName: user.firstName,
         lastName: user.lastName,
         roles,
-        avatar: user.avatar?.url,
+        avatar: user.avatar?.url ?? null,
         phone: user.phone,
         isActive: user.isActive,
         candidate: user.candidate,
