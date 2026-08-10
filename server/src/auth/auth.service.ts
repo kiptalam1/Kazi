@@ -21,7 +21,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) {}
+  ) { }
   // refresh accesstoken.
   async refreshTokens(req: Request, res: Response) {
     const refreshToken = req.cookies?.refresh_token as string;
@@ -140,7 +140,7 @@ export class AuthService {
         firstName: existsUser.firstName,
         lastName: existsUser.lastName,
         roles,
-        avatar: existsUser.avatar,
+        avatar: existsUser.avatarId,
         phone: existsUser.phone,
         isActive: existsUser.isActive,
         lastLoginAt: existsUser.lastLoginAt,
@@ -165,7 +165,6 @@ export class AuthService {
           firstName: registerDto.firstName,
           lastName: registerDto.lastName,
           passwordHash: passwordHashed,
-          avatar: registerDto.avatar || null,
           phone: registerDto.phone || null,
           roles: {
             create: {

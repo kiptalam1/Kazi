@@ -31,7 +31,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) {}
+  ) { }
 
   // employer fetch single application;
   async employerFetchSingleApplication(
@@ -81,15 +81,18 @@ export class ApplicationsService {
                 qualification: true,
               },
             },
-            resumeUrl: true,
             skills: true,
             salaryExpectation: true,
             user: {
               select: {
                 firstName: true,
                 lastName: true,
-                avatar: true,
                 email: true,
+                avatar: {
+                  select: {
+                    url: true,
+                  }
+                },
               },
             },
           },
@@ -114,7 +117,16 @@ export class ApplicationsService {
       throw new ForbiddenException('Permission denied.');
     }
 
-    return application;
+    return {
+      ...application,
+      candidate: {
+        ...application.candidate,
+        user: {
+          ...application.candidate.user,
+          avatar: application.candidate.user.avatar?.url ?? null,
+        },
+      },
+    };
   }
 
   // fetch candidate single application;

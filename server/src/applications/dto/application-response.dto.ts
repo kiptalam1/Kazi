@@ -236,7 +236,7 @@ export class EmployerApplicationCandidateUserDto {
   lastName!: string;
 
   @ApiProperty()
-  avatar!: string | null;
+  avatar?: string | null;
 
   @ApiProperty()
   email!: string;
@@ -277,9 +277,6 @@ export class EmployerApplicationCandidateDto {
 
   @ApiProperty({ type: [CreatedEducationDto] })
   education!: CreatedEducationDto[];
-
-  @ApiProperty({ nullable: true })
-  resumeUrl!: string | null;
 
   @ApiProperty({ type: [String] })
   skills!: string[] | null;
