@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CandidatesService } from '../candidates/candidates.service.js';
 import { PrismaService } from '../prisma.service.js';
 import { CloudinaryService } from '../infrastructure/storage/cloudinary/cloudinary.service.js';
@@ -71,6 +71,44 @@ export class ResumesService {
       );
       throw new InternalServerErrorException(
         'Failed to save resume.'
+      );
+    }
+  }
+
+  async deleteResume(
+    userId: string,
+    resumeId: string,
+  ) {
+    const candidate = await this.candidatesService.findByUserId(userId);
+    const resume = await this.prisma.file.findFirst({
+      where: {
+        id: resumeId,
+        candidateId: candidate.id,
+        type: FileType.RESUME,
+      },
+    });
+
+    if (!resume) {
+      throw new NotFoundException('Resume not found.');
+    }
+
+    try {
+
+      await this.cloudinary.deleteFile(resume.publicId);
+      await this.prisma.file.delete({
+        where: {
+          id: resumeId,
+        },
+      });
+
+      return {
+        message: 'Resume deleted successfully',
+      };
+
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(
+        'Failed to delete resume.'
       );
     }
   }

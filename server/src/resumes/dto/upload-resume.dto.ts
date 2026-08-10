@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsNotEmpty, MaxLength } from 'class-validator';
 
 export class UploadResumeDto {
@@ -5,5 +6,6 @@ export class UploadResumeDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
+  @ApiProperty()
   displayName?: string;
 }
