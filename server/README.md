@@ -1,8 +1,8 @@
 # Core Modules
-Auth ✅
+Auth 💯
 Users 🟡
-Companies ✅
-Candidates ✅
+Companies 💯
+Candidates 💯
  - profile (Create, Update) ✅
  - experiences (create, update, delete) ✅
  - education (create, update, delete) ✅
@@ -10,7 +10,9 @@ Candidates ✅
 Jobs ✅
 Applications 🟡
 Bookmarks
-Uploads
+Uploads 
+ - resume ✅
+ - avatar 🟡
 Messaging
 Notifications
 Analytics
@@ -32,7 +34,7 @@ Create company ✅
 Edit company profile ✅
 Invite recruiters
 Company verification
-## Jobs
+## Jobs 💯
 CRUD ✅
 Search ✅
 Filtering ✅
@@ -40,10 +42,10 @@ Pagination ✅
 Draft/Published/Closed status ✅
 ## Applications
 Apply to jobs ✅
-Upload CV
-Cover letters
-Application timeline
+Upload CV ✅
+Cover letters ✅
 Withdraw application ✅
+Application timeline
 ## Messaging
 Candidate ↔ Recruiter chat
 Real-time messaging
@@ -54,13 +56,13 @@ Interview invitation
 Messages
 Job status updates
 Email notifications
-## Candidate
+## Candidate 💯
 Profile ✅
 Experience ✅
 Education ✅
 Skills ✅
-Resume
-Portfolio links
+Resume ✅
+Portfolio links ✅
 ## Company Dashboard
 Manage recruiters
 Manage jobs ✅
@@ -86,9 +88,9 @@ JWT ✅
 Custom Decorators ✅
 Role-Based Access Control ✅
 Swagger ✅
-Interceptors
+Interceptors ✅
+Custom Providers ✅
 Middleware
-Custom Providers
 Passport
 Dynamic Modules
 WebSockets
@@ -101,16 +103,16 @@ RBAC ✅
 Pagination ✅
 Filtering ✅
 Sorting ✅
+Request validation ✅
+Migrations ✅
+Transactions ✅
 Global exception handling
 Global response interceptor
-Request validation
 Request logging
 Audit logging
-Transactions
 Soft deletes
 Environment configuration
 Database seeding
-Migrations ✅
 API versioning
 # Security
 HttpOnly cookies ✅
@@ -135,10 +137,10 @@ Global guards ✅
 Global exception filter
 Global response interceptor
 ## Milestone 2 — Users
-Candidate profiles
-User management
-File uploads
-Avatar support
+Candidate profiles ✅
+User management 🟡
+File uploads ✅
+Avatar support 🟡
 ## Milestone 3 — Companies
 Company creation ✅
 Company profiles ✅
@@ -149,10 +151,10 @@ Job CRUD ✅
 Search ✅
 Filters ✅
 Pagination ✅
-Bookmarks
+Bookmarks 🟡
 ## Milestone 5 — Applications
 Apply for jobs ✅
-Resume uploads
+Resume uploads ✅
 Application status workflow 🟡
 Recruiter review tools
 ## Milestone 6 — Communication
@@ -202,7 +204,7 @@ CI/CD automation.
 A polished frontend integrated with a scalable backend.
 
 ## *TODO*
-1. Finish Candidates
+1. Finish Candidates 💯
 → experience ✅
  - add new experience ✅
  - update experience ✅
@@ -212,12 +214,12 @@ A polished frontend integrated with a scalable backend.
  - update education ✅
  - delete education ✅
 → skills ✅
-→ portfolio
-→ resume structure
+→ portfolio ✅
+→ resume structure ✅
 
 2. Finish Applications
-→ CV upload
-→ cover letter
+→ CV upload ✅
+→ cover letter ✅
 → application timeline
 → robust status transitions
 
@@ -227,7 +229,7 @@ A polished frontend integrated with a scalable backend.
 
 4. Bookmarks
 
-5. Upload infrastructure
+5. Upload infrastructure ✅
 
 6. Global API infrastructure
 → response interceptor
