@@ -11,7 +11,7 @@ export class CandidateUserDto {
   lastName!: string;
   avatar!: string | null;
 
-  @ApiProperty({ type: [CandidateRoleDto] })
+  @ApiProperty({ type: () => [CandidateRoleDto] })
   roles!: CandidateRoleDto[];
 }
 
@@ -40,12 +40,12 @@ export class CandidateDto {
   createdAt!: Date;
   updatedAt!: Date;
 
-  @ApiProperty({ type: CandidateUserDto })
+  @ApiProperty({ type: () => CandidateUserDto })
   user!: CandidateUserDto;
 }
 
 export class GetAllCandidatesResponseDto {
-  @ApiProperty({ type: [CandidateDto] })
+  @ApiProperty({ type: () => [CandidateDto] })
   data!: CandidateDto[];
 
   @ApiProperty({ type: Meta })

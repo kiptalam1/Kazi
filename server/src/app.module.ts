@@ -13,6 +13,7 @@ import { ApplicationsModule } from './applications/applications.module.js';
 import { CompanyMembersService } from './company-members/company-members.service.js';
 import { ExperienceModule } from './experience/experience.module.js';
 import { EducationModule } from './education/education.module.js';
+import { ResumesModule } from './resumes/resumes.module.js';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { EducationModule } from './education/education.module.js';
     ApplicationsModule,
     ExperienceModule,
     EducationModule,
+    ResumesModule,
   ],
   controllers: [AppController],
   providers: [
@@ -38,4 +40,4 @@ import { EducationModule } from './education/education.module.js';
     CompanyMembersService,
   ],
 })
-export class AppModule {}
+export class AppModule { }
