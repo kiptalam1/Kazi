@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CandidatesService } from '../candidates/candidates.service.js';
 import { PrismaService } from '../prisma.service.js';
 import { CloudinaryService } from '../infrastructure/storage/cloudinary/cloudinary.service.js';
@@ -8,13 +13,11 @@ import { UploadResumeApiResponse } from './dto/resume-response.js';
 
 @Injectable()
 export class ResumesService {
-
   constructor(
     private readonly candidatesService: CandidatesService,
     private readonly prisma: PrismaService,
     private cloudinary: CloudinaryService,
-  ) { }
-
+  ) {}
 
   async uploadResume(
     userId: string,
@@ -31,13 +34,14 @@ export class ResumesService {
     });
 
     if (resumeCount >= 5) {
-      throw new BadRequestException(
-        'You can have a maximum of 5 resumes.'
-      );
+      throw new BadRequestException('You can have a maximum of 5 resumes.');
     }
 
-    const cloudinaryResponse = await this.cloudinary
-      .uploadFile(file, 'kazi/resumes', 'raw');
+    const cloudinaryResponse = await this.cloudinary.uploadFile(
+      file,
+      'kazi/resumes',
+      'raw',
+    );
 
     try {
       const resume = await this.prisma.file.create({
@@ -66,19 +70,12 @@ export class ResumesService {
       };
     } catch (error) {
       console.error(error);
-      await this.cloudinary.deleteFile(
-        cloudinaryResponse.public_id
-      );
-      throw new InternalServerErrorException(
-        'Failed to save resume.'
-      );
+      await this.cloudinary.deleteFile(cloudinaryResponse.public_id);
+      throw new InternalServerErrorException('Failed to save resume.');
     }
   }
 
-  async deleteResume(
-    userId: string,
-    resumeId: string,
-  ) {
+  async deleteResume(userId: string, resumeId: string) {
     const candidate = await this.candidatesService.findByUserId(userId);
     const resume = await this.prisma.file.findFirst({
       where: {
@@ -93,7 +90,6 @@ export class ResumesService {
     }
 
     try {
-
       await this.cloudinary.deleteFile(resume.publicId);
       await this.prisma.file.delete({
         where: {
@@ -104,13 +100,9 @@ export class ResumesService {
       return {
         message: 'Resume deleted successfully',
       };
-
     } catch (error) {
       console.error(error);
-      throw new InternalServerErrorException(
-        'Failed to delete resume.'
-      );
+      throw new InternalServerErrorException('Failed to delete resume.');
     }
   }
 }
-

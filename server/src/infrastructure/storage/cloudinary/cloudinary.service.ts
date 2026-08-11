@@ -1,12 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { v2 as Cloudinary, type UploadApiResponse, type DeleteApiResponse } from 'cloudinary';
+import {
+  v2 as Cloudinary,
+  type UploadApiResponse,
+  type DeleteApiResponse,
+} from 'cloudinary';
 
 @Injectable()
 export class CloudinaryService {
   constructor(
     @Inject('CLOUDINARY')
     private readonly cloudinary: typeof Cloudinary,
-  ) { }
+  ) {}
 
   uploadFile(
     file: Express.Multer.File,

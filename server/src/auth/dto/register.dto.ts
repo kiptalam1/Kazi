@@ -33,7 +33,6 @@ export class RegisterDto {
   @MinLength(6, { message: 'Password must be atleast 6 characters long ' })
   password!: string;
 
-
   @IsOptional()
   @IsString({ message: 'Enter a valid phone number' })
   phone!: string | null;
