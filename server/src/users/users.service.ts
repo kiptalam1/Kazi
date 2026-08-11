@@ -1,12 +1,98 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
-import type { Prisma, User } from '../generated/prisma/client.js';
+import { FileType, type Prisma, type User } from '../generated/prisma/client.js';
+import { CloudinaryService } from '../infrastructure/storage/cloudinary/cloudinary.service.js';
+import { UploadAvatarApiResponse } from './dto/avatar-response.dto.js';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) { }
+  constructor(
+    private prisma: PrismaService,
+    private readonly cloudinary: CloudinaryService,
+  ) { }
 
-  // my profile
+  // upload user avatar;
+  async uploadAvatar(
+    userId: string,
+    file: Express.Multer.File
+  ): Promise<UploadAvatarApiResponse> {
+    const existingAvatar = await this.prisma.file
+      .findFirst({
+        where: {
+          userAvatar: {
+            id: userId,
+          },
+          type: FileType.AVATAR,
+        },
+      });
+
+    let uploaded;
+    try {
+      uploaded = await this.cloudinary.uploadFile(
+        file,
+        'kazi/avatars',
+        'image'
+      );
+    } catch {
+      throw new BadRequestException(
+        'failed to upload avatar.',
+      );
+    }
+
+    let newAvatar;
+    try {
+      newAvatar = await this.prisma.file.create({
+        data: {
+          fileName: file.originalname,
+          mimeType: file.mimetype,
+          publicId: uploaded.public_id,
+          size: file.size,
+          type: FileType.AVATAR,
+          url: uploaded.secure_url,
+          userAvatar: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+
+    } catch (error) {
+      try {
+        console.error(error);
+        await this.cloudinary.deleteFile(
+          uploaded.public_id
+        );
+      } catch (cleanupError) {
+        console.error(cleanupError);
+      }
+      throw new InternalServerErrorException(
+        'Failed to upload avatar');
+    }
+    if (existingAvatar) {
+      await this.cloudinary
+        .deleteFile(existingAvatar.publicId);
+
+      await this.prisma.file.delete({
+        where: {
+          id: existingAvatar.id,
+        },
+      });
+    }
+    return {
+      message: 'Avatar uploaded successfully',
+      data: {
+        id: newAvatar.id,
+        fileName: newAvatar.fileName,
+        mimeType: newAvatar.mimeType,
+        size: newAvatar.size,
+        url: newAvatar.url,
+        type: newAvatar.type,
+      },
+    };
+  }
+
+  // get my profile
   async me(id: string) {
     const user = await this.findById(id);
     if (!user) {
