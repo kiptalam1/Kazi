@@ -17,7 +17,7 @@ export class ResumesService {
     private readonly candidatesService: CandidatesService,
     private readonly prisma: PrismaService,
     private cloudinary: CloudinaryService,
-  ) {}
+  ) { }
 
   async uploadResume(
     userId: string,
@@ -93,7 +93,7 @@ export class ResumesService {
       await this.cloudinary.deleteFile(resume.publicId);
       await this.prisma.file.delete({
         where: {
-          id: resumeId,
+          id: resume.id,
         },
       });
 

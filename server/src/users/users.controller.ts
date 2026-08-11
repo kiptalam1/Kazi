@@ -1,4 +1,4 @@
-import { Controller, FileTypeValidator, Get, HttpCode, HttpStatus, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Delete, FileTypeValidator, Get, HttpCode, HttpStatus, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service.js';
 import { ApiCookieAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, } from '@nestjs/swagger';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
@@ -35,7 +35,7 @@ export class UsersController {
     summary: "User upload avatar",
   })
   @HttpCode(HttpStatus.CREATED)
-  @Post('me/profile/upload')
+  @Post('me/avatar')
   @UseInterceptors(FileInterceptor('avatar'))
   async upoadAvatar(
     @CurrentUser('id') userId: string,
@@ -56,5 +56,20 @@ export class UsersController {
       userId,
       file
     );
+  }
+
+  // delete user avatar; 
+  @ApiOkResponse({
+    summary: 'Avatar deleted successfully',
+  })
+  @ApiOperation({
+    summary: "User delete avatar",
+  })
+  @HttpCode(HttpStatus.OK)
+  @Delete('me/avatar')
+  async deleteAvatar(
+    @CurrentUser('id') userId: string,
+  ) {
+    return await this.usersService.deleteAvatar(userId);
   }
 }

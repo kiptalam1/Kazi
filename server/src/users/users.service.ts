@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
 import { FileType, type Prisma, type User } from '../generated/prisma/client.js';
 import { CloudinaryService } from '../infrastructure/storage/cloudinary/cloudinary.service.js';
@@ -92,6 +92,46 @@ export class UsersService {
     };
   }
 
+  // delete user avatar;
+  async deleteAvatar(
+    userId: string,
+  ) {
+    const existsAvatar = await this.prisma.file.findFirst({
+      where: {
+        type: FileType.AVATAR,
+        userAvatar: {
+          id: userId
+        },
+      }
+    });
+
+    if (!existsAvatar) {
+      throw new NotFoundException(
+        'Avatar not found',
+      );
+    }
+
+    try {
+      await this.cloudinary.deleteFile(existsAvatar.publicId);
+
+      await this.prisma.file.delete({
+        where: {
+          id: existsAvatar.id,
+        }
+      });
+
+      return {
+        message: 'Avatar deleted successfully.',
+      };
+
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(
+        'Failed to delete avatar.'
+      );
+    }
+  }
+
   // get my profile
   async me(id: string) {
     const user = await this.findById(id);
@@ -106,7 +146,10 @@ export class UsersService {
         firstName: user.firstName,
         lastName: user.lastName,
         roles,
-        avatar: user.avatar?.url ?? null,
+        avatarId: user.avatarId,
+        avatar: user.avatar
+          ? this.cloudinary.getAvatarUrl(user.avatar.publicId)
+          : null,
         phone: user.phone,
         isActive: user.isActive,
         candidate: user.candidate,
@@ -137,6 +180,7 @@ export class UsersService {
           select: {
             url: true,
             type: true,
+            publicId: true,
           },
         },
       },
