@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { FileType } from "../../generated/prisma/enums.js";
+import { ApiProperty } from '@nestjs/swagger';
+import { FileType } from '../../generated/prisma/enums.js';
 
 export class FileResponse {
   id!: string;

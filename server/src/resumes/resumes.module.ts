@@ -4,12 +4,13 @@ import { ResumesController } from './resumes.controller.js';
 import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { PrismaService } from '../prisma.service.js';
-import { CloudinaryService } from '../infrastructure/storage/cloudinary/cloudinary.service.js';
-import { CandidatesService } from '../candidates/candidates.service.js';
-import { CloudinaryProvider } from '../infrastructure/storage/cloudinary/cloudinary.provider.js';
+import { CloudinaryModule } from '../infrastructure/storage/cloudinary/cloudinary.module.js';
+import { CandidatesModule } from '../candidates/candidates.module.js';
 
 @Module({
   imports: [
+    CloudinaryModule,
+    CandidatesModule,
     MulterModule.register({
       storage: memoryStorage(),
     }),
@@ -18,9 +19,7 @@ import { CloudinaryProvider } from '../infrastructure/storage/cloudinary/cloudin
   providers: [
     ResumesService,
     PrismaService,
-    CloudinaryService,
-    CandidatesService,
-    CloudinaryProvider,
   ],
+  exports: [ResumesService],
 })
 export class ResumesModule { }

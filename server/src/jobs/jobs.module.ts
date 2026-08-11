@@ -1,17 +1,22 @@
 import { Module } from '@nestjs/common';
 import { JobsService } from './jobs.service.js';
 import { JobsController } from './jobs.controller.js';
-import { CompaniesService } from '../companies/companies.service.js';
 import { PrismaService } from '../prisma.service.js';
-import { CompanyMembersService } from '../company-members/company-members.service.js';
+import { CompaniesModule } from '../companies/companies.module.js';
+import { CompanyMembersModule } from '../company-members/company-members.module.js';
 
 @Module({
+  imports: [
+    CompaniesModule,
+    CompanyMembersModule,
+  ],
   controllers: [JobsController],
   providers: [
     JobsService,
-    CompaniesService,
     PrismaService,
-    CompanyMembersService,
   ],
+  exports: [
+    JobsService,
+  ]
 })
-export class JobsModule {}
+export class JobsModule { }

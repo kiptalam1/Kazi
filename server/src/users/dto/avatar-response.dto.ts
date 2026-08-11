@@ -1,13 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { FileType } from '../../generated/prisma/enums.js';
 
-export class ResumeUploaded {
+export class AvatarUploaded {
   @ApiProperty()
   id!: string;
   @ApiProperty()
   fileName!: string;
-  @ApiProperty()
-  displayName!: string | null;
   @ApiProperty()
   size!: number;
   @ApiProperty()
@@ -18,9 +16,9 @@ export class ResumeUploaded {
   type!: FileType;
 }
 
-export class UploadResumeApiResponse {
+export class UploadAvatarApiResponse {
   @ApiProperty()
   message!: string;
-  @ApiProperty({ type: () => ResumeUploaded })
-  data!: ResumeUploaded;
+  @ApiProperty({ type: () => AvatarUploaded })
+  data!: AvatarUploaded;
 }

@@ -231,7 +231,7 @@ model File {
   type        FileType
   createdAt   DateTime @default(now())
 
-  candidateId String
+  candidateId String?
   candidate   Candidate? @relation(fields: [candidateId], references: [id], onDelete: Cascade)
 
   applicationResumes Application[] @relation("ApplicationResume")

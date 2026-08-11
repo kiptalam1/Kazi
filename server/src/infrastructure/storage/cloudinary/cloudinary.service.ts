@@ -1,5 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { v2 as Cloudinary, type UploadApiResponse, type DeleteApiResponse } from 'cloudinary';
+import {
+  v2 as Cloudinary,
+  type UploadApiResponse,
+  type DeleteApiResponse,
+} from 'cloudinary';
 
 @Injectable()
 export class CloudinaryService {
@@ -36,5 +40,25 @@ export class CloudinaryService {
 
   async deleteFile(publicId: string): Promise<DeleteApiResponse> {
     return await this.cloudinary.uploader.destroy(publicId);
+  }
+
+
+  // optimize returned image;
+  getAvatarUrl(publicId: string): string {
+    return this.cloudinary.url(publicId, {
+      secure: true,
+      // effect: 'background_removal',
+      transformation: [
+        {
+          width: 300,
+          height: 300,
+          radius: 'max',
+          gravity: 'face',
+          crop: 'thumb',
+          quality: 'auto',
+          fetch_format: 'auto',
+        },
+      ],
+    });
   }
 }

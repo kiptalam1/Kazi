@@ -12,7 +12,7 @@ Applications 🟡
 Bookmarks
 Uploads 
  - resume ✅
- - avatar 🟡
+ - avatar ✅
 Messaging
 Notifications
 Analytics
@@ -140,7 +140,7 @@ Global response interceptor
 Candidate profiles ✅
 User management 🟡
 File uploads ✅
-Avatar support 🟡
+Avatar support ✅
 ## Milestone 3 — Companies
 Company creation ✅
 Company profiles ✅

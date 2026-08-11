@@ -40,4 +40,4 @@ import { ResumesModule } from './resumes/resumes.module.js';
     CompanyMembersService,
   ],
 })
-export class AppModule { }
+export class AppModule {}
