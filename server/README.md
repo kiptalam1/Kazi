@@ -1,6 +1,7 @@
 # Core Modules
 Auth 💯
 Users 🟡
+ - delete own account;
 Companies 💯
 Candidates 💯
  - profile (Create, Update) ✅
@@ -27,7 +28,7 @@ Login ✅
 Logout ✅
 Refresh tokens ✅
 Email verification
-Forgot password
+Forgot password 
 Reset password
 ## Companies
 Create company ✅
