@@ -36,16 +36,16 @@
 ## Primitives
 Button ✅
 Input ✅
-Label
-Avatar
+Avatar ✅
 Card
+Modal
+Label
 Textarea
 Select
 Radio
 Checkbox
 Badge
 Separator
-Modal
 Dropdown
 Tooltip
 Spinner
