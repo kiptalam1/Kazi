@@ -1,26 +1,45 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+/* Background */
+--background: oklch(98.5% 0 none);
+--background-muted: oklch(98.4% 0.003 247.858);
+--background-subtle: oklch(96.8% 0.007 247.896);
+--background-contrast : oklch(92.9% 0.013 255.508);
+/* Text */ 
+--text-primary:oklch(20.8% 0.042 265.755);
+--text-secondary: oklch(44.6% 0.043 257.281);
+--text-muted: oklch(55.4% 0.046 257.417);
+--text-disabled: oklch(70.4% 0.04 256.788);
+--text-inverse: oklch(98.5% 0 none);
+/* Borders */
+--border: oklch(92.8% 0.006 264.531);
+--border-muted: oklch(96.7% 0.003 264.542);
+--border-strong: oklch(87.2% 0.01 258.338);
+/* Brand */ 
+--brand-primary: oklch(59.6% 0.145 163.225);
+--brand-hover: oklch(50.8% 0.118 165.612);
+--brand-active: oklch(43.2% 0.095 166.913);
+/* Acccent */
+--accent: oklch(76.9% 0.188 70.08);
+--accent-hover: oklch(66.6% 0.179 58.318);
+--accent-active: oklch(55.5% 0.163 48.998);
+--accent-soft: oklch(98.7% 0.022 95.277);
+--accent-content: oklch(27.9% 0.077 45.635);
+/* FeedBack */
+--success: oklch(62.7% 0.194 149.214);
+--warning: oklch(66.6% 0.179 58.318);
+--danger: oklch(57.7% 0.245 27.325);
+--info: oklch(54.6% 0.245 262.881);
+/* Utility */
+--focus: oklch(69.6% 0.17 162.48);
+--placeholder: oklch(70.4% 0.04 256.788);
+--selection: oklch(95% 0.052 163.051);
+--overlay: oklch(14.5% 0 none);
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
