@@ -3,7 +3,7 @@
 @theme {
 /* Background */
 --color-background: oklch(98.5% 0 none);
---color-background-muted: oklch(98.4% 0.003 247.858);
+--color-background-muted: oklch(97.5% 0.003 247.858);
 --color-background-subtle: oklch(96.8% 0.007 247.896);
 --color-background-contrast : oklch(92.9% 0.013 255.508);
 /* Text */ 
