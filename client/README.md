@@ -37,9 +37,9 @@
 Button ✅
 Input ✅
 Avatar ✅
-Card
+Card ✅
 Modal
-Label
+Label 🟡
 Textarea
 Select
 Radio

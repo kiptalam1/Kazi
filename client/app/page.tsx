@@ -1,5 +1,6 @@
 import { Avatar } from "@/components/ui/Avatar";
 import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Image from "next/image";
 
@@ -31,6 +32,10 @@ export default function Home() {
         height={50}
         className="border"
       />
+      <Card className="my-4 hover:bg-background-subtle">
+        <h1>Adams Kiptalam</h1>
+        <p>Software developer</p>
+      </Card>
     </div>
   );
 }
