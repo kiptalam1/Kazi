@@ -32,3 +32,20 @@
 16. Accessibility + polish
         ↓
 17. Production hardening
+
+## Primitives
+Button ✅
+Input ✅
+Label
+Avatar
+Card
+Textarea
+Select
+Radio
+Checkbox
+Badge
+Separator
+Modal
+Dropdown
+Tooltip
+Spinner

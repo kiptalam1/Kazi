@@ -1,21 +1,13 @@
-type ButtonProps = {
-  children: React.ReactNode;
-  type?: "submit" | "button" | "reset";
+
+type ButtonProps = React.ComponentProps<"button"> & {
   variant?: "primary" | "accent";
   className?: string;
-  onClick?: () => void;
-  disabled?: boolean;
-  ariaLabel?: string;
-}
+};
 
 export default function Button({
-  children,
-  type = "button",
   variant = "primary",
   className,
-  onClick,
-  disabled = false,
-  ariaLabel,
+  ...props
 }: ButtonProps) {
 
   const baseStyles = "px-4 py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2";
@@ -27,12 +19,8 @@ export default function Button({
 
   return (
     <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={ariaLabel}
-      className={`${baseStyles} ${variantStyles[variant]} ${className}`}   >
-      {children}
+      {...props}
+      className={`${baseStyles} ${variantStyles[variant]} ${className}`}>
     </button>
   )
 }
