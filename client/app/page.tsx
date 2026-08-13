@@ -1,3 +1,4 @@
+import Button from "@/components/ui/Button";
 import Image from "next/image";
 
 export default function Home() {
@@ -12,6 +13,12 @@ export default function Home() {
         />
       </div>
       <h1 className="text-xl my-2">Kazi Landing Page</h1>
+      <Button
+        variant="primary"
+        type="button"
+      >
+        Sign Up
+      </Button>
     </div>
   );
 }
