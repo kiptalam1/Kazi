@@ -20,9 +20,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       <body className="min-h-screen flex flex-col mx-auto max-w-7xl">
         <TopBar />
         <main>
-          <Providers>
-            {children}
-          </Providers>
+          <Providers>{children}</Providers>
         </main>
       </body>
     </html>

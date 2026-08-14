@@ -1,17 +1,72 @@
-'use client'
-import { useJobs } from "@/features/jobs/hooks/useJobs";
+'use client';
+import { Avatar } from '@/components/ui/Avatar';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import Spinner from '@/components/ui/Spinner';
+import { useJobs } from '@/features/jobs/hooks/useJobs';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 export default function page() {
   const { data, isError, isPending, error } = useJobs();
+  const jobs = data?.data ?? [];
+  const meta = data?.meta;
 
-  if (isPending) return <p>wait...</p>
-  console.log(data)
+  if (isError) {
+    return <p>{error.message}</p>;
+  }
+
   return (
-    <main>
-      <h1 className="text-text-primary text-xl">Jobs</h1>
-      <section>{data?.data.map((job) => (
-        <li>{job.title}</li>
-      ))}</section>
+    <main className="py-4 sm:py-8 space-y-6 px-4">
+      <h1 className="text-text-primary text-2xl font-semibold">Jobs</h1>
+      <section className="space-y-4">
+        {isPending && (
+          <div className="flex items-center justify-center h-screen">
+            <Spinner />
+          </div>
+        )}
+
+        {jobs.map((job) => (
+          <Card key={job.id} className="space-y-2">
+            <div className="flex items-center gap-3 ">
+              {job.company.logoUrl ? (
+                <Avatar
+                  className="size-10"
+                  src={job.company.logoUrl}
+                  alt={job.company.name}
+                  width={50}
+                  height={50}
+                />
+              ) : (
+                <span className="font-bold border border-border text-text-muted rounded-full size-10 flex items-center justify-center">
+                  {job.company.name.charAt(0).toUpperCase()}
+                </span>
+              )}
+              <h2 className="text-sm text-text-secondary font-medium">{job.company.name}</h2>
+            </div>
+            <h3 className="text-lg font-semibold">{job.title}</h3>
+            <p className="text-sm text-text-muted">{job.location ?? 'Location not specified.'}</p>
+            {job.isRemote && (
+              <span className="text-xs text-text-secondary font-medium border border-border-muted shadow-xs inline-flex bg-background-subtle py-1 px-2.5 rounded-full">
+                Remote
+              </span>
+            )}
+          </Card>
+        ))}
+      </section>
+      {/* Pagination */}
+      {meta && (
+        <section className="flex items-center justify-center gap-3">
+          <Button variant="basic" disabled={meta.page <= 1}>
+            <ArrowLeft size={16} />
+          </Button>
+          <span className="text-xs">
+            {meta.page} / {meta.totalPages}
+          </span>
+          <Button variant="basic" disabled={meta.page >= meta.totalPages}>
+            <ArrowRight size={16} />
+          </Button>
+        </section>
+      )}
     </main>
   );
 }

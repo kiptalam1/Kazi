@@ -1,8 +1,14 @@
 type Status =
-  | 'PENDING' | 'REVIEWING' | 'WITHDRAWN' | 'INTERVIEW' | 'SHORTLISTED' | 'HIRED' | 'OFFERED' | 'REJECTED';
+  | 'PENDING'
+  | 'REVIEWING'
+  | 'WITHDRAWN'
+  | 'INTERVIEW'
+  | 'SHORTLISTED'
+  | 'HIRED'
+  | 'OFFERED'
+  | 'REJECTED';
 
-type ExperienceLevel =
-  | 'INTERN' | 'APPRENTICE' | 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD';
+type ExperienceLevel = 'INTERN' | 'APPRENTICE' | 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD';
 
 export type JobsParams = {
   page?: number;
@@ -13,7 +19,7 @@ export type JobsParams = {
   sortBy?: 'createdAt' | 'salaryMax';
   order?: 'desc' | 'asc';
   experienceLevel?: ExperienceLevel;
-}
+};
 
 export interface JobCompany {
   id: string;
@@ -22,11 +28,7 @@ export interface JobCompany {
   slug: string;
 }
 
-export type JobStatus =
-  | 'DRAFT'
-  | 'PUBLISHED'
-  | 'CLOSED'
-  | 'ARCHIVED';
+export type JobStatus = 'DRAFT' | 'PUBLISHED' | 'CLOSED' | 'ARCHIVED';
 
 export interface JobResponse {
   id: string;
