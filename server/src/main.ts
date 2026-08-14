@@ -46,6 +46,7 @@ async function bootstrap() {
       persistAuthorization: true,
       withCredentials: true,
     },
+    jsonDocumentUrl: 'docs-json',
   });
 
   await app.listen(process.env.PORT ?? 4000);
