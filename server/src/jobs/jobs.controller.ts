@@ -16,10 +16,11 @@ import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { GetQueryDto } from '../common/dto/query.dto.js';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { JobResponseDto } from './dto/job-response.dto.js';
+import { Public } from '../common/decorators/public.decorator.js';
 
 @Controller('api/v1')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService) {}
+  constructor(private readonly jobsService: JobsService) { }
 
   // create company;
   @Post('companies/:slug/jobs')
@@ -32,6 +33,7 @@ export class JobsController {
   }
 
   // fetch all jobs;
+  @Public()
   @Get('jobs')
   @ApiOkResponse({
     type: JobResponseDto,
