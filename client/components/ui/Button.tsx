@@ -1,5 +1,5 @@
 type ButtonProps = React.ComponentProps<'button'> & {
-  variant?: 'primary' | 'accent';
+  variant?: 'primary' | 'accent' | 'basic';
   className?: string;
 };
 
@@ -10,6 +10,7 @@ export default function Button({ variant = 'primary', className, ...props }: But
   const variantStyles = {
     primary: 'bg-brand-primary text-text-inverse hover:bg-brand-hover focus:ring-brand-primary',
     accent: 'bg-accent text-text-inverse hover:bg-accent-hover focus:ring-accent',
+    basic: 'bg-inherit hover:bg-gray-50 focus:ring-gray-100 border border-border',
   };
 
   return (
