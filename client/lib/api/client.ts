@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const api = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/`,
   withCredentials: true,
-  timeoutErrorMessage: "TimeOut was exceeded.Please try again later."
-})
+  timeoutErrorMessage: 'TimeOut was exceeded.Please try again later.',
+});

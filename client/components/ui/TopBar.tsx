@@ -1,6 +1,3 @@
 export default function TopBar() {
-  return (
-    <nav>TopBar</nav>
-  );
+  return <nav>TopBar</nav>;
 }
-

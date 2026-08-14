@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 type AvatarProps = {
   src: string;
@@ -6,24 +6,11 @@ type AvatarProps = {
   width: number;
   height: number;
   className?: string;
-
 };
-export const Avatar = ({
-  src,
-  alt,
-  width,
-  height,
-  className
-}: AvatarProps) => {
+export const Avatar = ({ src, alt, width, height, className }: AvatarProps) => {
   return (
-    <div className={`overflow-hidden rounded-full ${width} ${height} ${className ?? ""}`}>
-      <Image
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        className="object-cover"
-      />
+    <div className={`overflow-hidden rounded-full ${width} ${height} ${className ?? ''}`}>
+      <Image src={src} alt={alt} width={width} height={height} className="object-cover" />
     </div>
-  )
-}
+  );
+};
