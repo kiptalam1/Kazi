@@ -2,6 +2,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
+import Label from "@/components/ui/Label";
 import Image from "next/image";
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       >
         Sign Up
       </Button>
+      <Label>Email</Label>
       <Input id="12"
         className="my-4"
         placeholder="sign up..." />

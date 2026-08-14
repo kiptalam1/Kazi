@@ -38,12 +38,12 @@ Button ✅
 Input ✅
 Avatar ✅
 Card ✅
-Modal
-Label 🟡
+Label ✅
 Textarea
 Select
-Radio
 Checkbox
+Radio
+Modal
 Badge
 Separator
 Dropdown
