@@ -21,7 +21,7 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.enableCors({
-    origin: 'http://localhost:3000/api',
+    origin: 'http://localhost:3000',
     credentials: true,
   });
 
@@ -46,8 +46,9 @@ async function bootstrap() {
       persistAuthorization: true,
       withCredentials: true,
     },
+    jsonDocumentUrl: 'docs-json',
   });
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 4000);
 }
 void bootstrap();
