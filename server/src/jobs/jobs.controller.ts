@@ -44,6 +44,7 @@ export class JobsController {
   }
 
   // fetch one job by id;
+  @Public()
   @Get('jobs/:id')
   @ApiOkResponse({ type: JobResponseDto })
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
