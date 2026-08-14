@@ -1,15 +1,15 @@
 # ROADMAP
-1. Next.js setup
+1. Next.js setup ✅
         ↓
-2. Theme / globals.css
+2. Theme / globals.css ✅
         ↓
-3. Font
+3. Font ✅
         ↓
-4. Root layout
+4. Root layout ✅
         ↓
 5. Public / Candidate / Employer layouts
         ↓
-6. Base UI components
+6. Base UI components ✅
         ↓
 7. Header / Sidebar / Navigation
         ↓

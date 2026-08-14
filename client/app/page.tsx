@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="border min-h-screen flex flex-col items-center justify-center ">
+    <div className="w-full min-h-screen flex flex-col items-center justify-center ">
       <div>
         <Image
           src={"/logo.png"}
@@ -16,7 +16,9 @@ export default function Home() {
           alt="Kazi Logo"
         />
       </div>
-      <h1 className="text-xl my-2">Kazi Landing Page</h1>
+      <h1 className="text-xl my-2">
+        Kazi Landing Page
+      </h1>
       <Button
         type="button"
       >
@@ -25,7 +27,8 @@ export default function Home() {
       <Label>Email</Label>
       <Input id="12"
         className="my-4"
-        placeholder="sign up..." />
+        placeholder="sign up..."
+      />
 
       <Avatar
         src="/logo.png"
@@ -34,7 +37,9 @@ export default function Home() {
         height={50}
         className="border"
       />
-      <Card className="my-4 hover:bg-background-subtle">
+      <Card
+        className="my-4 hover:bg-background-subtle"
+      >
         <h1>Adams Kiptalam</h1>
         <p>Software developer</p>
       </Card>

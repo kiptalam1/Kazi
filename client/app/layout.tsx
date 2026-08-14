@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import TopBar from "@/components/ui/TopBar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -18,8 +19,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${inter.variable} antialiased`}
     >
-      <body className="min-h-screen flex flex-col max-w-7xl">
-        {children}
+      <body className="min-h-screen flex flex-col mx-auto max-w-7xl">
+        <TopBar />
+        <main>
+          {children}
+        </main>
       </body>
     </html>
   );
