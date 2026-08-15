@@ -16,15 +16,17 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
+
+
   return (
     <html lang="en" className={`${inter.variable} antialiased`}>
       <body className="min-h-screen flex flex-col mx-auto max-w-7xl">
-        <TopBar />
-        <main>
-          <Providers>{children}</Providers>
-          <Toaster richColors position="top-center" />
-        </main>
+        <Providers>
+          <TopBar />
+          <main>{children}</main>
+        </Providers>
+        <Toaster richColors position='top-center' />
       </body>
-    </html>
+    </html >
   );
 }
