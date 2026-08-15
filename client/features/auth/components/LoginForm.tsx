@@ -5,9 +5,9 @@ import Label from '@/components/ui/Label';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { type ChangeEvent, type SyntheticEvent, useState } from 'react';
-import { loginUser } from '../api/login';
 import Spinner from '@/components/ui/Spinner';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useLogin } from '../hooks/useLogin';
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
@@ -15,10 +15,9 @@ export default function LoginForm() {
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const loginMutation = useLogin();
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -34,15 +33,11 @@ export default function LoginForm() {
 
   const callbackUrl = getSafeCallbackUrl(searchParams.get('callbackUrl'));
 
-  async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
+  function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    try {
-      setLoading(true);
-      const user = await loginUser(formData);
-      if (user) router.push(callbackUrl);
-    } finally {
-      setLoading(false);
-    }
+    loginMutation.mutate(formData, {
+      onSuccess: () => router.push(callbackUrl),
+    });
   }
 
   return (
@@ -95,7 +90,7 @@ export default function LoginForm() {
         </div>
       </div>
       <Button type="submit" className="flex items-center justify-center">
-        {loading ? <Spinner /> : 'Log in'}
+        {loginMutation.isPending ? <Spinner /> : 'Log in'}
       </Button>
       <div className="flex flex-col gap-2">
         <span className="mx-auto text-xs text-text-muted">Or</span>
