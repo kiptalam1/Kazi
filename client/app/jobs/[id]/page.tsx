@@ -12,6 +12,12 @@ export default function page() {
   const { id } = useParams();
   const { data: job, isPending, isError, error } = useOneJob(id as string);
 
+  function formattedDate(value: string): string {
+    return new Date(value).toLocaleDateString('en-US', {
+      dateStyle: 'medium',
+    });
+  }
+
   if (isError) {
     return <p>{error.message}</p>;
   }
@@ -25,10 +31,6 @@ export default function page() {
         )}
         {job && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between gap-4">
-              <h2 className="text-xl font-semibold">{job.title}</h2>
-              <Button className="text-xs font-semibold cursor-pointer">Apply</Button>
-            </div>
             <div className="flex items-center gap-4">
               {job.company.logoUrl ? (
                 <CompanyLogo
@@ -43,36 +45,45 @@ export default function page() {
                   {getInitials(job.company.name)}
                 </span>
               )}
-              <h3 className="text-lg text-text-secondary  font-medium">{job.company.name}</h3>
+              <h3 className="text-lg text-text-secondary  font-medium">
+                {job.company.name}
+              </h3>
             </div>
-            {/* job specifics */}
-            <div className='space-y-2'>
-              {job.location ? (
-                <p className="text-sm text-text-muted">
-                  Location: {' '}
-                  <span className="text-base text-text-secondary">
-                    {job.location}
-                  </span>
-                </p>
-              ) : (
-                <p>Location not specified</p>
-              )}
-              <div className=' flex items-center gap-3'>
-                {job.isRemote && <Badge>Remote</Badge>}
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="text-xl font-semibold">{job.title}</h2>
+              <Button className="text-xs font-semibold cursor-pointer">
+                Apply
+              </Button>
+            </div>
 
-                <Badge>{job.experienceLevel}</Badge>
-                <Badge>{job.location}</Badge>
+            {/* job specifics */}
+            <div className="space-y-2">
+              <p className="text-text-secondary text-sm font-medium">
+                {job.location ?? ''}
+              </p>
+              <p className="text-sm text-text-muted">
+                Posted {formattedDate(job.createdAt)}
+              </p>
+              <div className=" flex items-center gap-3">
+                {job.isRemote && <Badge>Remote</Badge>}
+                {job.experienceLevel && <Badge>{job.experienceLevel}</Badge>}
+                {job.location && <Badge>{job.location}</Badge>}
               </div>
+              <hr className="border border-border-muted my-6" />
             </div>
-            <div className='space-y-2'>
-              <h4 className='font-semibold text-text-muted'>
-                Description
+            <div className="space-y-2">
+              <h4 className="font-semibold text-text-muted">Description</h4>
+              <div className="text-text-secondary ">{job.description}</div>
+              <hr className="border border-border-muted my-6" />
+            </div>
+            <div className="space-y-2">
+              <h4 className="font-semibold text-text-muted">
+                About the company
               </h4>
-              <div className='text-text-secondary '>
-                {job.description}
-              </div>
+              <p className="text-sm font-medium text-text-secondary">
+                {job.company.name}
+              </p>
             </div>
-            <div></div>
           </div>
         )}
       </section>

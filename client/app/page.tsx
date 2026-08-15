@@ -16,7 +16,13 @@ export default function Home() {
       <Label>Email</Label>
       <Input id="12" className="my-4" placeholder="sign up..." />
 
-      <Avatar src="/logo.png" alt="logo" width={50} height={50} className="border" />
+      <Avatar
+        src="/logo.png"
+        alt="logo"
+        width={50}
+        height={50}
+        className="border"
+      />
       <Card className="my-4 hover:bg-background-subtle">
         <h1>Adams Kiptalam</h1>
         <p>Software developer</p>

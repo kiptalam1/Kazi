@@ -16,7 +16,7 @@
    ↓
 8. Landing page
    ↓
-9. Jobs + Job Details
+9. Jobs + Job Details ✅
    ↓
 10. Authentication
     ↓

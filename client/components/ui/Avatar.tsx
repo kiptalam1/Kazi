@@ -9,8 +9,16 @@ type AvatarProps = {
 };
 export const Avatar = ({ src, alt, width, height, className }: AvatarProps) => {
   return (
-    <div className={`overflow-hidden rounded-full ${width} ${height} ${className ?? ''}`}>
-      <Image src={src} alt={alt} width={width} height={height} className="object-cover" />
+    <div
+      className={`overflow-hidden rounded-full ${width} ${height} ${className ?? ''}`}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className="object-cover"
+      />
     </div>
   );
 };

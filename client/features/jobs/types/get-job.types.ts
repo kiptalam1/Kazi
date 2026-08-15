@@ -6,7 +6,8 @@ export interface JobCompany {
   logoUrl: string | null;
 }
 
-type ExperienceLevel = 'INTERN' | 'APPRENTICE' | 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD';
+type ExperienceLevel =
+  'INTERN' | 'APPRENTICE' | 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD';
 
 export interface Job {
   id: string;
