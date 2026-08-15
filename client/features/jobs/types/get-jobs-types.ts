@@ -8,7 +8,8 @@ type Status =
   | 'OFFERED'
   | 'REJECTED';
 
-type ExperienceLevel = 'INTERN' | 'APPRENTICE' | 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD';
+type ExperienceLevel =
+  'INTERN' | 'APPRENTICE' | 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD';
 
 export type JobsParams = {
   page?: number;

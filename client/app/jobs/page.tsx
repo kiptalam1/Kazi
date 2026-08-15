@@ -43,10 +43,14 @@ export default function page() {
                     {job.company.name.charAt(0).toUpperCase()}
                   </span>
                 )}
-                <h2 className="text-sm text-text-secondary font-medium">{job.company.name}</h2>
+                <h2 className="text-sm text-text-secondary font-medium">
+                  {job.company.name}
+                </h2>
               </div>
               <h3 className="text-lg font-semibold">{job.title}</h3>
-              <p className="text-sm text-text-muted">{job.location ?? 'Location not specified.'}</p>
+              <p className="text-sm text-text-muted">
+                {job.location ?? 'Location not specified.'}
+              </p>
               {job.isRemote && (
                 <span className="text-xs text-text-secondary font-medium border border-border-muted shadow-xs inline-flex bg-background-subtle py-1 px-2.5 rounded-full">
                   Remote

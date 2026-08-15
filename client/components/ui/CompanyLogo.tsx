@@ -7,10 +7,24 @@ type LogoProps = {
   height: number;
   className?: string;
 };
-export const CompanyLogo = ({ src, alt, width, height, className }: LogoProps) => {
+export const CompanyLogo = ({
+  src,
+  alt,
+  width,
+  height,
+  className,
+}: LogoProps) => {
   return (
-    <div className={`overflow-hidden rounded-full ${width} ${height} ${className ?? ''}`}>
-      <Image src={src} alt={alt} width={width} height={height} className="object-cover" />
+    <div
+      className={`overflow-hidden rounded-full ${width} ${height} ${className ?? ''}`}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className="object-cover"
+      />
     </div>
   );
 };
