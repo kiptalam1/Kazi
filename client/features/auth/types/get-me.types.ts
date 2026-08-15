@@ -1,15 +1,8 @@
 export type UserRole =
   'CANDIDATE' | 'COMPANY_ADMIN' | 'PLATFORM_ADMIN' | 'RECRUITER';
 
-
-
 export type ExperienceLevel =
-  | 'INTERN'
-  | 'APPRENTICE'
-  | 'JUNIOR'
-  | 'MID'
-  | 'SENIOR'
-  | 'LEAD';
+  'INTERN' | 'APPRENTICE' | 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD';
 
 export interface Candidate {
   id: string;
