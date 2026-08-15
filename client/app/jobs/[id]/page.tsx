@@ -8,7 +8,7 @@ import { useOneJob } from '@/features/jobs/hooks/useOneJob';
 import { getInitials } from '@/lib/utils/getInitials';
 import { useParams } from 'next/navigation';
 
-export default function page() {
+export default function JobDetailsPage() {
   const { id } = useParams();
   const { data: job, isPending, isError, error } = useOneJob(id as string);
 
