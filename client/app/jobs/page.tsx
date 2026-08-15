@@ -7,7 +7,7 @@ import { useJobs } from '@/features/jobs/hooks/useJobs';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-export default function page() {
+export default function JobsPage() {
   const { data, isError, isPending, error } = useJobs();
   const jobs = data?.data ?? [];
   const meta = data?.meta;

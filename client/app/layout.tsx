@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import TopBar from '@/components/ui/TopBar';
 import Providers from './providers';
+import { Toaster } from 'sonner';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <TopBar />
         <main>
           <Providers>{children}</Providers>
+          <Toaster richColors position="top-center" />
         </main>
       </body>
     </html>
