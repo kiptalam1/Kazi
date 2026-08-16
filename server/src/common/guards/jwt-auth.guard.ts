@@ -19,7 +19,7 @@ export class JwtAuthGuard implements CanActivate {
     private jwtService: JwtService,
     private configService: ConfigService,
     private usersService: UsersService,
-  ) {}
+  ) { }
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getClass(),

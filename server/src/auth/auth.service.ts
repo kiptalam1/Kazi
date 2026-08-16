@@ -21,7 +21,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) {}
+  ) { }
   // refresh accesstoken.
   async refreshTokens(req: Request, res: Response) {
     const refreshToken = req.cookies?.refresh_token as string;
@@ -239,7 +239,7 @@ export class AuthService {
       secure: process.env.NODE_ENV == 'production',
       sameSite: 'lax' as const,
       httpOnly: true,
-      partitioned: true,
+      // partitioned: true,
       path: '/',
     };
     res.cookie('refresh_token', refreshToken, {
