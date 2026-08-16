@@ -18,7 +18,7 @@
    ↓
 9. Jobs + Job Details ✅
    ↓
-10. Authentication
+10. Authentication ✅
     ↓
 11. Candidate workflow
     ↓
