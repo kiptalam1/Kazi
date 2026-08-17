@@ -5,18 +5,13 @@ import Button from '@/components/ui/Button';
 import { CompanyLogo } from '@/components/ui/CompanyLogo';
 import Spinner from '@/components/ui/Spinner';
 import { useOneJob } from '@/features/jobs/hooks/useOneJob';
+import formattedDate from '@/lib/utils/formattedDate';
 import { getInitials } from '@/lib/utils/getInitials';
 import { useParams } from 'next/navigation';
 
 export default function JobDetailsPage() {
   const { id } = useParams();
   const { data: job, isPending, isError, error } = useOneJob(id as string);
-
-  function formattedDate(value: string): string {
-    return new Date(value).toLocaleDateString('en-US', {
-      dateStyle: 'medium',
-    });
-  }
 
   if (isError) {
     return <p>{error.message}</p>;

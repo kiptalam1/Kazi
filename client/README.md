@@ -12,7 +12,7 @@
    ↓
 6. Base UI components ✅
    ↓
-7. Header / Sidebar / Navigation
+7. Header / Sidebar / Navigation ✅
    ↓
 8. Landing page
    ↓
@@ -50,4 +50,4 @@ Badge
 Separator
 Dropdown
 Tooltip
-Spinner
+Spinner ✅
