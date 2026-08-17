@@ -6,15 +6,14 @@ export const api = axios.create({
   timeoutErrorMessage: 'TimeOut was exceeded.Please try again later.',
 });
 
-
 let isRefreshing = false;
 let pendingRequests: (() => void)[] = [];
 
 api.interceptors.response.use(
-  function(response) {
+  function (response) {
     return response;
   },
-  async function(error) {
+  async function (error) {
     const originalRequest = error.config;
     const isUnauthorized = error.response?.status === 401;
     const isRefreshRequest = originalRequest?.url?.includes(
@@ -42,7 +41,7 @@ api.interceptors.response.use(
 
       window.location.href = '/login';
 
-      return new Promise(() => { });
+      return new Promise(() => {});
     } finally {
       isRefreshing = false;
     }
