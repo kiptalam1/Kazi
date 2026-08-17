@@ -27,7 +27,7 @@ import { GetQueryDto } from '../common/dto/query.dto.js';
 
 @Controller('api/v1/applications')
 export class ApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) {}
+  constructor(private readonly applicationsService: ApplicationsService) { }
 
   // employer fetch a candidate application;
   @Get('employer/:applicationId')
@@ -42,24 +42,6 @@ export class ApplicationsController {
     @Param('applicationId', ParseUUIDPipe) applicationId: string,
   ): Promise<EmployerFetchSingleApplicationResponseDto> {
     return await this.applicationsService.employerFetchSingleApplication(
-      userId,
-      applicationId,
-    );
-  }
-
-  // candidate fetch their single application;
-  @ApiOperation({
-    summary: 'candidate fetch their single application',
-  })
-  @ApiOkResponse({
-    type: SingleCandidateApplicationResponseDto,
-  })
-  @Get(':applicationId')
-  async findSingleCandidateApplication(
-    @CurrentUser('id') userId: string,
-    @Param('applicationId', ParseUUIDPipe) applicationId: string,
-  ): Promise<SingleCandidateApplicationResponseDto> {
-    return await this.applicationsService.findSingleCandidateApplication(
       userId,
       applicationId,
     );
@@ -98,6 +80,26 @@ export class ApplicationsController {
   ): Promise<CandidateApplicationApiResponse> {
     return this.applicationsService.findCandidateApplications(userId, query);
   }
+
+  // candidate fetch their single application;
+  @ApiOperation({
+    summary: 'candidate fetch their single application',
+  })
+  @ApiOkResponse({
+    type: SingleCandidateApplicationResponseDto,
+  })
+  @Get(':applicationId')
+  async findSingleCandidateApplication(
+    @CurrentUser('id') userId: string,
+    @Param('applicationId', ParseUUIDPipe) applicationId: string,
+  ): Promise<SingleCandidateApplicationResponseDto> {
+    return await this.applicationsService.findSingleCandidateApplication(
+      userId,
+      applicationId,
+    );
+  }
+
+
 
   // Employer fetch all job applications per job;
   @ApiOperation({
