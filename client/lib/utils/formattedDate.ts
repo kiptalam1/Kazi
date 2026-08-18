@@ -3,5 +3,3 @@ export default function formattedDate(value: string): string {
     dateStyle: 'medium',
   });
 }
-
-

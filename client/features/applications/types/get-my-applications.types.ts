@@ -1,4 +1,8 @@
-import { ApplicationStatus, Company, JobStatus } from "@/features/common/types/common.types";
+import {
+  ApplicationStatus,
+  Company,
+  JobStatus,
+} from '@/features/common/types/common.types';
 
 interface Meta {
   page: number;
@@ -16,7 +20,7 @@ type Job = {
   company: Company;
 };
 
-type MyApplication = {
+export type MyApplication = {
   status: ApplicationStatus;
   job: Job;
   id: string;
@@ -29,7 +33,7 @@ type MyApplication = {
 export type GetMyApplicationsResponse = {
   data: MyApplication[];
   meta: Meta;
-}
+};
 
 export type AppsParams = {
   page?: number;
