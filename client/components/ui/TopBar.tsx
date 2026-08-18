@@ -5,8 +5,12 @@ import { CompanyLogo } from './CompanyLogo';
 import { Avatar } from './Avatar';
 import { Bell, BriefcaseBusiness, FileText, User } from 'lucide-react';
 import NavLink from './NavLink';
+import FallbackAvatar from './FallbackAvatar';
+import { useState } from 'react';
+import ProfileDropdown from './ProfileDropdown';
 
 export default function TopBar() {
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const { data, isPending, isError } = useAuth();
   if (isPending || isError || !data) {
     return null;
@@ -36,19 +40,29 @@ export default function TopBar() {
           <span className="hidden sm:block">Notifications</span>
         </NavLink>
       </div>
-      {user.avatar ? (
-        <Avatar
-          src={user.avatar}
-          alt="avatar"
-          width={32}
-          height={32}
-          className="w-auto h-auto"
-        />
-      ) : (
-        <button className="border border-border p-2 sm:p-3 rounded-full text-text-disabled">
-          <User size={16} />
-        </button>
-      )}
+      <div
+        className="relative"
+        onClick={() => setIsOpenDropdown((prev) => !prev)}
+      >
+        {user.avatar ? (
+          <Avatar
+            src={user.avatar}
+            alt="avatar"
+            width={32}
+            height={32}
+            className="w-auto h-auto"
+          />
+        ) : (
+          <FallbackAvatar value={user.firstName} className="size-10" />
+        )}
+        {/* dropdown */}
+        {isOpenDropdown && (
+          <ProfileDropdown
+            isOpen={isOpenDropdown}
+            onClose={() => setIsOpenDropdown(false)}
+          />
+        )}
+      </div>
     </nav>
   );
 }
