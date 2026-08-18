@@ -17,6 +17,4 @@ export type Company = {
   id: string;
   name: string;
   logoUrl: string | null;
-}
-
-
+};

@@ -14,7 +14,7 @@ export default function TopBar() {
   const user = data.data;
 
   return (
-    <nav className='flex items-center justify-between border-b border-border-muted shadow-xs text-sm px-6 sm:px-8 py-4 sm:py-6'>
+    <nav className="flex items-center justify-between border-b border-border-muted shadow-xs text-sm px-6 sm:px-8 py-4 sm:py-6">
       <CompanyLogo
         src="/favicon.ico"
         alt="Kazi logo"
@@ -23,24 +23,17 @@ export default function TopBar() {
         className="w-fit h-fit justify-self-start"
       />
       <div className="flex items-center gap-10">
-
-        <NavLink
-          href={'/jobs'}
-        >
-          <BriefcaseBusiness size={20} className='sm:hidden' />
-          <span className='hidden sm:block'>Jobs</span>
+        <NavLink href={'/jobs'}>
+          <BriefcaseBusiness size={20} className="sm:hidden" />
+          <span className="hidden sm:block">Jobs</span>
         </NavLink>
-        <NavLink
-          href={'/applications'}
-        >
-          <FileText size={20} className='sm:hidden' />
-          <span className='hidden sm:block'>Applications</span>
+        <NavLink href={'/applications'}>
+          <FileText size={20} className="sm:hidden" />
+          <span className="hidden sm:block">Applications</span>
         </NavLink>
-        <NavLink
-          href={'/notifications'}
-        >
-          <Bell size={20} className='sm:hidden' />
-          <span className='hidden sm:block'>Notifications</span>
+        <NavLink href={'/notifications'}>
+          <Bell size={20} className="sm:hidden" />
+          <span className="hidden sm:block">Notifications</span>
         </NavLink>
       </div>
       {user.avatar ? (
