@@ -1,24 +1,44 @@
 'use client';
-
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { CompanyLogo } from './CompanyLogo';
 import { Avatar } from './Avatar';
-import { Bell, BriefcaseBusiness, FileText, User } from 'lucide-react';
+import { Bell, BriefcaseBusiness, FileText } from 'lucide-react';
 import NavLink from './NavLink';
 import FallbackAvatar from './FallbackAvatar';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ProfileDropdown from './ProfileDropdown';
 
 export default function TopBar() {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
+  const dropDownRef = useRef<HTMLDivElement>(null);
   const { data, isPending, isError } = useAuth();
+
+  useEffect(() => {
+    function handlePointerDown(event: PointerEvent) {
+      if (
+        dropDownRef.current &&
+        !dropDownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenDropdown(false);
+      }
+    }
+
+    if (isOpenDropdown) {
+      document.addEventListener('pointerdown', handlePointerDown);
+    }
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+    };
+  }, [isOpenDropdown]);
+
   if (isPending || isError || !data) {
     return null;
   }
   const user = data.data;
 
   return (
-    <nav className="flex items-center justify-between border-b border-border-muted shadow-xs text-sm px-6 sm:px-8 py-4 sm:py-6">
+    <nav className="flex items-center justify-between border-b border-border-muted  text-sm px-6 sm:px-8 py-4 sm:py-6">
       <CompanyLogo
         src="/favicon.ico"
         alt="Kazi logo"
@@ -40,21 +60,17 @@ export default function TopBar() {
           <span className="hidden sm:block">Notifications</span>
         </NavLink>
       </div>
-      <div
-        className="relative"
-        onClick={() => setIsOpenDropdown((prev) => !prev)}
-      >
-        {user.avatar ? (
-          <Avatar
-            src={user.avatar}
-            alt="avatar"
-            width={32}
-            height={32}
-            className="w-auto h-auto"
-          />
-        ) : (
-          <FallbackAvatar value={user.firstName} className="size-10" />
-        )}
+      <div ref={dropDownRef} className="relative">
+        <button
+          onClick={() => setIsOpenDropdown((prev) => !prev)}
+          className="cursor-pointer"
+        >
+          {user.avatar ? (
+            <Avatar src={user.avatar} alt="avatar" width={36} height={36} />
+          ) : (
+            <FallbackAvatar value={user.firstName} className="size-9" />
+          )}
+        </button>
         {/* dropdown */}
         {isOpenDropdown && (
           <ProfileDropdown

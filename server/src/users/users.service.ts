@@ -165,6 +165,11 @@ export class UsersService {
       include: {
         roles: true,
         candidate: true,
+        avatar: {
+          select: {
+            url: true,
+          },
+        },
       },
     });
   }

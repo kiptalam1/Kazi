@@ -10,14 +10,15 @@ type AvatarProps = {
 export const Avatar = ({ src, alt, width, height, className }: AvatarProps) => {
   return (
     <div
-      className={`overflow-hidden rounded-full ${width} ${height} ${className ?? ''}`}
+      style={{ width, height }}
+      className={`overflow-hidden rounded-full ${className ?? ''}`}
     >
       <Image
         src={src}
         alt={alt}
         width={width}
         height={height}
-        className="object-cover"
+        className="h-full w-full object-cover"
       />
     </div>
   );

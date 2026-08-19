@@ -39,8 +39,7 @@ api.interceptors.response.use(
     } catch (refreshError) {
       pendingRequests = [];
 
-      window.location.href = '/login';
-
+      console.error('refresh token:', refreshError);
       return new Promise(() => {});
     } finally {
       isRefreshing = false;

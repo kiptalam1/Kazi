@@ -8,6 +8,7 @@ export class UserLoginResponse {
   lastName!: string;
   @ApiProperty({ enum: Role, isArray: true })
   roles!: Role[];
+  avatarId?: string | null;
   avatar!: string | null;
   phone!: string | null;
   isActive!: boolean;
