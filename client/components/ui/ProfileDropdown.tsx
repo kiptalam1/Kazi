@@ -1,5 +1,7 @@
+import { useLogout } from '@/features/auth/hooks/useLogout';
 import { LogOut, User } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'
 
 type ProfileDropdownProps = {
   isOpen: boolean;
@@ -10,8 +12,17 @@ export default function ProfileDropdown({
   isOpen,
   onClose,
 }: ProfileDropdownProps) {
+  const { mutateAsync: logout } = useLogout();
+  const router = useRouter();
+
   if (!isOpen) {
     return null;
+  }
+
+  async function handleLogout() {
+    await logout();
+    onClose();
+    router.replace('/');
   }
 
   return (
@@ -23,7 +34,10 @@ export default function ProfileDropdown({
         <User className="size-4 " />
         Profile
       </Link>
-      <button className="text-danger flex items-center gap-2 t hover:bg-background-muted px-4 py-3 duration-75">
+      <button
+        type='button'
+        onClick={handleLogout}
+        className="text-danger flex items-center gap-2 t hover:bg-background-muted px-4 py-3 duration-75">
         {' '}
         <LogOut className="size-4" />
         Log Out

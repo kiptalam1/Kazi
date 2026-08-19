@@ -1,4 +1,5 @@
-'use client'; import { useAuth } from '@/features/auth/hooks/useAuth';
+'use client';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { CompanyLogo } from './CompanyLogo';
 import { Avatar } from './Avatar';
 import { Bell, BriefcaseBusiness, FileText, } from 'lucide-react';
@@ -27,6 +28,7 @@ export default function TopBar() {
       document.removeEventListener('pointerdown', handlePointerDown)
     }
   }, [isOpenDropdown]);
+
   if (isPending || isError || !data) {
     return null;
   }
