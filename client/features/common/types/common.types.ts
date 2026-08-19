@@ -1,3 +1,4 @@
+export type FileType = 'AVATAR' | 'RESUME';
 export type ApplicationStatus =
   | 'PENDING'
   | 'REVIEWING'
