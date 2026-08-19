@@ -3,6 +3,7 @@ import { loginUser } from '../api/login';
 import { type LoginBody } from '../types/login.types';
 import { toast } from 'sonner';
 import { getApiErrorMessage } from '@/lib/api/error';
+import type { GetMeResponse } from '../types/get-me.types';
 
 export function useLogin() {
   const queryClient = useQueryClient();
@@ -13,9 +14,9 @@ export function useLogin() {
       toast.error(getApiErrorMessage(error));
     },
     onSuccess: (result) => {
-      queryClient.invalidateQueries({
-        queryKey: ['auth', 'me'],
-      });
+      queryClient.setQueryData<GetMeResponse>(
+        ['auth', 'me'],
+        { data: result.data });
       toast.success(result.message);
     },
     retry: false,

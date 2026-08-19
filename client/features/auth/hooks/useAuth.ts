@@ -5,6 +5,6 @@ export function useAuth() {
   return useQuery({
     queryKey: ['auth', 'me'],
     queryFn: getMe,
-    retry: 3,
+    retry: false,
   });
 }

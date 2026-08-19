@@ -11,7 +11,7 @@ export function useLogout() {
     },
     onSuccess: (data) => {
       toast.success(data.message ?? 'Logged out successfully');
-      queryClient.invalidateQueries({
+      queryClient.removeQueries({
         queryKey: ['auth', 'me'],
       });
     },
