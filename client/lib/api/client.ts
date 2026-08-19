@@ -19,7 +19,7 @@ api.interceptors.response.use(
     const isRefreshRequest = originalRequest?.url?.includes(
       '/auth/refresh-tokens',
     );
-    if (!isUnauthorized || originalRequest?._retry || isRefreshRequest || originalRequest?.skipAuthRefresh) {
+    if (!isUnauthorized || originalRequest?._retry || isRefreshRequest) {
       return Promise.reject(error);
     }
     originalRequest._retry = true;
@@ -32,9 +32,7 @@ api.interceptors.response.use(
     }
     isRefreshing = true;
     try {
-      await api.post('/auth/refresh-tokens', {
-        skipAuthRefresh: true,
-      });
+      await api.post('/auth/refresh-tokens');
       pendingRequests.forEach((resolve) => resolve());
       pendingRequests = [];
       return api(originalRequest);
@@ -42,7 +40,8 @@ api.interceptors.response.use(
       pendingRequests = [];
 
       console.error('refresh token:', refreshError);
-      return new Promise(() => { });
+      return Promise.reject(refreshError);
+      // return new Promise(() => { });
     } finally {
       isRefreshing = false;
     }
