@@ -36,7 +36,7 @@ export default function TopBar() {
 
 
   return (
-    <nav className="flex items-center justify-between border-b border-border-muted shadow-xs text-sm px-6 sm:px-8 py-4 sm:py-6">
+    <nav className="flex items-center justify-between border-b border-border-muted  text-sm px-6 sm:px-8 py-4 sm:py-6">
       <CompanyLogo
         src="/favicon.ico"
         alt="Kazi logo"
@@ -71,12 +71,11 @@ export default function TopBar() {
             <Avatar
               src={user.avatar}
               alt="avatar"
-              width={32}
-              height={32}
-              className="w-auto h-auto"
+              width={36}
+              height={36}
             />
           ) : (
-            <FallbackAvatar value={user.firstName} className="size-10" />
+            <FallbackAvatar value={user.firstName} className="size-9" />
           )}
         </button>
         {/* dropdown */}
