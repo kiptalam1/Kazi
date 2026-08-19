@@ -2,7 +2,7 @@
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { CompanyLogo } from './CompanyLogo';
 import { Avatar } from './Avatar';
-import { Bell, BriefcaseBusiness, FileText, } from 'lucide-react';
+import { Bell, BriefcaseBusiness, FileText } from 'lucide-react';
 import NavLink from './NavLink';
 import FallbackAvatar from './FallbackAvatar';
 import { useEffect, useRef, useState } from 'react';
@@ -15,7 +15,10 @@ export default function TopBar() {
 
   useEffect(() => {
     function handlePointerDown(event: PointerEvent) {
-      if (dropDownRef.current && !dropDownRef.current.contains(event.target as Node)) {
+      if (
+        dropDownRef.current &&
+        !dropDownRef.current.contains(event.target as Node)
+      ) {
         setIsOpenDropdown(false);
       }
     }
@@ -25,15 +28,14 @@ export default function TopBar() {
     }
 
     return () => {
-      document.removeEventListener('pointerdown', handlePointerDown)
-    }
+      document.removeEventListener('pointerdown', handlePointerDown);
+    };
   }, [isOpenDropdown]);
 
   if (isPending || isError || !data) {
     return null;
   }
   const user = data.data;
-
 
   return (
     <nav className="flex items-center justify-between border-b border-border-muted  text-sm px-6 sm:px-8 py-4 sm:py-6">
@@ -58,22 +60,13 @@ export default function TopBar() {
           <span className="hidden sm:block">Notifications</span>
         </NavLink>
       </div>
-      <div
-        ref={dropDownRef}
-        className="relative"
-      >
+      <div ref={dropDownRef} className="relative">
         <button
-          onClick={() => setIsOpenDropdown(
-            (prev) => !prev)}
-          className='cursor-pointer'
+          onClick={() => setIsOpenDropdown((prev) => !prev)}
+          className="cursor-pointer"
         >
           {user.avatar ? (
-            <Avatar
-              src={user.avatar}
-              alt="avatar"
-              width={36}
-              height={36}
-            />
+            <Avatar src={user.avatar} alt="avatar" width={36} height={36} />
           ) : (
             <FallbackAvatar value={user.firstName} className="size-9" />
           )}

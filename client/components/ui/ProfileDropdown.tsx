@@ -1,7 +1,7 @@
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { LogOut, User } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 type ProfileDropdownProps = {
   isOpen: boolean;
@@ -35,9 +35,10 @@ export default function ProfileDropdown({
         Profile
       </Link>
       <button
-        type='button'
+        type="button"
         onClick={handleLogout}
-        className="text-danger flex items-center gap-2 t hover:bg-background-muted px-4 py-3 duration-75">
+        className="text-danger flex items-center gap-2 t hover:bg-background-muted px-4 py-3 duration-75"
+      >
         {' '}
         <LogOut className="size-4" />
         Log Out

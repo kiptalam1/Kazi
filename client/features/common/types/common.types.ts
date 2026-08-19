@@ -52,5 +52,3 @@ export interface User {
   lastLoginAt: string | null;
   candidate: Candidate | null;
 }
-
-

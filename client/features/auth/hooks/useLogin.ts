@@ -14,9 +14,9 @@ export function useLogin() {
       toast.error(getApiErrorMessage(error));
     },
     onSuccess: (result) => {
-      queryClient.setQueryData<GetMeResponse>(
-        ['auth', 'me'],
-        { data: result.data });
+      queryClient.setQueryData<GetMeResponse>(['auth', 'me'], {
+        data: result.data,
+      });
       toast.success(result.message);
     },
     retry: false,

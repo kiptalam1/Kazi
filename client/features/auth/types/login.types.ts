@@ -1,4 +1,4 @@
-import { User } from "@/features/common/types/common.types";
+import { User } from '@/features/common/types/common.types';
 
 export type LoginBody = {
   email: string;
