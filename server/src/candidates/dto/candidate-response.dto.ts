@@ -51,3 +51,26 @@ export class GetAllCandidatesResponseDto {
   @ApiProperty({ type: Meta })
   meta!: Meta;
 }
+
+export class CandidateProfile {
+  id!: string;
+  userId!: string;
+
+  headline!: string | null;
+  bio!: string | null;
+  location!: string | null;
+  skills!: string[];
+
+  @ApiProperty({ enum: ExperienceLevel })
+  experienceLevel!: ExperienceLevel | null;
+
+  currentJobTitle!: string | null;
+  salaryExpectation!: number | null;
+  availability!: string | null;
+  linkedinUrl!: string | null;
+  githubUrl!: string | null;
+  portfolioUrl!: string | null;
+
+  createdAt!: Date;
+  updatedAt!: Date;
+}
