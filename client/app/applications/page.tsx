@@ -28,8 +28,10 @@ export default function ApplicationsPage() {
   // const meta = data?.meta ?? {};
 
   return (
-    <main className="p-4 sm:py-8 space-y-6 ">
-      <h1 className="text-text-primary text-xl sm:text-2xl font-semibold">My Applications</h1>
+    <main className="p-4 sm:py-8 space-y-6">
+      <h1 className="text-text-primary text-xl sm:text-2xl font-semibold">
+        My Applications
+      </h1>
       <section className="space-y-4">
         {applications.length === 0 && (
           <div className="text-center text-text-secondary text-sm">
