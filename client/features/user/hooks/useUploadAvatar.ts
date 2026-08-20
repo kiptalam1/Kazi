@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { uploadAvatar } from "../api/upload-avatar";
-import { getApiErrorMessage } from "@/lib/api/error";
-import { toast } from "sonner";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { uploadAvatar } from '../api/upload-avatar';
+import { getApiErrorMessage } from '@/lib/api/error';
+import { toast } from 'sonner';
 
 export function useUploadAvatar() {
   const queryClient = useQueryClient();
@@ -14,7 +14,7 @@ export function useUploadAvatar() {
     onSuccess: (result) => {
       toast.success(result.message);
       queryClient.invalidateQueries({
-        queryKey: ['auth', 'me']
+        queryKey: ['auth', 'me'],
       });
     },
   });
