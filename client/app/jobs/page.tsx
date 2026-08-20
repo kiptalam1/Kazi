@@ -18,8 +18,8 @@ export default function JobsPage() {
 
   return (
     <main className="p-4 sm:py-8 space-y-6 ">
-      <h1 className="text-text-primary text-2xl font-semibold">Jobs</h1>
-      <section className="grid gap-3">
+      <h1 className="text-text-primary text-xl sm:text-2xl font-semibold">Jobs</h1>
+      <section className="grid gap-4">
         {isPending && (
           <div className="flex items-center justify-center h-screen">
             <Spinner />
