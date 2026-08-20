@@ -5,7 +5,18 @@ import { GetCandidateQueryDto } from './dto/query.dto.js';
 
 @Injectable()
 export class CandidatesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
+
+  // get my candidate profile;
+  async myCandidateProfile(userId: string) {
+    const candidate = await this.prisma.candidate.findUnique({
+      where: {
+        userId,
+      },
+    });
+    return candidate;
+  }
+
 
   // get all candidates
   async candidates(query: GetCandidateQueryDto) {
@@ -13,23 +24,23 @@ export class CandidatesService {
     const skip = (page - 1) * limit;
     const where: Prisma.CandidateWhereInput = search
       ? {
-          user: {
-            OR: [
-              {
-                firstName: {
-                  contains: search,
-                  mode: 'insensitive',
-                },
+        user: {
+          OR: [
+            {
+              firstName: {
+                contains: search,
+                mode: 'insensitive',
               },
-              {
-                lastName: {
-                  contains: search,
-                  mode: 'insensitive',
-                },
+            },
+            {
+              lastName: {
+                contains: search,
+                mode: 'insensitive',
               },
-            ],
-          },
-        }
+            },
+          ],
+        },
+      }
       : {};
     const [data, total] = await this.prisma.$transaction([
       this.prisma.candidate.findMany({
