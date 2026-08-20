@@ -6,8 +6,16 @@ type AvatarProps = {
   width: number;
   height: number;
   className?: string;
+  loading?: 'lazy' | 'eager';
 };
-export const Avatar = ({ src, alt, width, height, className }: AvatarProps) => {
+export const Avatar = ({
+  src,
+  alt,
+  width,
+  height,
+  className,
+  loading,
+}: AvatarProps) => {
   return (
     <div
       style={{ width, height }}
@@ -18,6 +26,7 @@ export const Avatar = ({ src, alt, width, height, className }: AvatarProps) => {
         alt={alt}
         width={width}
         height={height}
+        loading={loading}
         className="h-full w-full object-cover"
       />
     </div>
