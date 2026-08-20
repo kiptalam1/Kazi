@@ -1,4 +1,4 @@
-import { FileType } from "@/features/common/types/common.types";
+import { FileType } from '@/features/common/types/common.types';
 
 export type Avatar = {
   id: string;
@@ -7,9 +7,9 @@ export type Avatar = {
   mimeType: string;
   url: string;
   type: FileType;
-}
+};
 
 export type UploadAvatarResponse = {
   message: string;
   data: Avatar;
-}
+};
