@@ -12,7 +12,6 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
-
 export default function ApplicationPage() {
   const { id } = useParams<{ id: string }>();
   const {
@@ -43,31 +42,28 @@ export default function ApplicationPage() {
 
   async function handleWithdraw(applicationId: string) {
     await withdrawMutation.mutateAsync(applicationId);
-    router.push('/applications')
+    router.push('/applications');
   }
 
   return (
     <main className="p-4 sm:py-8 space-y-4 sm:space-y-6 ">
       <section>
-        <div className='mb-5 flex items-center justify-between '>
+        <div className="mb-5 flex items-center justify-between ">
           <Link
             href={'/applications'}
             className="size-8 inline-flex items-center justify-center rounded-md text-text-secondary  hover:bg-background-muted hover:text-text-primary duration-75"
           >
             <ArrowLeft className="size-4" />
           </Link>
-          {
-            canWithdrawApplication(application.status) &&
+          {canWithdrawApplication(application.status) && (
             <Button
               onClick={() => handleWithdraw(application.id)}
               disabled={withdrawMutation.isPending}
-              className='text-xs font-semibold p-1'>
-              {
-                withdrawMutation.isPending
-                  ? 'Withdrawing...'
-                  : 'Withdraw'}
+              className="text-xs font-semibold p-1"
+            >
+              {withdrawMutation.isPending ? 'Withdrawing...' : 'Withdraw'}
             </Button>
-          }
+          )}
         </div>
         <h1 className="mb-6 text-sm font-semibold uppercase text-text-muted tracking-wide">
           Application

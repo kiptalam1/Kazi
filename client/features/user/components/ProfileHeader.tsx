@@ -1,11 +1,11 @@
-import { useAuth } from "@/features/auth/hooks/useAuth";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useUploadAvatar } from "../hooks/useUploadAvatar";
-import Spinner from "@/components/ui/Spinner";
-import { getApiErrorMessage } from "@/lib/api/error";
-import { Avatar } from "@/components/ui/Avatar";
-import FallbackAvatar from "@/components/ui/FallbackAvatar";
-import { UserPlus } from "lucide-react";
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useUploadAvatar } from '../hooks/useUploadAvatar';
+import Spinner from '@/components/ui/Spinner';
+import { getApiErrorMessage } from '@/lib/api/error';
+import { Avatar } from '@/components/ui/Avatar';
+import FallbackAvatar from '@/components/ui/FallbackAvatar';
+import { UserPlus } from 'lucide-react';
 
 export default function ProfileHeader() {
   const { data, isPending, isError, error } = useAuth();
@@ -49,7 +49,6 @@ export default function ProfileHeader() {
   }
 
   const user = data.data;
-
 
   return (
     <section className="flex items-center gap-4 border border-border-muted p-4 sm:p-6 md:p-8">
@@ -105,7 +104,5 @@ export default function ProfileHeader() {
         <p>{user.phone ?? 'No phone'}</p>
       </div>
     </section>
-
-  )
+  );
 }
-

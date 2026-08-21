@@ -1,8 +1,9 @@
 'use client';
 
-import { ProfessionalInfo } from "@/features/candidates/components/ProfessionalInfo";
-import { ProfileLinks } from "@/features/candidates/components/ProfileLinks";
-import ProfileHeader from "@/features/user/components/ProfileHeader";
+import CandidateExperiences from '@/features/candidates/components/CandidateExperiences';
+import { ProfessionalInfo } from '@/features/candidates/components/ProfessionalInfo';
+import { ProfileLinks } from '@/features/candidates/components/ProfileLinks';
+import ProfileHeader from '@/features/user/components/ProfileHeader';
 
 export default function ProfilePage() {
   return (
@@ -10,6 +11,7 @@ export default function ProfilePage() {
       <ProfileHeader />
       <ProfessionalInfo />
       <ProfileLinks />
-    </main >
+      <CandidateExperiences />
+    </main>
   );
 }

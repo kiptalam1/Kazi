@@ -1,4 +1,4 @@
-import type { ApplicationStatus } from "@/features/common/types/common.types";
+import type { ApplicationStatus } from '@/features/common/types/common.types';
 
 const withdrawableStatuses: ApplicationStatus[] = [
   'PENDING',

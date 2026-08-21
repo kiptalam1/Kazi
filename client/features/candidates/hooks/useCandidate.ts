@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query"
-import { getMyCandidateProfile } from "../api/get-my-candidate-profile";
+import { useQuery } from '@tanstack/react-query';
+import { getMyCandidateProfile } from '../api/get-my-candidate-profile';
 
 export function useCandidate() {
   return useQuery({

@@ -1,6 +1,6 @@
-import Spinner from "@/components/ui/Spinner";
-import { useCandidate } from "../hooks/useCandidate";
-import { getApiErrorMessage } from "@/lib/api/error";
+import Spinner from '@/components/ui/Spinner';
+import { useCandidate } from '../hooks/useCandidate';
+import { getApiErrorMessage } from '@/lib/api/error';
 
 const profileLinks = [
   {
@@ -18,7 +18,12 @@ const profileLinks = [
 ] as const;
 
 export const ProfileLinks = () => {
-  const { data: candidate, isError: isCandidateError, error: candidateError, isPending: isCandidatePending } = useCandidate();
+  const {
+    data: candidate,
+    isError: isCandidateError,
+    error: candidateError,
+    isPending: isCandidatePending,
+  } = useCandidate();
 
   if (isCandidatePending) {
     return (
@@ -30,10 +35,11 @@ export const ProfileLinks = () => {
 
   if (isCandidateError) {
     return (
-      <p className="text-center mx-auto p-6">{getApiErrorMessage(candidateError)}</p>
+      <p className="text-center mx-auto p-6">
+        {getApiErrorMessage(candidateError)}
+      </p>
     );
   }
-
 
   return (
     <section className="border border-border-muted p-4 sm:p-6 md:p-8">
@@ -61,6 +67,5 @@ export const ProfileLinks = () => {
         })}
       </div>
     </section>
-
-  )
-}
+  );
+};

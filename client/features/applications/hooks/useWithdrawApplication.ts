@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { withdrawApplication } from "../api/withdrawApplication";
-import { toast } from "sonner";
-import { getApiErrorMessage } from "@/lib/api/error";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { withdrawApplication } from '../api/withdrawApplication';
+import { toast } from 'sonner';
+import { getApiErrorMessage } from '@/lib/api/error';
 
 export function useWithdrawApplication() {
   const queryClient = useQueryClient();
@@ -19,7 +19,7 @@ export function useWithdrawApplication() {
       });
       queryClient.invalidateQueries({
         queryKey: ['applications', result.data.id],
-      })
-    }
+      });
+    },
   });
 }
