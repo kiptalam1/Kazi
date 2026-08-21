@@ -3,10 +3,7 @@ import { CompanyMembersService } from './company-members.service.js';
 import { PrismaService } from '../prisma.service.js';
 
 @Module({
-  providers: [
-    CompanyMembersService,
-    PrismaService,
-  ],
+  providers: [CompanyMembersService, PrismaService],
   exports: [CompanyMembersService],
 })
-export class CompanyMembersModule { }
+export class CompanyMembersModule {}

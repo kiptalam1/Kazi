@@ -9,7 +9,10 @@ import { PrismaService } from '../prisma.service.js';
 import { CloudinaryService } from '../infrastructure/storage/cloudinary/cloudinary.service.js';
 import { FileType } from '../generated/prisma/enums.js';
 import { UploadResumeDto } from './dto/upload-resume.dto.js';
-import { UploadResumeApiResponse } from './dto/resume-response.js';
+import {
+  ResumeUploaded,
+  UploadResumeApiResponse,
+} from './dto/resume-response.js';
 
 @Injectable()
 export class ResumesService {
@@ -19,6 +22,20 @@ export class ResumesService {
     private cloudinary: CloudinaryService,
   ) { }
 
+  // fetch candidate resumes;
+  async getMyResumes(userId: string): Promise<ResumeUploaded[]> {
+    const candidate = await this.candidatesService.findByUserId(userId);
+    const resumes = await this.prisma.file.findMany({
+      where: {
+        candidateId: candidate.id,
+        type: FileType.RESUME,
+      },
+
+    });
+    return resumes;
+  }
+
+  // candidate upload resume
   async uploadResume(
     userId: string,
     file: Express.Multer.File,

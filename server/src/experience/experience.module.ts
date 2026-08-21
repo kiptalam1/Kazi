@@ -7,9 +7,7 @@ import { CandidatesModule } from '../candidates/candidates.module.js';
 @Module({
   imports: [CandidatesModule],
   controllers: [ExperienceController],
-  providers: [
-    ExperienceService,
-    PrismaService],
+  providers: [ExperienceService, PrismaService],
   exports: [ExperienceService],
 })
-export class ExperienceModule { }
+export class ExperienceModule {}

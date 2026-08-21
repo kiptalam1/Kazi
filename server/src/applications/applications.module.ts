@@ -17,12 +17,7 @@ import { CandidatesModule } from '../candidates/candidates.module.js';
     CandidatesModule,
   ],
   controllers: [ApplicationsController],
-  providers: [
-    ApplicationsService,
-    PrismaService,
-  ],
-  exports: [
-    ApplicationsService,
-  ]
+  providers: [ApplicationsService, PrismaService],
+  exports: [ApplicationsService],
 })
-export class ApplicationsModule { }
+export class ApplicationsModule {}

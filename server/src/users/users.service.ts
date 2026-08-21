@@ -1,6 +1,16 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
-import { FileType, type Prisma, type User } from '../generated/prisma/client.js';
+import {
+  FileType,
+  type Prisma,
+  type User,
+} from '../generated/prisma/client.js';
 import { CloudinaryService } from '../infrastructure/storage/cloudinary/cloudinary.service.js';
 import { UploadAvatarApiResponse } from './dto/avatar-response.dto.js';
 
@@ -9,34 +19,31 @@ export class UsersService {
   constructor(
     private prisma: PrismaService,
     private readonly cloudinary: CloudinaryService,
-  ) { }
+  ) {}
 
   // upload user avatar;
   async uploadAvatar(
     userId: string,
-    file: Express.Multer.File
+    file: Express.Multer.File,
   ): Promise<UploadAvatarApiResponse> {
-    const existingAvatar = await this.prisma.file
-      .findFirst({
-        where: {
-          userAvatar: {
-            id: userId,
-          },
-          type: FileType.AVATAR,
+    const existingAvatar = await this.prisma.file.findFirst({
+      where: {
+        userAvatar: {
+          id: userId,
         },
-      });
+        type: FileType.AVATAR,
+      },
+    });
 
     let uploaded;
     try {
       uploaded = await this.cloudinary.uploadFile(
         file,
         'kazi/avatars',
-        'image'
+        'image',
       );
     } catch {
-      throw new BadRequestException(
-        'failed to upload avatar.',
-      );
+      throw new BadRequestException('failed to upload avatar.');
     }
 
     let newAvatar;
@@ -56,22 +63,17 @@ export class UsersService {
           },
         },
       });
-
     } catch (error) {
       try {
         console.error(error);
-        await this.cloudinary.deleteFile(
-          uploaded.public_id
-        );
+        await this.cloudinary.deleteFile(uploaded.public_id);
       } catch (cleanupError) {
         console.error(cleanupError);
       }
-      throw new InternalServerErrorException(
-        'Failed to upload avatar');
+      throw new InternalServerErrorException('Failed to upload avatar');
     }
     if (existingAvatar) {
-      await this.cloudinary
-        .deleteFile(existingAvatar.publicId);
+      await this.cloudinary.deleteFile(existingAvatar.publicId);
 
       await this.prisma.file.delete({
         where: {
@@ -93,22 +95,18 @@ export class UsersService {
   }
 
   // delete user avatar;
-  async deleteAvatar(
-    userId: string,
-  ) {
+  async deleteAvatar(userId: string) {
     const existsAvatar = await this.prisma.file.findFirst({
       where: {
         type: FileType.AVATAR,
         userAvatar: {
-          id: userId
+          id: userId,
         },
-      }
+      },
     });
 
     if (!existsAvatar) {
-      throw new NotFoundException(
-        'Avatar not found',
-      );
+      throw new NotFoundException('Avatar not found');
     }
 
     try {
@@ -117,18 +115,15 @@ export class UsersService {
       await this.prisma.file.delete({
         where: {
           id: existsAvatar.id,
-        }
+        },
       });
 
       return {
         message: 'Avatar deleted successfully.',
       };
-
     } catch (error) {
       console.error(error);
-      throw new InternalServerErrorException(
-        'Failed to delete avatar.'
-      );
+      throw new InternalServerErrorException('Failed to delete avatar.');
     }
   }
 
@@ -189,9 +184,8 @@ export class UsersService {
           },
         },
       },
-    })
+    });
   }
-
 
   // update user
   async updateUser(params: {

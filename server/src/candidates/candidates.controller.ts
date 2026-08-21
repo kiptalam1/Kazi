@@ -12,12 +12,15 @@ import { CandidateUpdateDto } from './dto/update-candidate.dto.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import type { CurrentUserInterface } from '../common/interface/current-user.interface.js';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { CandidateProfile, GetAllCandidatesResponseDto } from './dto/candidate-response.dto.js';
+import {
+  CandidateProfile,
+  GetAllCandidatesResponseDto,
+} from './dto/candidate-response.dto.js';
 import { GetCandidateQueryDto } from './dto/query.dto.js';
 
 @Controller('api/v1/candidates')
 export class CandidatesController {
-  constructor(private readonly candidatesService: CandidatesService) { }
+  constructor(private readonly candidatesService: CandidatesService) {}
 
   // get me;
   @Get('me')
@@ -27,13 +30,9 @@ export class CandidatesController {
   @ApiOkResponse({
     type: CandidateProfile,
   })
-  async findOne(
-    @CurrentUser('id') userId: string,
-  ) {
+  async findOne(@CurrentUser('id') userId: string) {
     return this.candidatesService.myCandidateProfile(userId);
   }
-
-
 
   //get all candidates
   @Get()

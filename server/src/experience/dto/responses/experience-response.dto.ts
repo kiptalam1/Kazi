@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { EmploymentType } from '../../../generated/prisma/enums.js';
 
-class ExperienceDto {
+export class ExperienceDto {
   id!: string;
   jobTitle!: string;
   companyName!: string;
-  @ApiProperty({ type: () => EmploymentType })
   location?: string | null;
+  @ApiProperty({ enum: EmploymentType })
   employmentType?: EmploymentType | null;
   startDate!: Date;
   endDate?: Date | null;
@@ -16,5 +16,6 @@ class ExperienceDto {
 
 export class ExperienceApiResponse {
   message!: string;
+  @ApiProperty({ type: () => ExperienceDto })
   data!: ExperienceDto;
 }

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -19,11 +20,29 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { UpdateExperienceDto } from './dto/update-experience.dto.js';
-import { ExperienceApiResponse } from './dto/responses/experience-response.dto.js';
+import {
+  ExperienceApiResponse,
+  ExperienceDto,
+} from './dto/responses/experience-response.dto.js';
 
 @Controller('api/v1/candidates/me/experiences')
 export class ExperienceController {
   constructor(private readonly experienceService: ExperienceService) {}
+
+  // get my experiences;
+  @ApiOkResponse({
+    type: ExperienceDto,
+    isArray: true,
+  })
+  @ApiOperation({
+    summary: 'candidate fetch his experiences',
+  })
+  @Get()
+  async getMyExperiences(
+    @CurrentUser('id') userId: string,
+  ): Promise<ExperienceDto[]> {
+    return await this.experienceService.getMyExperiences(userId);
+  }
 
   // add Experience
   @ApiOperation({

@@ -20,7 +20,7 @@ import { Public } from '../common/decorators/public.decorator.js';
 
 @Controller('api/v1')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService) { }
+  constructor(private readonly jobsService: JobsService) {}
 
   // create company;
   @Post('companies/:slug/jobs')

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   FileTypeValidator,
+  Get,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -17,13 +18,29 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadResumeDto } from './dto/upload-resume.dto.js';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { UploadAvatarApiResponse } from '../users/dto/avatar-response.dto.js';
+import { ResumeUploaded } from './dto/resume-response.js';
 
 const allowedResumeTypes =
   /^(application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/;
 
 @Controller('api/v1/candidates/me/resumes')
 export class ResumesController {
-  constructor(private readonly resumesService: ResumesService) { }
+  constructor(private readonly resumesService: ResumesService) {}
+
+  // fetch my resumes;
+  @ApiOkResponse({
+    type: ResumeUploaded,
+    isArray: true,
+  })
+  @ApiOperation({
+    summary: 'candidate fetch his resumes',
+  })
+  @Get()
+  async getMyResumes(
+    @CurrentUser('id') userId: string,
+  ): Promise<ResumeUploaded[]> {
+    return await this.resumesService.getMyResumes(userId);
+  }
 
   // upload candidate's resume;
   @ApiOkResponse({

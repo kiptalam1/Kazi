@@ -27,7 +27,7 @@ import { GetQueryDto } from '../common/dto/query.dto.js';
 
 @Controller('api/v1/applications')
 export class ApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) { }
+  constructor(private readonly applicationsService: ApplicationsService) {}
 
   // employer fetch a candidate application;
   @Get('employer/:applicationId')
@@ -98,8 +98,6 @@ export class ApplicationsController {
       applicationId,
     );
   }
-
-
 
   // Employer fetch all job applications per job;
   @ApiOperation({

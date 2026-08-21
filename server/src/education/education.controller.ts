@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -17,12 +18,30 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { CreateEducationDto } from './dto/create-education.dto.js';
-import { EducationApiResponse } from './dto/education-response.dto.js';
+import {
+  CreatedEducationDto,
+  EducationApiResponse,
+} from './dto/education-response.dto.js';
 import { UpdateEducationDto } from './dto/update-education.dto.js';
 
 @Controller('api/v1/candidates/me/education')
 export class EducationController {
   constructor(private readonly educationService: EducationService) {}
+
+  // get my education;
+  @Get()
+  @ApiOperation({
+    summary: 'candidate fetch education',
+  })
+  @ApiOkResponse({
+    type: CreatedEducationDto,
+    isArray: true,
+  })
+  async getMyEducation(
+    @CurrentUser('id') userId: string,
+  ): Promise<CreatedEducationDto[]> {
+    return await this.educationService.getMyEducation(userId);
+  }
 
   // add education
   @ApiCreatedResponse({

@@ -6,17 +6,9 @@ import { CompaniesModule } from '../companies/companies.module.js';
 import { CompanyMembersModule } from '../company-members/company-members.module.js';
 
 @Module({
-  imports: [
-    CompaniesModule,
-    CompanyMembersModule,
-  ],
+  imports: [CompaniesModule, CompanyMembersModule],
   controllers: [JobsController],
-  providers: [
-    JobsService,
-    PrismaService,
-  ],
-  exports: [
-    JobsService,
-  ]
+  providers: [JobsService, PrismaService],
+  exports: [JobsService],
 })
-export class JobsModule { }
+export class JobsModule {}

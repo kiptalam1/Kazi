@@ -10,7 +10,7 @@ export class CloudinaryService {
   constructor(
     @Inject('CLOUDINARY')
     private readonly cloudinary: typeof Cloudinary,
-  ) { }
+  ) {}
 
   uploadFile(
     file: Express.Multer.File,
@@ -41,7 +41,6 @@ export class CloudinaryService {
   async deleteFile(publicId: string): Promise<DeleteApiResponse> {
     return await this.cloudinary.uploader.destroy(publicId);
   }
-
 
   // optimize returned image;
   getAvatarUrl(publicId: string): string {

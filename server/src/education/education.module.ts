@@ -7,7 +7,7 @@ import { CandidatesModule } from '../candidates/candidates.module.js';
 @Module({
   imports: [CandidatesModule],
   controllers: [EducationController],
-  providers: [EducationService, PrismaService,],
+  providers: [EducationService, PrismaService],
   exports: [EducationService],
 })
-export class EducationModule { }
+export class EducationModule {}
