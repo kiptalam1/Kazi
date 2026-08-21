@@ -16,10 +16,7 @@ import { CandidatesModule } from '../candidates/candidates.module.js';
     }),
   ],
   controllers: [ResumesController],
-  providers: [
-    ResumesService,
-    PrismaService,
-  ],
+  providers: [ResumesService, PrismaService],
   exports: [ResumesService],
 })
-export class ResumesModule { }
+export class ResumesModule {}

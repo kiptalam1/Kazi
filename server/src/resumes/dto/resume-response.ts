@@ -14,7 +14,7 @@ export class ResumeUploaded {
   mimeType!: string;
   @ApiProperty()
   url!: string;
-  @ApiProperty({ type: () => FileType })
+  @ApiProperty({ enum: FileType })
   type!: FileType;
 }
 
