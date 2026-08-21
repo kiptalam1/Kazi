@@ -53,3 +53,12 @@ export interface User {
   lastLoginAt: string | null;
   candidate: Candidate | null;
 }
+
+export type EmploymentType =
+  | 'FULL_TIME'
+  | 'PART_TIME'
+  | 'CONTRACT'
+  | 'INTERNSHIP'
+  | 'APPRENTICESHIP'
+  | 'FREELANCE'
+  | 'VOLUNTEER';

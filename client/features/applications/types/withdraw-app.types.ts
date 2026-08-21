@@ -1,4 +1,4 @@
-import type { ApplicationStatus } from "@/features/common/types/common.types"
+import type { ApplicationStatus } from '@/features/common/types/common.types';
 
 type ApplicationWithdrawn = {
   status: ApplicationStatus;
@@ -6,9 +6,9 @@ type ApplicationWithdrawn = {
   jobId: string;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export type ApplicationWithdrawnResponse = {
   message: string;
   data: ApplicationWithdrawn;
-}
+};
