@@ -3,14 +3,31 @@ import { CreateExperienceDto } from './dto/create-experience.dto.js';
 import { CandidatesService } from '../candidates/candidates.service.js';
 import { PrismaService } from '../prisma.service.js';
 import { UpdateExperienceDto } from './dto/update-experience.dto.js';
-import { ExperienceApiResponse } from './dto/responses/experience-response.dto.js';
+import { ExperienceApiResponse, ExperienceDto, } from './dto/responses/experience-response.dto.js';
 
 @Injectable()
 export class ExperienceService {
   constructor(
     private readonly candidatesService: CandidatesService,
     private readonly prisma: PrismaService,
-  ) {}
+  ) { }
+
+  // get my experiences;
+  async getMyExperiences(userId: string): Promise<ExperienceDto[]> {
+    const candidate = await this.candidatesService.findByUserId(userId);
+    const experiences = await this.prisma.experience.findMany({
+      where: {
+        candidateId: candidate.id,
+      },
+      omit: {
+        candidateId: true,
+        createdAt: true,
+        updatedAt: true,
+      }
+    });
+
+    return experiences;
+  }
 
   // add experience
   async addExperience(

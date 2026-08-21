@@ -32,6 +32,7 @@ export class EducationController {
   })
   @ApiOkResponse({
     type: CreatedEducationDto,
+    isArray: true,
   })
   async getMyEducation(
     @CurrentUser('id') userId: string,
