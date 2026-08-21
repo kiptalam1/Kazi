@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
 import { CreateEducationDto } from './dto/create-education.dto.js';
 import { CandidatesService } from '../candidates/candidates.service.js';
-import { EducationApiResponse } from './dto/education-response.dto.js';
+import { CreatedEducationDto, EducationApiResponse } from './dto/education-response.dto.js';
 import { UpdateEducationDto } from './dto/update-education.dto.js';
 
 @Injectable()
@@ -10,7 +10,28 @@ export class EducationService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly candidatesService: CandidatesService,
-  ) {}
+  ) { }
+
+  // get my education;
+  async getMyEducation(userId: string): Promise<CreatedEducationDto[]> {
+    const candidate = await this.candidatesService.findByUserId(userId);
+
+    const education = await this.prisma.education.findMany({
+      where: {
+        candidateId: candidate.id,
+      },
+      select: {
+        id: true,
+        schoolName: true,
+        fieldOfStudy: true,
+        qualification: true,
+        startDate: true,
+        endDate: true,
+      }
+
+    });
+    return education;
+  }
 
   // add education
   async addEducation(
