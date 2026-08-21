@@ -1,13 +1,17 @@
 'use client';
+import Button from '@/components/ui/Button';
 import { CompanyLogo } from '@/components/ui/CompanyLogo';
 import Spinner from '@/components/ui/Spinner';
 import useMyOneApplication from '@/features/applications/hooks/useMyOneApplication';
+import { useWithdrawApplication } from '@/features/applications/hooks/useWithdrawApplication';
 import { getApiErrorMessage } from '@/lib/api/error';
+import { canWithdrawApplication } from '@/lib/utils/canWithdrawApplication';
 import formattedDate from '@/lib/utils/formattedDate';
 import { getInitials } from '@/lib/utils/getInitials';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+
 
 export default function ApplicationPage() {
   const { id } = useParams<{ id: string }>();
@@ -17,10 +21,12 @@ export default function ApplicationPage() {
     isPending,
     error,
   } = useMyOneApplication(id);
+  const withdrawMutation = useWithdrawApplication();
+  const router = useRouter();
 
   if (isPending) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh]">
+      <div className="p-4 flex items-center justify-center min-h-[50vh]">
         <Spinner />
       </div>
     );
@@ -35,15 +41,34 @@ export default function ApplicationPage() {
   const job = application.job;
   const company = job.company;
 
+  async function handleWithdraw(applicationId: string) {
+    await withdrawMutation.mutateAsync(applicationId);
+    router.push('/applications')
+  }
+
   return (
     <main className="p-4 sm:py-8 space-y-4 sm:space-y-6 ">
       <section>
-        <Link
-          href={'/applications'}
-          className="mb-5 size-8 inline-flex items-center justify-center rounded-md text-text-secondary  hover:bg-background-muted hover:text-text-primary duration-75"
-        >
-          <ArrowLeft className="size-4" />
-        </Link>
+        <div className='mb-5 flex items-center justify-between '>
+          <Link
+            href={'/applications'}
+            className="size-8 inline-flex items-center justify-center rounded-md text-text-secondary  hover:bg-background-muted hover:text-text-primary duration-75"
+          >
+            <ArrowLeft className="size-4" />
+          </Link>
+          {
+            canWithdrawApplication(application.status) &&
+            <Button
+              onClick={() => handleWithdraw(application.id)}
+              disabled={withdrawMutation.isPending}
+              className='text-xs font-semibold p-1'>
+              {
+                withdrawMutation.isPending
+                  ? 'Withdrawing...'
+                  : 'Withdraw'}
+            </Button>
+          }
+        </div>
         <h1 className="mb-6 text-sm font-semibold uppercase text-text-muted tracking-wide">
           Application
         </h1>
