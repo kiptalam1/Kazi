@@ -36,7 +36,7 @@ export default function CandidateExperiences() {
             <div className="flex flex-wrap items-center gap-2">
               {exp.employmentType && (
                 <span className="rounded-full bg-background-subtle p-1 px-1.5 text-text-secondary text-xs">
-                  {exp.employmentType}
+                  {exp.employmentType.trim().split('_').join(' ')}
                 </span>
               )}
 

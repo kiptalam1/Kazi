@@ -13,7 +13,7 @@ export class EducationService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly candidatesService: CandidatesService,
-  ) {}
+  ) { }
 
   // get my education;
   async getMyEducation(userId: string): Promise<CreatedEducationDto[]> {
@@ -28,6 +28,8 @@ export class EducationService {
         schoolName: true,
         fieldOfStudy: true,
         qualification: true,
+        city: true,
+        country: true,
         startDate: true,
         endDate: true,
       },
@@ -60,6 +62,8 @@ export class EducationService {
         schoolName: education.schoolName,
         fieldOfStudy: education.fieldOfStudy,
         qualification: education.qualification,
+        city: education.city,
+        country: education.country,
         startDate: education.startDate,
         endDate: education.endDate,
       },
@@ -91,6 +95,8 @@ export class EducationService {
         schoolName: updatedEducation.schoolName,
         fieldOfStudy: updatedEducation.fieldOfStudy,
         qualification: updatedEducation.qualification,
+        city: updatedEducation.city,
+        country: updatedEducation.country,
         startDate: updatedEducation.startDate,
         endDate: updatedEducation.endDate,
       },
