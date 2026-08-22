@@ -54,10 +54,15 @@ export class ResumesService {
       throw new BadRequestException('You can have a maximum of 5 resumes.');
     }
 
+    const resourceType =
+      file.mimetype === 'application/pdf'
+        ? 'image'
+        : 'raw';
+
     const cloudinaryResponse = await this.cloudinary.uploadFile(
       file,
       'kazi/resumes',
-      'raw',
+      resourceType,
     );
 
     try {
