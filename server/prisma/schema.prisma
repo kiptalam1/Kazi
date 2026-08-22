@@ -213,6 +213,8 @@ model Education {
   schoolName    String
   fieldOfStudy  String?
   qualification Qualification
+  city          String?
+  country       String?
   startDate     DateTime
   endDate       DateTime?
 
