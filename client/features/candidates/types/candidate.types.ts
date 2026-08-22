@@ -1,4 +1,4 @@
-import type { EmploymentType } from '@/features/common/types/common.types';
+import type { EmploymentType, FileType } from '@/features/common/types/common.types';
 
 export type Experience = {
   employmentType: EmploymentType | null;
@@ -33,4 +33,19 @@ export type Education = {
   country?: string | null;
   startDate: string;
   endDate?: string | null;
+};
+
+export type ResumeMimeType =
+  | 'application/pdf'
+  | 'application/msword'
+  | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+export type Resume = {
+  id: string;
+  fileName: string;
+  displayName?: string | null;
+  size: number;
+  mimeType: ResumeMimeType;
+  url: string;
+  type: FileType;
 };
