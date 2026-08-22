@@ -11,3 +11,26 @@ export type Experience = {
   isCurrent: boolean;
   description: string | null;
 };
+
+export type EducationLevel =
+  | 'PRIMARY'
+  | 'SECONDARY'
+  | 'HIGH_SCHOOL'
+  | 'CERTIFICATE'
+  | 'DIPLOMA'
+  | 'ASSOCIATE'
+  | 'BACHELORS'
+  | 'POSTGRADUATE_DIPLOMA'
+  | 'MASTERS'
+  | 'DOCTORATE';
+
+export type Education = {
+  id: string;
+  qualification: EducationLevel;
+  schoolName: string;
+  fieldOfStudy?: string | null;
+  city?: string | null;
+  country?: string | null;
+  startDate: string;
+  endDate?: string | null;
+};
