@@ -2,6 +2,7 @@
 
 import CandidateEducation from '@/features/candidates/components/CandidateEducation';
 import CandidateExperiences from '@/features/candidates/components/CandidateExperiences';
+import CandidateResumes from '@/features/candidates/components/CandidateResumes';
 import { ProfessionalInfo } from '@/features/candidates/components/ProfessionalInfo';
 import { ProfileLinks } from '@/features/candidates/components/ProfileLinks';
 import ProfileHeader from '@/features/user/components/ProfileHeader';
@@ -14,6 +15,7 @@ export default function ProfilePage() {
       <ProfileLinks />
       <CandidateExperiences />
       <CandidateEducation />
+      <CandidateResumes />
     </main>
   );
 }
