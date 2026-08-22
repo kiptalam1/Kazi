@@ -26,6 +26,16 @@ export class CreateEducationDto {
   })
   qualification!: Qualification;
 
+  @IsOptional()
+  @IsString()
+  @MinLength(2, { message: 'City must be at least 2 characters long.' })
+  city?: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(2, { message: 'Country must be at least 2 characters long.' })
+  country?: string;
+
   @Type(() => Date)
   @IsDate()
   startDate!: Date;

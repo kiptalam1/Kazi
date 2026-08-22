@@ -7,6 +7,8 @@ export class CreatedEducationDto {
   fieldOfStudy?: string | null;
   @ApiProperty({ type: () => Qualification })
   qualification!: Qualification;
+  city?: string | null;
+  country?: string | null;
   startDate!: Date;
   endDate?: Date | null;
 }
