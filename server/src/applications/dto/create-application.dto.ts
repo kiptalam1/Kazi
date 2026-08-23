@@ -4,4 +4,8 @@ export class CreateApplicationDto {
   @IsOptional()
   @IsString()
   coverLetter?: string;
+
+  @IsOptional()
+  @IsString()
+  resumeId?: string;
 }
