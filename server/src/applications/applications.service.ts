@@ -233,8 +233,8 @@ export class ApplicationsService {
     }
     const application = await this.prisma.application.create({
       data: {
-        resumeId: createApplicationDto.resumeId,
-        coverLetter: createApplicationDto.coverLetter,
+        resumeId: createApplicationDto.resumeId || undefined,
+        coverLetter: createApplicationDto.coverLetter || undefined,
         candidateId: candidate.id,
         jobId: job.id,
       },
