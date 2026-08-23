@@ -11,7 +11,7 @@ import { PrismaService } from '../prisma.service.js';
 import { UsersService } from '../users/users.service.js';
 import { JobsService } from '../jobs/jobs.service.js';
 import { CompanyMembersService } from '../company-members/company-members.service.js';
-import { ApplicationStatus } from '../generated/prisma/enums.js';
+import { ApplicationStatus, FileType } from '../generated/prisma/enums.js';
 import { CandidatesService } from '../candidates/candidates.service.js';
 import {
   CandidateApplicationApiResponse,
@@ -31,7 +31,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) {}
+  ) { }
 
   // employer fetch single application;
   async employerFetchSingleApplication(
@@ -216,9 +216,25 @@ export class ApplicationsService {
       throw new ConflictException('You have already applied for this job.');
     }
 
+    if (createApplicationDto.resumeId) {
+      const resume = await this.prisma.file.findFirst({
+        where: {
+          id: createApplicationDto.resumeId,
+          candidateId: candidate.id,
+          type: FileType.RESUME,
+        },
+      });
+
+      if (!resume) {
+        throw new BadRequestException(
+          'Resume not found.'
+        );
+      }
+    }
     const application = await this.prisma.application.create({
       data: {
-        coverLetter: createApplicationDto.coverLetter,
+        resumeId: createApplicationDto.resumeId || undefined,
+        coverLetter: createApplicationDto.coverLetter || undefined,
         candidateId: candidate.id,
         jobId: job.id,
       },

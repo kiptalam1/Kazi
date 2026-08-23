@@ -4,16 +4,19 @@ import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
 import { CompanyLogo } from '@/components/ui/CompanyLogo';
 import Spinner from '@/components/ui/Spinner';
+import { ApplyModal } from '@/features/jobs/components/modals/ApplyModal';
 import { useOneJob } from '@/features/jobs/hooks/useOneJob';
 import formattedDate from '@/lib/utils/formattedDate';
 import { getInitials } from '@/lib/utils/getInitials';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useState } from 'react';
 
 export default function JobDetailsPage() {
   const { id } = useParams();
   const { data: job, isPending, isError, error } = useOneJob(id as string);
+  const [openApplyModal, setOpenApplyModal] = useState(false);
 
   if (isError) {
     return <p>{error.message}</p>;
@@ -54,10 +57,20 @@ export default function JobDetailsPage() {
             </div>
             <div className="flex items-center justify-between gap-4">
               <h2 className="text-xl font-semibold">{job.title}</h2>
-              <Button className="text-xs font-semibold cursor-pointer">
+              <Button
+                type='button'
+                onClick={() => setOpenApplyModal(true)}
+                className="text-xs font-semibold cursor-pointer">
                 Apply
               </Button>
             </div>
+            {
+              openApplyModal && <ApplyModal
+                jobId={job.id}
+                open={openApplyModal}
+                onClose={() => setOpenApplyModal(false)}
+              />
+            }
 
             {/* job specifics */}
             <div className="space-y-2">
