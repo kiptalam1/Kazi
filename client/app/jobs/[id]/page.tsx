@@ -66,6 +66,7 @@ export default function JobDetailsPage() {
             </div>
             {
               openApplyModal && <ApplyModal
+                jobId={job.id}
                 open={openApplyModal}
                 onClose={() => setOpenApplyModal(false)}
               />

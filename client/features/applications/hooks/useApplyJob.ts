@@ -16,11 +16,14 @@ export default function useApplyjob() {
       console.error(error);
       toast.error(getApiErrorMessage(error));
     },
-    onSuccess: (result) => {
+    onSuccess: (result, variables) => {
       toast.success(result.message);
       queryClient.invalidateQueries({
         queryKey: ['myapps'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['jobs', variables.jobId],
+      })
     },
   });
 }
