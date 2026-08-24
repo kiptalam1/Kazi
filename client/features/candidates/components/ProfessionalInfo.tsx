@@ -1,6 +1,9 @@
 import Spinner from '@/components/ui/Spinner';
 import { useCandidate } from '../hooks/useCandidate';
 import { getApiErrorMessage } from '@/lib/api/error';
+import UpdateProfInfoModal from './modals/UpdateProfInfoModal';
+import { useState } from 'react';
+import { Edit2 } from 'lucide-react';
 
 export const ProfessionalInfo = () => {
   const {
@@ -9,6 +12,7 @@ export const ProfessionalInfo = () => {
     error: candidateError,
     isPending: isCandidatePending,
   } = useCandidate();
+  const [openUpdateModal, setOpenUpdateModal] = useState(false)
 
   if (isCandidatePending) {
     return (
@@ -27,10 +31,19 @@ export const ProfessionalInfo = () => {
   }
 
   return (
-    <section className=" border border-border-muted p-4 sm:p-6 md:p-8">
-      <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-4">
-        Professional Information
-      </h2>
+    <section className="relative border border-border-muted p-4 sm:p-6 md:p-8">
+      <div className='mb-4 flex justify-between items-center'>
+        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide ">
+          Professional Information
+        </h2>
+        <button
+          onClick={() => setOpenUpdateModal(true)}
+          className='text-text-muted text-sm p-2 hover:bg-background-muted rounded-full duration-100'
+          aria-label='update Professional information'
+        >
+          <Edit2 className='size-4' />
+        </button>
+      </div>
 
       <div className="space-y-6">
         <div className="space-y-4">
@@ -84,6 +97,12 @@ export const ProfessionalInfo = () => {
           </div>
         </div>
       </div>
+      {
+        <UpdateProfInfoModal
+          open={openUpdateModal}
+          onClose={() => setOpenUpdateModal(false)}
+        />
+      }
     </section>
   );
 };
