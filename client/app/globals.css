@@ -36,10 +36,23 @@
   --color-placeholder: oklch(70.4% 0.04 256.788);
   --color-selection: oklch(95% 0.052 163.051);
   --color-overlay: oklch(14.5% 0 none);
+
+  --animate-emerge: emerge 250ms ease-out;
 }
 
 body {
   background: var(--background);
   color: var(--text-primary);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
+
+@keyframes emerge {
+from {
+  opacity: 0;
+  transform: perspective(1200px) translateZ(-150px) scale(0.65);
+}
+to {
+  opacity: 1;
+  transform: perspective(1200px) translateZ(0) scale(1);
+}
 }

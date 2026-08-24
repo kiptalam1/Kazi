@@ -33,7 +33,7 @@ export interface Candidate {
   experienceLevel: ExperienceLevel | null;
   currentJobTitle: string | null;
   salaryExpectation: number | null;
-  availability: string | null;
+  availability: boolean;
   linkedinUrl: string | null;
   githubUrl: string | null;
   portfolioUrl: string | null;
