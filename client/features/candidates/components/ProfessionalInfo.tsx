@@ -101,6 +101,7 @@ export const ProfessionalInfo = () => {
         <UpdateProfInfoModal
           open={openUpdateModal}
           onClose={() => setOpenUpdateModal(false)}
+          candidate={candidate}
         />
       }
     </section>

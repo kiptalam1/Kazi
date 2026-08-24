@@ -3,12 +3,14 @@ import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
-import { ExperienceLevel } from "@/features/common/types/common.types";
+import { Candidate, ExperienceLevel } from "@/features/common/types/common.types";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 type Props = {
   open: boolean;
   onClose: () => void;
+  candidate: Candidate;
 };
 
 const experienceLevels: { value: ExperienceLevel; label: string }[] = [
@@ -20,7 +22,28 @@ const experienceLevels: { value: ExperienceLevel; label: string }[] = [
   { value: 'LEAD', label: 'Lead' },
 ];
 
-export default function UpdateProfInfoModal({ open, onClose }: Props) {
+type ProfessionalInfoForm = {
+  headline: string;
+  bio: string;
+  currentJobTitle: string;
+  location: string;
+  experienceLevel: ExperienceLevel | null;
+  skills: string[];
+  availability: boolean;
+};
+
+export default function UpdateProfInfoModal({ open, onClose, candidate }: Props) {
+  const { register, handleSubmit, formState: { errors } } = useForm<ProfessionalInfoForm>({
+    defaultValues: {
+      headline: candidate.headline ?? '',
+      bio: candidate.bio ?? '',
+      currentJobTitle: candidate.currentJobTitle ?? '',
+      location: candidate.location ?? '',
+      experienceLevel: candidate.experienceLevel ?? null,
+      skills: candidate.skills ?? [],
+      availability: candidate.availability ?? true,
+    }
+  });
 
   useEffect(() => {
     if (open) {
@@ -32,6 +55,10 @@ export default function UpdateProfInfoModal({ open, onClose }: Props) {
   }, [open]);
 
   if (!open) return null;
+
+  const onSubmit = (data: ProfessionalInfoForm) => {
+    console.log(data);
+  }
 
   return (
     <div
@@ -45,26 +72,26 @@ export default function UpdateProfInfoModal({ open, onClose }: Props) {
           Professional Information
         </h2>
 
-        <form className="text-sm space-y-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="text-sm space-y-2">
           <div className="flex flex-col gap-1">
             <Label className="text-xs">Headline</Label>
-            <Input />
+            <Input {...register('headline')} />
           </div>
           <div className="flex flex-col gap-1">
             <Label className="text-xs">Bio</Label>
-            <Textarea />
+            <Textarea {...register('bio')} />
           </div>
           <div className="flex flex-col gap-1">
             <Label className="text-xs">
               Current Job Title
             </Label>
-            <Input />
+            <Input {...register('currentJobTitle')} />
           </div>
           <div className="flex flex-col gap-1">
             <Label className="text-xs">
               Experience Level
             </Label>
-            <Select >
+            <Select {...register('experienceLevel')}>
               {
                 experienceLevels.map((level) => (
 
@@ -79,11 +106,11 @@ export default function UpdateProfInfoModal({ open, onClose }: Props) {
           </div>
           <div className="flex flex-col gap-1">
             <Label className="text-xs">Location</Label>
-            <Input />
+            <Input {...register('location')} />
           </div>
           <div className="flex flex-col gap-1">
             <Label className="text-xs">Skills</Label>
-            <Input />
+            <Input {...register('skills')} />
           </div>
           <fieldset className="space-y-2">
             <legend className="text-xs text-text-muted">
@@ -94,9 +121,11 @@ export default function UpdateProfInfoModal({ open, onClose }: Props) {
               <label className="flex cursor-pointer items-center gap-2 text-sm">
                 <input
                   type="radio"
-                  name="availability"
                   value="true"
                   className="size-4"
+                  {...register('availability', {
+                    setValueAs: (value) => value === 'true'
+                  })}
                 />
                 <span>Yes</span>
               </label>
@@ -104,9 +133,11 @@ export default function UpdateProfInfoModal({ open, onClose }: Props) {
               <label className="flex cursor-pointer items-center gap-2 text-sm">
                 <input
                   type="radio"
-                  name="availability"
                   value="false"
                   className="size-4"
+                  {...register('availability', {
+                    setValueAs: (value) => value === 'true'
+                  })}
                 />
                 <span>No</span>
               </label>
