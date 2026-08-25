@@ -1,6 +1,9 @@
 import Spinner from '@/components/ui/Spinner';
 import { useCandidate } from '../hooks/useCandidate';
 import { getApiErrorMessage } from '@/lib/api/error';
+import { useState } from 'react';
+import UpdateLinks from './modals/UpdateLinks';
+import { Edit2 } from 'lucide-react';
 
 const profileLinks = [
   {
@@ -18,6 +21,7 @@ const profileLinks = [
 ] as const;
 
 export const ProfileLinks = () => {
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const {
     data: candidate,
     isError: isCandidateError,
@@ -43,6 +47,20 @@ export const ProfileLinks = () => {
 
   return (
     <section className="border border-border-muted p-4 sm:p-6 md:p-8">
+      <div className='mb-4 flex justify-between items-center'>
+        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide ">
+          Links
+        </h2>
+        <button
+          onClick={() => setOpenUpdateModal(true)}
+          className='text-text-muted text-sm p-2 hover:bg-background-muted rounded-full duration-100'
+          aria-label='update Professional links'
+        >
+          <Edit2 className='size-4' />
+        </button>
+      </div>
+
+
       <div className="grid gap-4 sm:grid-cols-2">
         {profileLinks.map((link) => {
           const url = candidate[link.value];
@@ -66,6 +84,13 @@ export const ProfileLinks = () => {
           );
         })}
       </div>
+      {
+        <UpdateLinks
+          open={openUpdateModal}
+          onClose={() => setOpenUpdateModal(false)}
+          candidate={candidate}
+        />
+      }
     </section>
   );
 };
