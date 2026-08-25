@@ -60,12 +60,14 @@ export const ProfessionalInfo = () => {
           <div>
             <p className="text-text-muted text-xs">Current Job Title</p>
             <p className="mt-1">
-              {candidate.currentJobTitle ?? 'No job title'}
+              {candidate.currentJobTitle?.trim() ?? 'No job title'}
             </p>
           </div>
           <div>
             <p className="text-text-muted text-xs">Location</p>
-            <p className="mt-1">{candidate.location ?? 'No location'}</p>
+            <p className="mt-1">
+              {candidate.location ?? 'No location'}
+            </p>
           </div>
           <div>
             <p className="text-text-muted text-xs">Experience Level</p>
@@ -75,14 +77,15 @@ export const ProfessionalInfo = () => {
           </div>
           <div>
             <p className="text-text-muted text-xs">Availability</p>
-            <p className="mt-1">{candidate.availability ?? 'Available'}</p>
+            <p className="mt-1">
+              {candidate.availability ? 'Available' : 'Not Available'}</p>
           </div>
           <div>
             <p className="text-text-muted text-xs">Skills</p>
 
             <div className="mt-2 flex flex-wrap gap-2">
               {candidate.skills.length > 0 ? (
-                candidate.skills.map((skill) => (
+                [...new Set(candidate.skills.filter((skill) => skill.trim()))].map((skill) => (
                   <span
                     key={skill}
                     className="rounded-full bg-background-muted px-2 py-1 text-sm"

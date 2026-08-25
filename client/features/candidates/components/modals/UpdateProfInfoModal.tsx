@@ -6,6 +6,7 @@ import Textarea from "@/components/ui/Textarea";
 import { Candidate, ExperienceLevel } from "@/features/common/types/common.types";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import useUpdateCandidateProfile from "../../hooks/useUpdateCandidateProfile";
 
 type Props = {
   open: boolean;
@@ -27,19 +28,20 @@ type ProfessionalInfoForm = {
   bio: string;
   currentJobTitle: string;
   location: string;
-  experienceLevel: ExperienceLevel | null;
+  experienceLevel: ExperienceLevel | undefined;
   skills: string[];
   availability: boolean;
 };
 
 export default function UpdateProfInfoModal({ open, onClose, candidate }: Props) {
-  const { register, handleSubmit, formState: { errors } } = useForm<ProfessionalInfoForm>({
+  const { mutate, isPending } = useUpdateCandidateProfile();
+  const { register, watch, setValue, handleSubmit, } = useForm<ProfessionalInfoForm>({
     defaultValues: {
       headline: candidate.headline ?? '',
       bio: candidate.bio ?? '',
       currentJobTitle: candidate.currentJobTitle ?? '',
       location: candidate.location ?? '',
-      experienceLevel: candidate.experienceLevel ?? null,
+      experienceLevel: candidate.experienceLevel ?? undefined,
       skills: candidate.skills ?? [],
       availability: candidate.availability ?? true,
     }
@@ -56,8 +58,22 @@ export default function UpdateProfInfoModal({ open, onClose, candidate }: Props)
 
   if (!open) return null;
 
+  const availability = watch('availability');
+
   const onSubmit = (data: ProfessionalInfoForm) => {
-    console.log(data);
+    mutate({
+      headline: data.headline.trim() || null,
+      bio: data.bio.trim() || null,
+      currentJobTitle: data.currentJobTitle.trim() || null,
+      location: data.location.trim() || null,
+      experienceLevel: data.experienceLevel,
+      availability: data.availability,
+      skills: data.skills.filter((skill) => skill.trim()),
+    }, {
+      onSuccess: () => {
+        onClose();
+      }
+    });
   }
 
   return (
@@ -110,7 +126,13 @@ export default function UpdateProfInfoModal({ open, onClose, candidate }: Props)
           </div>
           <div className="flex flex-col gap-1">
             <Label className="text-xs">Skills</Label>
-            <Input {...register('skills')} />
+            <Input {...register('skills', {
+              setValueAs: (value) =>
+                value
+                  .split(',')
+                  .map((skill: string) => skill.trim())
+                  .filter(Boolean),
+            })} />
           </div>
           <fieldset className="space-y-2">
             <legend className="text-xs text-text-muted">
@@ -121,11 +143,9 @@ export default function UpdateProfInfoModal({ open, onClose, candidate }: Props)
               <label className="flex cursor-pointer items-center gap-2 text-sm">
                 <input
                   type="radio"
-                  value="true"
+                  checked={availability === true}
+                  onChange={() => setValue('availability', true)}
                   className="size-4"
-                  {...register('availability', {
-                    setValueAs: (value) => value === 'true'
-                  })}
                 />
                 <span>Yes</span>
               </label>
@@ -133,11 +153,9 @@ export default function UpdateProfInfoModal({ open, onClose, candidate }: Props)
               <label className="flex cursor-pointer items-center gap-2 text-sm">
                 <input
                   type="radio"
-                  value="false"
+                  checked={availability === false}
+                  onChange={() => setValue('availability', false)}
                   className="size-4"
-                  {...register('availability', {
-                    setValueAs: (value) => value === 'true'
-                  })}
                 />
                 <span>No</span>
               </label>
@@ -152,8 +170,13 @@ export default function UpdateProfInfoModal({ open, onClose, candidate }: Props)
               Cancel
             </Button>
 
-            <Button type="submit">
-              Save changes
+            <Button type="submit"
+              disabled={isPending}>
+              {
+                isPending
+                  ? 'Saving...'
+                  : 'Save changes'
+              }
             </Button>
           </div>
         </form>
