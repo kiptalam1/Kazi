@@ -270,7 +270,7 @@ export class EmployerApplicationCandidateDto {
   experienceLevel!: ExperienceLevel | null;
 
   @ApiProperty()
-  availability!: string | null;
+  availability!: boolean;
 
   @ApiProperty({ nullable: true })
   portfolioUrl!: string | null;
