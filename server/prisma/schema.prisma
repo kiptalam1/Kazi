@@ -46,7 +46,7 @@ model Candidate {
   experienceLevel   ExperienceLevel?
   currentJobTitle   String?
   salaryExpectation Int?
-  availability      String?
+  availability      Boolean          @default(true)
   linkedinUrl       String?
   githubUrl         String?
   portfolioUrl      String?

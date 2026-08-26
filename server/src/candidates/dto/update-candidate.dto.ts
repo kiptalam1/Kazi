@@ -1,19 +1,19 @@
-import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { ExperienceLevel } from '../../generated/prisma/enums.js';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CandidateUpdateDto {
   @IsOptional()
-  @IsString({ message: 'Headline must be a string' })
-  headline!: string;
+  @IsString()
+  headline!: string | null;
 
   @IsOptional()
-  @IsString({ message: 'Bio must be a string' })
-  bio!: string;
+  @IsString()
+  bio!: string | null;
 
   @IsOptional()
-  @IsString({ message: 'Location must be a string' })
-  location!: string;
+  @IsString()
+  location!: string | null;
 
   @IsOptional()
   @IsArray()
@@ -23,32 +23,32 @@ export class CandidateUpdateDto {
   @IsOptional()
   @IsEnum(ExperienceLevel)
   @ApiProperty({ enum: ExperienceLevel })
-  experienceLevel!: ExperienceLevel;
-
-  @IsOptional()
-  @IsString({ message: 'Title must be a string' })
-  currentJobTitle!: string;
-
-  @IsOptional()
-  salaryExpectation!: number;
+  experienceLevel!: ExperienceLevel | null;
 
   @IsOptional()
   @IsString()
-  availability!: string;
+  currentJobTitle!: string | null;
+
+  @IsOptional()
+  salaryExpectation!: number | null;
+
+  @IsOptional()
+  @IsBoolean()
+  availability!: boolean;
 
   @IsOptional()
   @IsString()
-  linkedinUrl!: string;
+  linkedinUrl!: string | null;
 
   @IsOptional()
   @IsString()
-  githubUrl!: string;
+  githubUrl!: string | null;
 
   @IsOptional()
   @IsString()
-  portfolioUrl!: string;
+  portfolioUrl!: string | null;
 
   @IsOptional()
   @IsString()
-  resumeUrl!: string;
+  resumeUrl!: string | null;
 }
