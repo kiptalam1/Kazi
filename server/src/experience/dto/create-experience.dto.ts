@@ -26,7 +26,7 @@ export class CreateExperienceDto {
   @IsOptional()
   @IsString()
   @MinLength(3)
-  location?: string;
+  location?: string | null;
 
   @ApiProperty({ nullable: true })
   @IsOptional()
@@ -45,7 +45,7 @@ export class CreateExperienceDto {
   @IsOptional()
   @IsDate()
   @Type(() => Date)
-  endDate?: Date;
+  endDate?: Date | null;
 
   @IsBoolean()
   isCurrent!: boolean;
