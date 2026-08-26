@@ -2,9 +2,13 @@ import Spinner from '@/components/ui/Spinner';
 import { useCandidateExperiences } from '../hooks/useCandidateExperiences';
 import { getApiErrorMessage } from '@/lib/api/error';
 import formattedDate from '@/lib/utils/formattedDate';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import AddWorkExperience from './modals/AddWorkExperience';
 
 export default function CandidateExperiences() {
   const { data, isPending, isError, error } = useCandidateExperiences();
+  const [openAddModal, setOpenAddModal] = useState(false);
 
   if (isPending) {
     return (
@@ -21,10 +25,20 @@ export default function CandidateExperiences() {
   }
 
   return (
-    <section className="p-4 sm:p-6 border border-border-muted  ">
-      <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-4">
-        Work Experience
-      </h2>
+    <section className="p-4 sm:p-6 border border-border-muted min-h-32 ">
+      <div className='flex items-center justify-between  mb-4 '>
+        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide ">
+          Work Experience
+        </h2>
+        <button
+          type='button'
+          aria-label='add new experience'
+          onClick={() => setOpenAddModal(true)}
+          className='p-2 hover:bg-background-muted duration-100 rounded-full text-text-muted'
+        >
+          <Plus className='size-4' />
+        </button>
+      </div>
       <div className="divide-y divide-border-muted">
         {data.map((exp) => (
           <article
@@ -56,6 +70,12 @@ export default function CandidateExperiences() {
           </article>
         ))}
       </div>
+      {
+        <AddWorkExperience
+          open={openAddModal}
+          onClose={() => setOpenAddModal(false)}
+        />
+      }
     </section>
   );
 }

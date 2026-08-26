@@ -14,7 +14,7 @@
    ↓
 7. Header / Sidebar / Navigation ✅
    ↓
-8. Landing page
+8. Landing page 🟡
    ↓
 9. Jobs + Job Details ✅
    ↓
@@ -41,13 +41,13 @@ Input ✅
 Avatar ✅
 Card ✅
 Label ✅
-Textarea
-Select
-Checkbox
-Radio
+Textarea ✅
+Select ✅
+Spinner ✅
+Dropdown ✅
 Modal
 Badge
+Checkbox
+Radio
 Separator
-Dropdown
 Tooltip
-Spinner ✅
