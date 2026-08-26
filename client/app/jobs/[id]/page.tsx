@@ -58,19 +58,20 @@ export default function JobDetailsPage() {
             <div className="flex items-center justify-between gap-4">
               <h2 className="text-xl font-semibold">{job.title}</h2>
               <Button
-                type='button'
+                type="button"
                 onClick={() => setOpenApplyModal(true)}
-                className="text-xs font-semibold cursor-pointer">
+                className="text-xs font-semibold cursor-pointer"
+              >
                 Apply
               </Button>
             </div>
-            {
-              openApplyModal && <ApplyModal
+            {openApplyModal && (
+              <ApplyModal
                 jobId={job.id}
                 open={openApplyModal}
                 onClose={() => setOpenApplyModal(false)}
               />
-            }
+            )}
 
             {/* job specifics */}
             <div className="space-y-2">

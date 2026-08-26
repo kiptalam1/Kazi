@@ -1,4 +1,8 @@
-import type { EmploymentType, ExperienceLevel, FileType } from '@/features/common/types/common.types';
+import type {
+  EmploymentType,
+  ExperienceLevel,
+  FileType,
+} from '@/features/common/types/common.types';
 
 export type Experience = {
   employmentType: EmploymentType | null;
@@ -63,4 +67,15 @@ export interface CandidateUpdatePayload {
   githubUrl?: string | null;
   portfolioUrl?: string | null;
   resumeUrl?: string | null;
+}
+
+export interface ExperienceBody {
+  jobTitle: string;
+  companyName: string;
+  location: string | null;
+  employmentType: EmploymentType;
+  isCurrent: boolean;
+  description: string | null;
+  startDate: Date;
+  endDate: Date | null;
 }

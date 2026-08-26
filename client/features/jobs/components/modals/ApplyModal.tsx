@@ -1,13 +1,12 @@
-import { ApplyForm } from "../ApplyForm";
+import { ApplyForm } from '../ApplyForm';
 
 type Props = {
   jobId: string;
   open: boolean;
   onClose: () => void;
-}
+};
 
 export const ApplyModal = ({ jobId, open, onClose }: Props) => {
-
   if (!open) return null;
 
   return (
@@ -20,5 +19,5 @@ export const ApplyModal = ({ jobId, open, onClose }: Props) => {
     >
       <ApplyForm jobId={jobId} onClose={onClose} />
     </div>
-  )
-}
+  );
+};

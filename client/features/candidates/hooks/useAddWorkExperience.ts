@@ -1,25 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import applyjob from '../api/applyjob';
+import type { ExperienceBody } from '../types/candidate.types';
+import addCandidateWorkExperience from '../api/add-candidate-work-experience';
 import { toast } from 'sonner';
 import { getApiErrorMessage } from '@/lib/api/error';
-import type { ApplyJobBody } from '../types/apply-job.types';
 
-export default function useApplyjob() {
+export default function useAddWorkExperience() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ jobId, data }: { jobId: string; data: ApplyJobBody }) =>
-      applyjob(jobId, data),
+    mutationFn: (data: ExperienceBody) => addCandidateWorkExperience(data),
     onError: (error) => {
       console.error(error);
       toast.error(getApiErrorMessage(error));
     },
-    onSuccess: (result, variables) => {
+    onSuccess: (result) => {
       toast.success(result.message);
       queryClient.invalidateQueries({
-        queryKey: ['myapps'],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ['jobs', variables.jobId],
+        queryKey: ['myexperiences'],
       });
     },
   });

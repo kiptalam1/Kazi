@@ -1,7 +1,7 @@
-import Spinner from "@/components/ui/Spinner";
-import { useCandidateEducation } from "../hooks/useCandidateEducation";
-import { getApiErrorMessage } from "@/lib/api/error";
-import formattedDate from "@/lib/utils/formattedDate";
+import Spinner from '@/components/ui/Spinner';
+import { useCandidateEducation } from '../hooks/useCandidateEducation';
+import { getApiErrorMessage } from '@/lib/api/error';
+import formattedDate from '@/lib/utils/formattedDate';
 
 export default function CandidateEducation() {
   const { data, isPending, isError, error } = useCandidateEducation();
@@ -16,11 +16,9 @@ export default function CandidateEducation() {
 
   if (isError) {
     return (
-      <p className="text-center mx-auto p-6">
-        {getApiErrorMessage(error)}</p>
+      <p className="text-center mx-auto p-6">{getApiErrorMessage(error)}</p>
     );
   }
-
 
   return (
     <section className="p-4 sm:p-6 border border-border-muted  ">
@@ -28,38 +26,32 @@ export default function CandidateEducation() {
         Education
       </h2>
       <div className="divide-y divide-border-muted">
-        {
-          data.map((edu) => (
-            <article key={edu.id}
-              className="text-sm space-y-2 py-5 first:pt-0 last:pb-0"
-            >
-              <h3 className="font-semibold">
-                {edu.schoolName}
-              </h3>
-              {edu.fieldOfStudy &&
-                <p className="text-text-secondary">
-                  {edu.fieldOfStudy}
-                </p>
-              }
-              <p className="text-text-secondary text-xs bg-background-subtle w-fit py-1 px-1.5 rounded-full">
-                {edu.qualification.trim().split('_').join(' ')}
+        {data.map((edu) => (
+          <article
+            key={edu.id}
+            className="text-sm space-y-2 py-5 first:pt-0 last:pb-0"
+          >
+            <h3 className="font-semibold">{edu.schoolName}</h3>
+            {edu.fieldOfStudy && (
+              <p className="text-text-secondary">{edu.fieldOfStudy}</p>
+            )}
+            <p className="text-text-secondary text-xs bg-background-subtle w-fit py-1 px-1.5 rounded-full">
+              {edu.qualification.trim().split('_').join(' ')}
+            </p>
+            {(edu.city || edu.country) && (
+              <p className="text-text-secondary">
+                {edu.city}
+                {edu.city && edu.country && ', '}
+                {edu.country}
               </p>
-              {(edu.city || edu.country) &&
-                <p className="text-text-secondary">
-                  {edu.city}
-                  {edu.city && edu.country && ', '}
-                  {edu.country}
-                </p>}
-              <p className="text-xs text-text-muted">
-                {formattedDate(edu.startDate)} –{' '}
-                {edu.endDate ? formattedDate(edu.endDate) : 'Present'}
-              </p>
-
-            </article>
-          ))
-        }
+            )}
+            <p className="text-xs text-text-muted">
+              {formattedDate(edu.startDate)} –{' '}
+              {edu.endDate ? formattedDate(edu.endDate) : 'Present'}
+            </p>
+          </article>
+        ))}
       </div>
     </section>
-  )
+  );
 }
-

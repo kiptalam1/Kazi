@@ -1,12 +1,15 @@
-import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
-import Label from "@/components/ui/Label";
-import Select from "@/components/ui/Select";
-import Textarea from "@/components/ui/Textarea";
-import { Candidate, ExperienceLevel } from "@/features/common/types/common.types";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import useUpdateCandidateProfile from "../../hooks/useUpdateCandidateProfile";
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
+import Label from '@/components/ui/Label';
+import Select from '@/components/ui/Select';
+import Textarea from '@/components/ui/Textarea';
+import {
+  Candidate,
+  ExperienceLevel,
+} from '@/features/common/types/common.types';
+import { useEffect } from 'react';
+import { useWatch, useForm } from 'react-hook-form';
+import useUpdateCandidateProfile from '../../hooks/useUpdateCandidateProfile';
 
 type Props = {
   open: boolean;
@@ -33,53 +36,65 @@ type ProfessionalInfoForm = {
   availability: boolean;
 };
 
-export default function UpdateProfInfoModal({ open, onClose, candidate }: Props) {
+export default function UpdateProfInfoModal({
+  open,
+  onClose,
+  candidate,
+}: Props) {
   const { mutate, isPending } = useUpdateCandidateProfile();
-  const { register, watch, setValue, handleSubmit, } = useForm<ProfessionalInfoForm>({
-    defaultValues: {
-      headline: candidate.headline ?? '',
-      bio: candidate.bio ?? '',
-      currentJobTitle: candidate.currentJobTitle ?? '',
-      location: candidate.location ?? '',
-      experienceLevel: candidate.experienceLevel ?? undefined,
-      skills: candidate.skills ?? [],
-      availability: candidate.availability ?? true,
-    }
-  });
+  const { register, control, setValue, handleSubmit } =
+    useForm<ProfessionalInfoForm>({
+      defaultValues: {
+        headline: candidate.headline ?? '',
+        bio: candidate.bio ?? '',
+        currentJobTitle: candidate.currentJobTitle ?? '',
+        location: candidate.location ?? '',
+        experienceLevel: candidate.experienceLevel ?? undefined,
+        skills: candidate.skills ?? [],
+        availability: candidate.availability ?? true,
+      },
+    });
 
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
     }
     return () => {
-      document.body.style.overflow = ''
-    }
+      document.body.style.overflow = '';
+    };
   }, [open]);
 
-  if (!open) return null;
-
-  const availability = watch('availability');
+  const availability = useWatch({
+    control,
+    name: 'availability',
+  });
 
   const onSubmit = (data: ProfessionalInfoForm) => {
-    mutate({
-      headline: data.headline.trim() || null,
-      bio: data.bio.trim() || null,
-      currentJobTitle: data.currentJobTitle.trim() || null,
-      location: data.location.trim() || null,
-      experienceLevel: data.experienceLevel,
-      availability: data.availability,
-      skills: data.skills.filter((skill) => skill.trim()),
-    }, {
-      onSuccess: () => {
-        onClose();
-      }
-    });
-  }
+    mutate(
+      {
+        headline: data.headline.trim() || null,
+        bio: data.bio.trim() || null,
+        currentJobTitle: data.currentJobTitle.trim() || null,
+        location: data.location.trim() || null,
+        experienceLevel: data.experienceLevel,
+        availability: data.availability,
+        skills: data.skills.filter((skill) => skill.trim()),
+      },
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      },
+    );
+  };
+
+  if (!open) return null;
 
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 p-4 backdrop-blur-2xl">
+      className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 p-4 backdrop-blur-2xl"
+    >
       <div
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-6xl p-6 border border-border-muted bg-background-muted shadow-lg rounded animate-emerge"
@@ -98,26 +113,17 @@ export default function UpdateProfInfoModal({ open, onClose, candidate }: Props)
             <Textarea {...register('bio')} />
           </div>
           <div className="flex flex-col gap-1">
-            <Label className="text-xs">
-              Current Job Title
-            </Label>
+            <Label className="text-xs">Current Job Title</Label>
             <Input {...register('currentJobTitle')} />
           </div>
           <div className="flex flex-col gap-1">
-            <Label className="text-xs">
-              Experience Level
-            </Label>
+            <Label className="text-xs">Experience Level</Label>
             <Select {...register('experienceLevel')}>
-              {
-                experienceLevels.map((level) => (
-
-                  <option
-                    key={level.value}
-                    value={level.value}>
-                    {level.label}
-                  </option>
-                ))
-              }
+              {experienceLevels.map((level) => (
+                <option key={level.value} value={level.value}>
+                  {level.label}
+                </option>
+              ))}
             </Select>
           </div>
           <div className="flex flex-col gap-1">
@@ -126,13 +132,15 @@ export default function UpdateProfInfoModal({ open, onClose, candidate }: Props)
           </div>
           <div className="flex flex-col gap-1">
             <Label className="text-xs">Skills</Label>
-            <Input {...register('skills', {
-              setValueAs: (value) =>
-                value
-                  .split(',')
-                  .map((skill: string) => skill.trim())
-                  .filter(Boolean),
-            })} />
+            <Input
+              {...register('skills', {
+                setValueAs: (value) =>
+                  value
+                    .split(',')
+                    .map((skill: string) => skill.trim())
+                    .filter(Boolean),
+              })}
+            />
           </div>
           <fieldset className="space-y-2">
             <legend className="text-xs text-text-muted">
@@ -162,26 +170,16 @@ export default function UpdateProfInfoModal({ open, onClose, candidate }: Props)
             </div>
           </fieldset>
           <div className="flex justify-end gap-2 pt-4">
-            <Button
-              type="button"
-              variant="basic"
-              onClick={onClose}
-            >
+            <Button type="button" variant="basic" onClick={onClose}>
               Cancel
             </Button>
 
-            <Button type="submit"
-              disabled={isPending}>
-              {
-                isPending
-                  ? 'Saving...'
-                  : 'Save changes'
-              }
+            <Button type="submit" disabled={isPending}>
+              {isPending ? 'Saving...' : 'Save changes'}
             </Button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }
-
