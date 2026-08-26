@@ -56,7 +56,7 @@ export default function CandidateResumes() {
               <iframe
                 src={resume.url}
                 title={resume.displayName || resume.fileName || 'Resume'}
-                className="h-[70vh] w-full border border-border-muted"
+                className="hidden sm:block h-[60vh] w-full border border-border-muted"
               />
             )}
           </article>

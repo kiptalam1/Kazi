@@ -22,16 +22,17 @@ export default function JobDetailsPage() {
     return <p>{error.message}</p>;
   }
   return (
-    <main className="p-4 sm:py-8 space-y-4 sm:spac-y-6">
+    <main className="p-4 sm:py-8 space-y-4 sm:space-y-6">
       <section>
         <Link
           href={'/jobs'}
+          aria-label="Back to jobs"
           className="mb-5 size-8 inline-flex items-center justify-center rounded-md text-text-secondary  hover:bg-background-muted hover:text-text-primary duration-75"
         >
           <ArrowLeft className="size-4" />
         </Link>
         {isPending && (
-          <div className="flex items-center justify-center h-screen">
+          <div className="flex items-center justify-center min-h-[50vh]">
             <Spinner />
           </div>
         )}

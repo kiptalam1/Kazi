@@ -29,6 +29,7 @@ export default function ProfileDropdown({
     <div className="absolute z-50 right-0 border border-border bg-white top-full w-60 h-auto mt-6 shadow-xs flex flex-col">
       <Link
         href={'/profile'}
+        onClick={onClose}
         className="text-text-secondary flex items-center gap-2 px-4 py-3 hover:bg-background-muted text-sm"
       >
         <User className="size-4 " />
@@ -37,7 +38,7 @@ export default function ProfileDropdown({
       <button
         type="button"
         onClick={handleLogout}
-        className="text-danger flex items-center gap-2 t hover:bg-background-muted px-4 py-3 duration-75"
+        className="text-danger flex items-center gap-2  hover:bg-background-muted px-4 py-3 duration-75"
       >
         {' '}
         <LogOut className="size-4" />

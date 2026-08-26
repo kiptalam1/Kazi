@@ -72,7 +72,7 @@ export const ProfileLinks = () => {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm hover:underline"
+                  className="text-sm hover:underline truncate"
                 >
                   {url}
                 </a>

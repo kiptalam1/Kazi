@@ -51,6 +51,7 @@ export default function ApplicationPage() {
         <div className="mb-5 flex items-center justify-between ">
           <Link
             href={'/applications'}
+            aria-label="Back to applications"
             className="size-8 inline-flex items-center justify-center rounded-md text-text-secondary  hover:bg-background-muted hover:text-text-primary duration-75"
           >
             <ArrowLeft className="size-4" />
