@@ -64,3 +64,15 @@ export interface CandidateUpdatePayload {
   portfolioUrl?: string | null;
   resumeUrl?: string | null;
 }
+
+export interface ExperienceBody {
+  jobTitle: string;
+  companyName: string;
+  location: string | null;
+  employmentType: EmploymentType;
+  isCurrent: boolean;
+  description: string | null;
+  startDate: Date;
+  endDate: Date | null;
+}
+
