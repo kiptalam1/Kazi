@@ -1,4 +1,8 @@
-import type { EmploymentType, ExperienceLevel, FileType } from '@/features/common/types/common.types';
+import type {
+  EmploymentType,
+  ExperienceLevel,
+  FileType,
+} from '@/features/common/types/common.types';
 
 export type Experience = {
   employmentType: EmploymentType | null;
@@ -75,4 +79,3 @@ export interface ExperienceBody {
   startDate: Date;
   endDate: Date | null;
 }
-

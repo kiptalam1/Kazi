@@ -12,7 +12,7 @@ export const ProfessionalInfo = () => {
     error: candidateError,
     isPending: isCandidatePending,
   } = useCandidate();
-  const [openUpdateModal, setOpenUpdateModal] = useState(false)
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   if (isCandidatePending) {
     return (
@@ -32,16 +32,16 @@ export const ProfessionalInfo = () => {
 
   return (
     <section className="relative border border-border-muted p-4 sm:p-6 md:p-8">
-      <div className='mb-4 flex justify-between items-center'>
+      <div className="mb-4 flex justify-between items-center">
         <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide ">
           Professional Information
         </h2>
         <button
           onClick={() => setOpenUpdateModal(true)}
-          className='text-text-muted text-sm p-2 hover:bg-background-muted rounded-full duration-100'
-          aria-label='update Professional information'
+          className="text-text-muted text-sm p-2 hover:bg-background-muted rounded-full duration-100"
+          aria-label="update Professional information"
         >
-          <Edit2 className='size-4' />
+          <Edit2 className="size-4" />
         </button>
       </div>
 
@@ -65,9 +65,7 @@ export const ProfessionalInfo = () => {
           </div>
           <div>
             <p className="text-text-muted text-xs">Location</p>
-            <p className="mt-1">
-              {candidate.location ?? 'No location'}
-            </p>
+            <p className="mt-1">{candidate.location ?? 'No location'}</p>
           </div>
           <div>
             <p className="text-text-muted text-xs">Experience Level</p>
@@ -78,14 +76,17 @@ export const ProfessionalInfo = () => {
           <div>
             <p className="text-text-muted text-xs">Availability</p>
             <p className="mt-1">
-              {candidate.availability ? 'Available' : 'Not Available'}</p>
+              {candidate.availability ? 'Available' : 'Not Available'}
+            </p>
           </div>
           <div>
             <p className="text-text-muted text-xs">Skills</p>
 
             <div className="mt-2 flex flex-wrap gap-2">
               {candidate.skills.length > 0 ? (
-                [...new Set(candidate.skills.filter((skill) => skill.trim()))].map((skill) => (
+                [
+                  ...new Set(candidate.skills.filter((skill) => skill.trim())),
+                ].map((skill) => (
                   <span
                     key={skill}
                     className="rounded-full bg-background-muted px-2 py-1 text-sm"

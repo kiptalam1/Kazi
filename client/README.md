@@ -45,9 +45,9 @@ Textarea ✅
 Select ✅
 Spinner ✅
 Dropdown ✅
-Modal
+Modal ✅
+Checkbox ✅
 Badge
-Checkbox
 Radio
 Separator
 Tooltip

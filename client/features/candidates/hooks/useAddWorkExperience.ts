@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { ExperienceBody } from "../types/candidate.types";
-import addCandidateWorkExperience from "../api/add-candidate-work-experience";
-import { toast } from "sonner";
-import { getApiErrorMessage } from "@/lib/api/error";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { ExperienceBody } from '../types/candidate.types';
+import addCandidateWorkExperience from '../api/add-candidate-work-experience';
+import { toast } from 'sonner';
+import { getApiErrorMessage } from '@/lib/api/error';
 
 export default function useAddWorkExperience() {
   const queryClient = useQueryClient();
@@ -17,6 +17,6 @@ export default function useAddWorkExperience() {
       queryClient.invalidateQueries({
         queryKey: ['myexperiences'],
       });
-    }
+    },
   });
 }

@@ -1,7 +1,6 @@
-
 type ModalProps = React.ComponentProps<'div'> & {
   onClose: () => void;
-}
+};
 export default function Modal({ onClose, children }: ModalProps) {
   return (
     <div
@@ -12,4 +11,3 @@ export default function Modal({ onClose, children }: ModalProps) {
     </div>
   );
 }
-

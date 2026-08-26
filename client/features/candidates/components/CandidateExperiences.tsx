@@ -26,17 +26,17 @@ export default function CandidateExperiences() {
 
   return (
     <section className="p-4 sm:p-6 border border-border-muted min-h-32 ">
-      <div className='flex items-center justify-between  mb-4 '>
+      <div className="flex items-center justify-between  mb-4 ">
         <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide ">
           Work Experience
         </h2>
         <button
-          type='button'
-          aria-label='add new experience'
+          type="button"
+          aria-label="add new experience"
           onClick={() => setOpenAddModal(true)}
-          className='p-2 hover:bg-background-muted duration-100 rounded-full text-text-muted'
+          className="p-2 hover:bg-background-muted duration-100 rounded-full text-text-muted"
         >
-          <Plus className='size-4' />
+          <Plus className="size-4" />
         </button>
       </div>
       <div className="divide-y divide-border-muted">

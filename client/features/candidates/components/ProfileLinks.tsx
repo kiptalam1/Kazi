@@ -47,19 +47,18 @@ export const ProfileLinks = () => {
 
   return (
     <section className="border border-border-muted p-4 sm:p-6 md:p-8">
-      <div className='mb-4 flex justify-between items-center'>
+      <div className="mb-4 flex justify-between items-center">
         <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide ">
           Links
         </h2>
         <button
           onClick={() => setOpenUpdateModal(true)}
-          className='text-text-muted text-sm p-2 hover:bg-background-muted rounded-full duration-100'
-          aria-label='update Professional links'
+          className="text-text-muted text-sm p-2 hover:bg-background-muted rounded-full duration-100"
+          aria-label="update Professional links"
         >
-          <Edit2 className='size-4' />
+          <Edit2 className="size-4" />
         </button>
       </div>
-
 
       <div className="grid gap-4 sm:grid-cols-2">
         {profileLinks.map((link) => {
