@@ -217,7 +217,15 @@ export default function WorkExperienceModal({ open, onClose, experience }: Props
           )}
           <div className="flex flex-col gap-1">
             <Label>Description</Label>
-            <Textarea {...register('description')} />
+            <Textarea
+              rows={10}
+              maxLength={5000}
+              autoCapitalize='sentences'
+              spellCheck
+              wrap='soft'
+              autoCorrect='on'
+              className='min-h-48'
+              {...register('description')} />
           </div>
 
           <div className="flex justify-end gap-2 pt-4">

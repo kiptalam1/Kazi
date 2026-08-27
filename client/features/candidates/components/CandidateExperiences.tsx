@@ -4,13 +4,17 @@ import { getApiErrorMessage } from '@/lib/api/error';
 import formattedDate from '@/lib/utils/formattedDate';
 import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import WorkExperienceModal from './modals/AddWorkExperience';
+import WorkExperienceModal from './modals/WorkExperienceModal';
 import type { Experience } from '../types/candidate.types';
+import ConfirmModal from '@/components/ui/ConfirmModal';
+import useDeleteCandidateExperience from '../hooks/useDeleteCandidateExperience';
 
 export default function CandidateExperiences() {
   const { data, isPending, isError, error } = useCandidateExperiences();
   const [openExpModal, setOpenExpModal] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState<Experience | undefined>()
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const { mutate: deleteExperience, isPending: isDeleting } = useDeleteCandidateExperience();
 
   if (isPending) {
     return (
@@ -40,6 +44,16 @@ export default function CandidateExperiences() {
     setOpenExpModal(false);
     setSelectedExperience(undefined);
   };
+
+  function handleDelete() {
+    if (!selectedExperience) return;
+    deleteExperience(selectedExperience.id, {
+      onSuccess: () => {
+        setOpenDeleteModal(false);
+        setSelectedExperience(undefined);
+      },
+    });
+  }
 
   return (
     <section className="p-4 sm:p-6 border border-border-muted min-h-32 ">
@@ -77,6 +91,10 @@ export default function CandidateExperiences() {
                 <button
                   type='button'
                   aria-label={`Delete ${exp.jobTitle}`}
+                  onClick={() => {
+                    setOpenDeleteModal(true)
+                    setSelectedExperience(exp)
+                  }}
                   className='p-3 hover:bg-red-50 hover:text-danger rounded-full duration-100'>
                   <Trash2 className='size-3' />
                 </button>
@@ -113,6 +131,19 @@ export default function CandidateExperiences() {
           open={openExpModal}
           onClose={handleCloseModal}
           experience={selectedExperience}
+        />
+      }
+      {
+        <ConfirmModal
+          title='Are you sure you want to delete this experience? '
+          open={openDeleteModal}
+          onClose={() => {
+            setOpenDeleteModal(false)
+            setSelectedExperience(undefined)
+          }
+          }
+          onConfirm={handleDelete}
+          isPending={isDeleting}
         />
       }
     </section>
