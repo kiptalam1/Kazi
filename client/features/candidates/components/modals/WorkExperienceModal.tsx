@@ -8,36 +8,73 @@ import Textarea from '@/components/ui/Textarea';
 import type { EmploymentType } from '@/features/common/types/common.types';
 import useAddWorkExperience from '../../hooks/useAddWorkExperience';
 import { useForm, useWatch } from 'react-hook-form';
-import type { ExperienceBody } from '../../types/candidate.types';
+import type { Experience, ExperienceBody } from '../../types/candidate.types';
 import { useEffect } from 'react';
+import useUpdateCandidateExperience from '../../hooks/useUpdateCandidateExperience';
 
 type Props = {
   open: boolean;
   onClose: () => void;
+  experience?: Experience;
 };
 const employmentTypes: {
   label: string;
   value: EmploymentType;
 }[] = [
-  { label: 'Full Time', value: 'FULL_TIME' },
-  { label: 'Part Time', value: 'PART_TIME' },
-  { label: 'Contract', value: 'CONTRACT' },
-  { label: 'Internship', value: 'INTERNSHIP' },
-  { label: 'Apprenticeship', value: 'APPRENTICESHIP' },
-  { label: 'Freelance', value: 'FREELANCE' },
-  { label: 'Volunteer', value: 'VOLUNTEER' },
-];
+    { label: 'Full Time', value: 'FULL_TIME' },
+    { label: 'Part Time', value: 'PART_TIME' },
+    { label: 'Contract', value: 'CONTRACT' },
+    { label: 'Internship', value: 'INTERNSHIP' },
+    { label: 'Apprenticeship', value: 'APPRENTICESHIP' },
+    { label: 'Freelance', value: 'FREELANCE' },
+    { label: 'Volunteer', value: 'VOLUNTEER' },
+  ];
 
-export default function AddWorkExperience({ open, onClose }: Props) {
-  const { mutate, isPending } = useAddWorkExperience();
+type ExpFormFields = Omit<ExperienceBody, 'startDate' | 'endDate'> & {
+  startDate: string;
+  endDate: string;
+}
+
+export default function WorkExperienceModal({ open, onClose, experience }: Props) {
+  const { mutate: addExperience, isPending: isAddExperiencePending } = useAddWorkExperience();
+  const { mutate: updateExperience, isPending: isUpdateExperience } = useUpdateCandidateExperience();
   const {
     register,
-
     setValue,
     handleSubmit,
+    reset,
     control,
     formState: { errors },
-  } = useForm<ExperienceBody>();
+  } = useForm<ExpFormFields>();
+
+  useEffect(() => {
+    if (experience) {
+      reset({
+        jobTitle: experience.jobTitle,
+        companyName: experience.companyName,
+        employmentType: experience.employmentType ?? undefined,
+        location: experience.location ?? '',
+        startDate: new Date(experience.startDate).toISOString().split('T')[0],
+        isCurrent: experience.isCurrent,
+        description: experience.description ?? '',
+        endDate: experience.endDate
+          ? new Date(experience.endDate).toISOString().split('T')[0] : '',
+      })
+    } else {
+      reset({
+        jobTitle: '',
+        companyName: '',
+        employmentType: '' as EmploymentType,
+        location: '',
+        startDate: '',
+        isCurrent: false,
+        description: '',
+        endDate: '',
+      })
+
+    }
+  }
+    , [experience, reset]);
 
   useEffect(() => {
     if (open) {
@@ -55,24 +92,35 @@ export default function AddWorkExperience({ open, onClose }: Props) {
 
   useEffect(() => {
     if (isCurrent) {
-      setValue('endDate', null);
+      setValue('endDate', '');
     }
   }, [isCurrent, setValue]);
 
-  const onSubmit = (data: ExperienceBody) => {
-    mutate(
-      {
-        ...data,
-        jobTitle: data.jobTitle.trim(),
-        companyName: data.companyName.trim(),
-        location: data.location?.trim() || null,
-        description: data.description?.trim() || null,
-        endDate: data.isCurrent ? null : data.endDate,
-      },
-      {
+  const onSubmit = (data: ExpFormFields) => {
+    const payload: ExperienceBody = {
+      ...data,
+      jobTitle: data.jobTitle.trim(),
+      companyName: data.companyName.trim(),
+      location: data.location?.trim() || null,
+      description: data.description?.trim() || null,
+      startDate: new Date(data.startDate),
+      endDate: data.isCurrent || !data.endDate ? null : new Date(data.endDate),
+
+    }
+    if (experience) {
+      updateExperience({
+        experienceId: experience.id,
+        data: payload,
+      }, {
         onSuccess: () => onClose(),
-      },
-    );
+      })
+    } else {
+      addExperience(payload,
+        {
+          onSuccess: () => onClose(),
+        },
+      );
+    }
   };
 
   if (!open) return null;
@@ -84,7 +132,7 @@ export default function AddWorkExperience({ open, onClose }: Props) {
         className="w-full max-w-3xl border border-border-muted rounded-sm bg-background p-4 sm:p-6 shadow-lg animate-emerge max-h-[calc(100dvh-2rem)] overflow-y-auto"
       >
         <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-5">
-          Add work experience
+          {experience ? 'Edit Work Experience' : 'Add work experience'}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="text-sm space-y-4 ">
           <div className="flex flex-col gap-1">
@@ -146,7 +194,6 @@ export default function AddWorkExperience({ open, onClose }: Props) {
               type="date"
               {...register('startDate', {
                 required: 'Start date is required',
-                setValueAs: (value) => new Date(value),
               })}
             />
             {errors.startDate && (
@@ -164,14 +211,21 @@ export default function AddWorkExperience({ open, onClose }: Props) {
               <Input
                 type="date"
                 {...register('endDate', {
-                  setValueAs: (value) => (value ? new Date(value) : null),
                 })}
               />
             </div>
           )}
           <div className="flex flex-col gap-1">
             <Label>Description</Label>
-            <Textarea {...register('description')} />
+            <Textarea
+              rows={10}
+              maxLength={5000}
+              autoCapitalize='sentences'
+              spellCheck
+              wrap='soft'
+              autoCorrect='on'
+              className='min-h-48'
+              {...register('description')} />
           </div>
 
           <div className="flex justify-end gap-2 pt-4">
@@ -179,8 +233,8 @@ export default function AddWorkExperience({ open, onClose }: Props) {
               Cancel
             </Button>
 
-            <Button type="submit" disabled={isPending}>
-              {isPending ? 'Saving...' : 'Save'}
+            <Button type="submit" disabled={isAddExperiencePending || isUpdateExperience}>
+              {(isAddExperiencePending || isUpdateExperience) ? 'Saving...' : 'Save'}
             </Button>
           </div>
         </form>
