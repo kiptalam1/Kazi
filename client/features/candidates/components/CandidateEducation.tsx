@@ -7,12 +7,14 @@ import { useState } from 'react';
 import EducationModal from './modals/EducationModal';
 import type { Education } from '../types/candidate.types';
 import ConfirmModal from '@/components/ui/ConfirmModal';
+import useDeleteCandidateEducation from '../hooks/useDeleteCandidateEducation';
 
 export default function CandidateEducation() {
   const { data, isPending, isError, error } = useCandidateEducation();
   const [openEducationModal, setOpenEducationModal] = useState(false);
   const [selectedEducation, setSelectedEducation] = useState<Education | undefined>();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const { mutate: deleteEducation, isPending: isDeleting } = useDeleteCandidateEducation();
 
   if (isPending) {
     return (
@@ -43,8 +45,14 @@ export default function CandidateEducation() {
     setOpenEducationModal(false);
   }
 
-  const handleDelete = (education: Education) => {
-    if (!education) return;
+  const handleDelete = () => {
+    if (!selectedEducation) return;
+    deleteEducation(selectedEducation.id, {
+      onSuccess: () => {
+        setSelectedEducation(undefined);
+        setOpenDeleteModal(false);
+      }
+    })
   }
   return (
     <section className="p-4 sm:p-6 border border-border-muted  ">
@@ -117,8 +125,8 @@ export default function CandidateEducation() {
           education={selectedEducation}
         />
       }
-      {/*
-        <ConfirmModal
+      {
+        < ConfirmModal
           title='Are you sure you want to delete this education? '
           open={openDeleteModal}
           onClose={() => {
@@ -129,7 +137,7 @@ export default function CandidateEducation() {
           onConfirm={handleDelete}
           isPending={isDeleting}
         />
-      */}
+      }
 
     </section>
   );
