@@ -18,7 +18,7 @@ export class CreateEducationDto {
   @IsOptional()
   @IsString()
   @MinLength(3, { message: 'Field must be at least 3 characters long.' })
-  fieldOfStudy?: string;
+  fieldOfStudy?: string | null;
 
   @IsString()
   @IsEnum(Qualification, {
