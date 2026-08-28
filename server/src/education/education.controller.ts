@@ -88,7 +88,7 @@ export class EducationController {
     summary: 'Education removed successfully',
   })
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Delete(':educaionId')
+  @Delete(':educationId')
   async deleteEducation(
     @CurrentUser('id') userId: string,
     @Param('educationId') educationId: string,

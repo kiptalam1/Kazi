@@ -50,6 +50,8 @@ export class EducationService {
         schoolName: data.schoolName,
         fieldOfStudy: data.fieldOfStudy,
         qualification: data.qualification,
+        city: data.city,
+        country: data.country,
         startDate: data.startDate,
         endDate: data.endDate,
       },

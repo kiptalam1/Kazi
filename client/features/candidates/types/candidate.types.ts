@@ -79,3 +79,13 @@ export interface ExperienceBody {
   startDate: Date;
   endDate: Date | null;
 }
+
+export interface EducationBody {
+  schoolName: string;
+  fieldOfStudy: string | null;
+  qualification: EducationLevel;
+  city: string | null;
+  country: string | null;
+  startDate: Date;
+  endDate: Date | null;
+}
