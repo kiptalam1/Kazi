@@ -55,7 +55,7 @@ export default function CandidateEducation() {
     })
   }
   return (
-    <section className="p-4 sm:p-6 border border-border-muted  ">
+    <section className="p-4 sm:p-6 border border-border-muted min-h-32 ">
       <div className='flex items-center justify-between  mb-4'>
         <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide">
           Education
@@ -139,6 +139,6 @@ export default function CandidateEducation() {
         />
       }
 
-    </section>
+    </section >
   );
 }

@@ -1,9 +1,14 @@
 import Spinner from '@/components/ui/Spinner';
 import { useCandidateResumes } from '../hooks/useCandidateResumes';
 import { getApiErrorMessage } from '@/lib/api/error';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import ResumeModal from './modals/ResumeModal';
 
 export default function CandidateResumes() {
   const { data, isPending, isError, error } = useCandidateResumes();
+  const [openResumeModal, setOpenResumeModal] = useState(false);
+
 
   if (isPending) {
     return (
@@ -20,10 +25,20 @@ export default function CandidateResumes() {
   }
 
   return (
-    <section className="p-4 sm:p-6 border border-border-muted  ">
-      <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-4">
-        Resumes
-      </h2>
+    <section className="p-4 sm:p-6 border border-border-muted min-h-32 ">
+      <div className='flex items-center justify-between  mb-4'>
+        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide">
+          Resumes
+        </h2>
+        <button
+          type="button"
+          aria-label="add new resume"
+          onClick={() => setOpenResumeModal(true)}
+          className="p-2 hover:bg-background-muted duration-100 rounded-full text-text-muted"
+        >
+          <Plus className="size-4" />
+        </button>
+      </div>
       <div className="divide-y divide-border-muted">
         {data.map((resume) => (
           <article
@@ -62,6 +77,12 @@ export default function CandidateResumes() {
           </article>
         ))}
       </div>
+      {
+        <ResumeModal
+          open={openResumeModal}
+          onClose={() => setOpenResumeModal(false)}
+        />
+      }
     </section>
   );
 }

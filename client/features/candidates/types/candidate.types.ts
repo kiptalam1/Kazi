@@ -89,3 +89,8 @@ export interface EducationBody {
   startDate: Date;
   endDate: Date | null;
 }
+
+export type UploadResumeResponse = {
+  message: string;
+  data: Resume;
+};
