@@ -12,9 +12,12 @@ import useDeleteCandidateExperience from '../hooks/useDeleteCandidateExperience'
 export default function CandidateExperiences() {
   const { data, isPending, isError, error } = useCandidateExperiences();
   const [openExpModal, setOpenExpModal] = useState(false);
-  const [selectedExperience, setSelectedExperience] = useState<Experience | undefined>()
+  const [selectedExperience, setSelectedExperience] = useState<
+    Experience | undefined
+  >();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const { mutate: deleteExperience, isPending: isDeleting } = useDeleteCandidateExperience();
+  const { mutate: deleteExperience, isPending: isDeleting } =
+    useDeleteCandidateExperience();
 
   if (isPending) {
     return (
@@ -76,30 +79,28 @@ export default function CandidateExperiences() {
             key={exp.id}
             className="text-sm space-y-2 py-5 first:pt-0 last:pb-0"
           >
-            <div className='flex items-start justify-between gap-4 '>
-              <h3 className="font-semibold">
-                {exp.jobTitle}
-              </h3>
-              <div className='flex items-start gap-1 text-sm text-text-muted'>
+            <div className="flex items-start justify-between gap-4 ">
+              <h3 className="font-semibold">{exp.jobTitle}</h3>
+              <div className="flex items-start gap-1 text-sm text-text-muted">
                 <button
-                  type='button'
+                  type="button"
                   aria-label={`Edit ${exp.jobTitle}`}
                   onClick={() => handleEdit(exp)}
-                  className='p-3 hover:bg-accent-soft hover:text-accent-hover rounded-full duration-100'>
-                  <Pencil className='size-3' />
+                  className="p-3 hover:bg-accent-soft hover:text-accent-hover rounded-full duration-100"
+                >
+                  <Pencil className="size-3" />
                 </button>
                 <button
-                  type='button'
+                  type="button"
                   aria-label={`Delete ${exp.jobTitle}`}
                   onClick={() => {
-                    setOpenDeleteModal(true)
-                    setSelectedExperience(exp)
+                    setOpenDeleteModal(true);
+                    setSelectedExperience(exp);
                   }}
-                  className='p-3 hover:bg-red-50 hover:text-danger rounded-full duration-100'>
-                  <Trash2 className='size-3' />
+                  className="p-3 hover:bg-red-50 hover:text-danger rounded-full duration-100"
+                >
+                  <Trash2 className="size-3" />
                 </button>
-
-
               </div>
             </div>
             <p className="text-text-secondary">{exp.companyName}</p>
@@ -135,13 +136,12 @@ export default function CandidateExperiences() {
       }
       {
         <ConfirmModal
-          title='Are you sure you want to delete this experience? '
+          title="Are you sure you want to delete this experience? "
           open={openDeleteModal}
           onClose={() => {
-            setOpenDeleteModal(false)
-            setSelectedExperience(undefined)
-          }
-          }
+            setOpenDeleteModal(false);
+            setSelectedExperience(undefined);
+          }}
           onConfirm={handleDelete}
           isPending={isDeleting}
         />

@@ -1,9 +1,9 @@
-import { api } from "@/lib/api/client";
-import { Education, EducationBody } from "../types/candidate.types";
+import { api } from '@/lib/api/client';
+import { Education, EducationBody } from '../types/candidate.types';
 
 export default async function updatedCandidateEducation(
   educationId: string,
-  data: EducationBody
+  data: EducationBody,
 ): Promise<{
   data: Education;
   message: string;

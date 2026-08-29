@@ -9,7 +9,6 @@ export default function CandidateResumes() {
   const { data, isPending, isError, error } = useCandidateResumes();
   const [openResumeModal, setOpenResumeModal] = useState(false);
 
-
   if (isPending) {
     return (
       <div className="flex items-center justify-center  min-h-[50vh] w-full ">
@@ -26,7 +25,7 @@ export default function CandidateResumes() {
 
   return (
     <section className="p-4 sm:p-6 border border-border-muted min-h-32 ">
-      <div className='flex items-center justify-between  mb-4'>
+      <div className="flex items-center justify-between  mb-4">
         <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide">
           Resumes
         </h2>

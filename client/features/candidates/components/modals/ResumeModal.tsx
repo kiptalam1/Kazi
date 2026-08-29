@@ -1,24 +1,21 @@
-import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
-import Label from "@/components/ui/Label";
-import Modal from "@/components/ui/Modal";
-import { FileText, Loader2, X } from "lucide-react";
-import { ChangeEvent, SyntheticEvent, useRef, useState } from "react";
-import useUploadCandidateResume from "../../hooks/useUploadCandidateResume";
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
+import Label from '@/components/ui/Label';
+import Modal from '@/components/ui/Modal';
+import { FileText, Loader2, X } from 'lucide-react';
+import { ChangeEvent, SyntheticEvent, useRef, useState } from 'react';
+import useUploadCandidateResume from '../../hooks/useUploadCandidateResume';
 
 type Props = {
   open: boolean;
   onClose: () => void;
-}
-export default function ResumeModal({
-  open,
-  onClose
-}: Props) {
+};
+export default function ResumeModal({ open, onClose }: Props) {
   const [file, setFile] = useState<File | undefined>();
   const [displayName, setDisplayName] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const { mutate: uploadResume, isPending: isUploading } = useUploadCandidateResume();
-
+  const { mutate: uploadResume, isPending: isUploading } =
+    useUploadCandidateResume();
 
   function handleAddResume(event: ChangeEvent<HTMLInputElement>) {
     setFile(event.target.files?.[0]);
@@ -28,7 +25,7 @@ export default function ResumeModal({
     onClose();
     setFile(undefined);
     setDisplayName('');
-  }
+  };
 
   function handleSubmit(e: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
     e.preventDefault();
@@ -46,19 +43,17 @@ export default function ResumeModal({
 
     uploadResume(fd, {
       onSuccess: () => handleCloseModal,
-    })
+    });
   }
-
 
   if (!open) return null;
 
   return (
-    <Modal
-      onClose={handleCloseModal}
-    >
+    <Modal onClose={handleCloseModal}>
       <div
         onClick={(e) => e.stopPropagation()}
-        className="p-4 sm:p-6 bg-background space-y-4 rounded-sm shadow-lg w-full max-w-2xl animate-emerge">
+        className="p-4 sm:p-6 bg-background space-y-4 rounded-sm shadow-lg w-full max-w-2xl animate-emerge"
+      >
         <div className="flex items-center justify-between gap-2 text-text-secondary">
           <h2 className=" uppercase font-semibold text-sm tracking-wide">
             Upload Resume
@@ -66,13 +61,12 @@ export default function ResumeModal({
           <button
             type="button"
             onClick={handleCloseModal}
-            className="p-2 rounded-full hover:bg-background-subtle ">
+            className="p-2 rounded-full hover:bg-background-subtle "
+          >
             <X className="size-4" />
           </button>
         </div>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <Label>Display Name (Optional)</Label>
             <Input
@@ -83,11 +77,12 @@ export default function ResumeModal({
           </div>
           <input
             ref={inputRef}
-            type='file'
+            type="file"
             required
-            accept='.pdf, .docx'
+            accept=".pdf, .docx"
             onChange={handleAddResume}
-            className='hidden' />
+            className="hidden"
+          />
 
           <div className="flex items-center gap-2">
             <Button
@@ -97,30 +92,30 @@ export default function ResumeModal({
               disabled={isUploading}
               className="flex gap-2 items-center text-sm w-fit hover:ring-2 hover:ring-border-strong text-text-secondary disabled:text-text-disabled"
             >
-              {isUploading ? <Loader2 className='size-4 animate-spin' /> : <FileText className='size-4' />}
+              {isUploading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <FileText className="size-4" />
+              )}
               Pick a Resume
             </Button>
-            {file && <span className="text-sm text-accent max-w-35 truncate">
-              {
-                file.name
-              }
-            </span>
-            }
+            {file && (
+              <span className="text-sm text-accent max-w-35 truncate">
+                {file.name}
+              </span>
+            )}
           </div>
-          {file &&
+          {file && (
             <Button
               type="submit"
               disabled={isUploading}
               className="disabled:opacity-60"
             >
-              {
-                isUploading ? 'Uploading...' : 'Upload Resume'
-              }
+              {isUploading ? 'Uploading...' : 'Upload Resume'}
             </Button>
-          }
+          )}
         </form>
       </div>
-    </Modal >
-  )
+    </Modal>
+  );
 }
-

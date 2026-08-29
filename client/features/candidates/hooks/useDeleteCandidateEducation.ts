@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getApiErrorMessage } from "@/lib/api/error";
-import { toast } from "sonner";
-import deleteCandidateEducation from "../api/delete-candidate-education";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { getApiErrorMessage } from '@/lib/api/error';
+import { toast } from 'sonner';
+import deleteCandidateEducation from '../api/delete-candidate-education';
 
 export default function useDeleteCandidateEducation() {
   const queryClient = useQueryClient();
@@ -16,6 +16,6 @@ export default function useDeleteCandidateEducation() {
       queryClient.invalidateQueries({
         queryKey: ['myeducation'],
       });
-    }
+    },
   });
 }

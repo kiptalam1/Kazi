@@ -12,9 +12,12 @@ import useDeleteCandidateEducation from '../hooks/useDeleteCandidateEducation';
 export default function CandidateEducation() {
   const { data, isPending, isError, error } = useCandidateEducation();
   const [openEducationModal, setOpenEducationModal] = useState(false);
-  const [selectedEducation, setSelectedEducation] = useState<Education | undefined>();
+  const [selectedEducation, setSelectedEducation] = useState<
+    Education | undefined
+  >();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const { mutate: deleteEducation, isPending: isDeleting } = useDeleteCandidateEducation();
+  const { mutate: deleteEducation, isPending: isDeleting } =
+    useDeleteCandidateEducation();
 
   if (isPending) {
     return (
@@ -33,17 +36,17 @@ export default function CandidateEducation() {
   const handleAdd = () => {
     setSelectedEducation(undefined);
     setOpenEducationModal(true);
-  }
+  };
 
   const handleEdit = (education: Education) => {
     setSelectedEducation(education);
     setOpenEducationModal(true);
-  }
+  };
 
   const handleCloseModal = () => {
     setSelectedEducation(undefined);
     setOpenEducationModal(false);
-  }
+  };
 
   const handleDelete = () => {
     if (!selectedEducation) return;
@@ -51,12 +54,12 @@ export default function CandidateEducation() {
       onSuccess: () => {
         setSelectedEducation(undefined);
         setOpenDeleteModal(false);
-      }
-    })
-  }
+      },
+    });
+  };
   return (
     <section className="p-4 sm:p-6 border border-border-muted min-h-32 ">
-      <div className='flex items-center justify-between  mb-4'>
+      <div className="flex items-center justify-between  mb-4">
         <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide">
           Education
         </h2>
@@ -75,25 +78,27 @@ export default function CandidateEducation() {
             key={edu.id}
             className="text-sm space-y-2 py-5 first:pt-0 last:pb-0"
           >
-            <div className='flex items-center gap-4 justify-between'>
+            <div className="flex items-center gap-4 justify-between">
               <h3 className="font-semibold">{edu.schoolName}</h3>
-              <div className='flex items-start gap-1 text-sm text-text-muted'>
+              <div className="flex items-start gap-1 text-sm text-text-muted">
                 <button
-                  type='button'
+                  type="button"
                   aria-label={`Edit ${edu.schoolName}`}
                   onClick={() => handleEdit(edu)}
-                  className='p-3 hover:bg-accent-soft hover:text-accent-hover rounded-full duration-100'>
-                  <Pencil className='size-3' />
+                  className="p-3 hover:bg-accent-soft hover:text-accent-hover rounded-full duration-100"
+                >
+                  <Pencil className="size-3" />
                 </button>
                 <button
-                  type='button'
+                  type="button"
                   aria-label={`Delete ${edu.schoolName}`}
                   onClick={() => {
-                    setOpenDeleteModal(true)
-                    setSelectedEducation(edu)
+                    setOpenDeleteModal(true);
+                    setSelectedEducation(edu);
                   }}
-                  className='p-3 hover:bg-red-50 hover:text-danger rounded-full duration-100'>
-                  <Trash2 className='size-3' />
+                  className="p-3 hover:bg-red-50 hover:text-danger rounded-full duration-100"
+                >
+                  <Trash2 className="size-3" />
                 </button>
               </div>
             </div>
@@ -126,19 +131,17 @@ export default function CandidateEducation() {
         />
       }
       {
-        < ConfirmModal
-          title='Are you sure you want to delete this education? '
+        <ConfirmModal
+          title="Are you sure you want to delete this education? "
           open={openDeleteModal}
           onClose={() => {
-            setOpenDeleteModal(false)
-            setSelectedEducation(undefined)
-          }
-          }
+            setOpenDeleteModal(false);
+            setSelectedEducation(undefined);
+          }}
           onConfirm={handleDelete}
           isPending={isDeleting}
         />
       }
-
-    </section >
+    </section>
   );
 }
