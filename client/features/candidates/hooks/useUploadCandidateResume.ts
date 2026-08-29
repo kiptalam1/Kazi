@@ -1,18 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import updatedCandidateEducation from '../api/update-candidate-education';
-import type { EducationBody } from '../types/candidate.types';
+import uploadCanidateResume from '../api/upload-candidate-resume';
 import { toast } from 'sonner';
 import { getApiErrorMessage } from '@/lib/api/error';
 
-type Props = {
-  educationId: string;
-  data: EducationBody;
-};
-export default function useUpdateCandidateEducation() {
+export default function useUploadCandidateResume() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ educationId, data }: Props) =>
-      updatedCandidateEducation(educationId, data),
+    mutationFn: (data: FormData) => uploadCanidateResume(data),
     onError: (error) => {
       console.error(error);
       toast.error(getApiErrorMessage(error));
@@ -20,7 +14,7 @@ export default function useUpdateCandidateEducation() {
     onSuccess: (result) => {
       toast.success(result.message);
       queryClient.invalidateQueries({
-        queryKey: ['myeducation'],
+        queryKey: ['myresumes'],
       });
     },
   });

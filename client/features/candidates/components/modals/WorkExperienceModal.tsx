@@ -21,23 +21,29 @@ const employmentTypes: {
   label: string;
   value: EmploymentType;
 }[] = [
-    { label: 'Full Time', value: 'FULL_TIME' },
-    { label: 'Part Time', value: 'PART_TIME' },
-    { label: 'Contract', value: 'CONTRACT' },
-    { label: 'Internship', value: 'INTERNSHIP' },
-    { label: 'Apprenticeship', value: 'APPRENTICESHIP' },
-    { label: 'Freelance', value: 'FREELANCE' },
-    { label: 'Volunteer', value: 'VOLUNTEER' },
-  ];
+  { label: 'Full Time', value: 'FULL_TIME' },
+  { label: 'Part Time', value: 'PART_TIME' },
+  { label: 'Contract', value: 'CONTRACT' },
+  { label: 'Internship', value: 'INTERNSHIP' },
+  { label: 'Apprenticeship', value: 'APPRENTICESHIP' },
+  { label: 'Freelance', value: 'FREELANCE' },
+  { label: 'Volunteer', value: 'VOLUNTEER' },
+];
 
 type ExpFormFields = Omit<ExperienceBody, 'startDate' | 'endDate'> & {
   startDate: string;
   endDate: string;
-}
+};
 
-export default function WorkExperienceModal({ open, onClose, experience }: Props) {
-  const { mutate: addExperience, isPending: isAddExperiencePending } = useAddWorkExperience();
-  const { mutate: updateExperience, isPending: isUpdateExperience } = useUpdateCandidateExperience();
+export default function WorkExperienceModal({
+  open,
+  onClose,
+  experience,
+}: Props) {
+  const { mutate: addExperience, isPending: isAddExperiencePending } =
+    useAddWorkExperience();
+  const { mutate: updateExperience, isPending: isUpdateExperience } =
+    useUpdateCandidateExperience();
   const {
     register,
     setValue,
@@ -58,8 +64,9 @@ export default function WorkExperienceModal({ open, onClose, experience }: Props
         isCurrent: experience.isCurrent,
         description: experience.description ?? '',
         endDate: experience.endDate
-          ? new Date(experience.endDate).toISOString().split('T')[0] : '',
-      })
+          ? new Date(experience.endDate).toISOString().split('T')[0]
+          : '',
+      });
     } else {
       reset({
         jobTitle: '',
@@ -70,11 +77,9 @@ export default function WorkExperienceModal({ open, onClose, experience }: Props
         isCurrent: false,
         description: '',
         endDate: '',
-      })
-
+      });
     }
-  }
-    , [experience, reset]);
+  }, [experience, reset]);
 
   useEffect(() => {
     if (open) {
@@ -105,21 +110,21 @@ export default function WorkExperienceModal({ open, onClose, experience }: Props
       description: data.description?.trim() || null,
       startDate: new Date(data.startDate),
       endDate: data.isCurrent || !data.endDate ? null : new Date(data.endDate),
-
-    }
+    };
     if (experience) {
-      updateExperience({
-        experienceId: experience.id,
-        data: payload,
-      }, {
-        onSuccess: () => onClose(),
-      })
-    } else {
-      addExperience(payload,
+      updateExperience(
+        {
+          experienceId: experience.id,
+          data: payload,
+        },
         {
           onSuccess: () => onClose(),
         },
       );
+    } else {
+      addExperience(payload, {
+        onSuccess: () => onClose(),
+      });
     }
   };
 
@@ -208,11 +213,7 @@ export default function WorkExperienceModal({ open, onClose, experience }: Props
           {!isCurrent && (
             <div className="flex flex-col gap-1">
               <Label>End Date</Label>
-              <Input
-                type="date"
-                {...register('endDate', {
-                })}
-              />
+              <Input type="date" {...register('endDate', {})} />
             </div>
           )}
           <div className="flex flex-col gap-1">
@@ -220,12 +221,13 @@ export default function WorkExperienceModal({ open, onClose, experience }: Props
             <Textarea
               rows={10}
               maxLength={5000}
-              autoCapitalize='sentences'
+              autoCapitalize="sentences"
               spellCheck
-              wrap='soft'
-              autoCorrect='on'
-              className='min-h-48'
-              {...register('description')} />
+              wrap="soft"
+              autoCorrect="on"
+              className="min-h-48"
+              {...register('description')}
+            />
           </div>
 
           <div className="flex justify-end gap-2 pt-4">
@@ -233,8 +235,13 @@ export default function WorkExperienceModal({ open, onClose, experience }: Props
               Cancel
             </Button>
 
-            <Button type="submit" disabled={isAddExperiencePending || isUpdateExperience}>
-              {(isAddExperiencePending || isUpdateExperience) ? 'Saving...' : 'Save'}
+            <Button
+              type="submit"
+              disabled={isAddExperiencePending || isUpdateExperience}
+            >
+              {isAddExperiencePending || isUpdateExperience
+                ? 'Saving...'
+                : 'Save'}
             </Button>
           </div>
         </form>

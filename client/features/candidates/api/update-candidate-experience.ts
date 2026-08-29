@@ -1,5 +1,5 @@
-import { api } from "@/lib/api/client";
-import type { Experience, ExperienceBody } from "../types/candidate.types";
+import { api } from '@/lib/api/client';
+import type { Experience, ExperienceBody } from '../types/candidate.types';
 export default async function updateCandidateExperience(
   experienceId: string,
   data: ExperienceBody,
@@ -7,6 +7,9 @@ export default async function updateCandidateExperience(
   data: Experience;
   message: string;
 }> {
-  const res = await api.patch(`/candidates/me/experiences/${experienceId}`, data);
+  const res = await api.patch(
+    `/candidates/me/experiences/${experienceId}`,
+    data,
+  );
   return res.data;
 }
