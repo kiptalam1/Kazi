@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import deleteCandidateResume from "../api/delete-candidate-resume";
-import { toast } from "sonner";
-import { getApiErrorMessage } from "@/lib/api/error";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import deleteCandidateResume from '../api/delete-candidate-resume';
+import { toast } from 'sonner';
+import { getApiErrorMessage } from '@/lib/api/error';
 
 export default function useDeleteCandidateResume() {
   const queryClient = useQueryClient();

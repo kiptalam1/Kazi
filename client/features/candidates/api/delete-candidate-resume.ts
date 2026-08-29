@@ -1,4 +1,4 @@
-import { api } from "@/lib/api/client";
+import { api } from '@/lib/api/client';
 
 export default async function deleteCandidateResume(resumeId: string): Promise<{
   message: string;

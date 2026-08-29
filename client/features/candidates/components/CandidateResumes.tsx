@@ -13,7 +13,8 @@ export default function CandidateResumes() {
   const [openResumeModal, setOpenResumeModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedResume, setSelectedResume] = useState<Resume | undefined>();
-  const { mutate: deleteResume, isPending: isDeleting } = useDeleteCandidateResume();
+  const { mutate: deleteResume, isPending: isDeleting } =
+    useDeleteCandidateResume();
 
   if (isPending) {
     return (
@@ -32,7 +33,7 @@ export default function CandidateResumes() {
   const handleCloseModal = () => {
     setSelectedResume(undefined);
     setOpenDeleteModal(false);
-  }
+  };
 
   function handleDeleteResume() {
     if (!selectedResume) return;
@@ -74,7 +75,7 @@ export default function CandidateResumes() {
                 </p>
               </div>
 
-              <div className='flex flex-col sm:flex-row sm:gap-4 sm:items-center'>
+              <div className="flex flex-col sm:flex-row sm:gap-4 sm:items-center">
                 <a
                   href={resume.url}
                   target="_blank"
@@ -85,9 +86,9 @@ export default function CandidateResumes() {
                 </a>
                 <button
                   type="button"
-                  aria-label='Delete resume'
+                  aria-label="Delete resume"
                   onClick={() => {
-                    setSelectedResume(resume)
+                    setSelectedResume(resume);
                     setOpenDeleteModal(true);
                   }}
                   className="p-3 hover:bg-red-50 hover:text-danger rounded-full duration-100"
@@ -115,7 +116,7 @@ export default function CandidateResumes() {
       }
       {
         <ConfirmModal
-          title='Are you sure you want to delete this resume?'
+          title="Are you sure you want to delete this resume?"
           open={openDeleteModal}
           onClose={handleCloseModal}
           onConfirm={handleDeleteResume}
