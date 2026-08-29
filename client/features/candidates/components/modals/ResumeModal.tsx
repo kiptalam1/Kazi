@@ -42,7 +42,7 @@ export default function ResumeModal({ open, onClose }: Props) {
     }
 
     uploadResume(fd, {
-      onSuccess: () => handleCloseModal,
+      onSuccess: handleCloseModal,
     });
   }
 
@@ -90,7 +90,7 @@ export default function ResumeModal({ open, onClose }: Props) {
               variant="basic"
               onClick={() => inputRef.current?.click()}
               disabled={isUploading}
-              className="flex gap-2 items-center text-sm w-fit hover:ring-2 hover:ring-border-strong text-text-secondary disabled:text-text-disabled"
+              className="flex gap-2 items-center text-sm w-fit shrink-0 hover:ring-2 hover:ring-border-strong text-text-secondary disabled:text-text-disabled"
             >
               {isUploading ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -100,7 +100,7 @@ export default function ResumeModal({ open, onClose }: Props) {
               Pick a Resume
             </Button>
             {file && (
-              <span className="text-sm text-accent max-w-35 truncate">
+              <span className="text-sm text-accent flex-1 min-w-0 truncate">
                 {file.name}
               </span>
             )}
