@@ -20,11 +20,11 @@
    ↓
 10. Authentication ✅
     ↓
-11. Candidate workflow
+11. Candidate workflow ✅
     ↓
 12. Employer workflow
     ↓
-13. API integration
+13. API integration ✅
     ↓
 14. Loading / Error / Empty states
     ↓
