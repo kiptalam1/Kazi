@@ -26,9 +26,9 @@
     ↓
 13. API integration ✅
     ↓
-14. Loading / Error / Empty states
+14. Loading / Error / Empty states ✅
     ↓
-15. Responsive refinement
+15. Responsive refinement ✅
     ↓
 16. Accessibility + polish
     ↓
