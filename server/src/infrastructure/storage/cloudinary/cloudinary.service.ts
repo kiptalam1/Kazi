@@ -25,7 +25,7 @@ export class CloudinaryService {
         },
         (error, result) => {
           if (error) {
-            reject(error);
+            reject(new Error(error.message));
           } else if (result) {
             resolve(result);
           } else {
@@ -39,7 +39,8 @@ export class CloudinaryService {
   }
 
   async deleteFile(publicId: string): Promise<DeleteApiResponse> {
-    return await this.cloudinary.uploader.destroy(publicId);
+    const result: unknown = await this.cloudinary.uploader.destroy(publicId);
+    return result as DeleteApiResponse;
   }
 
   // optimize returned image;

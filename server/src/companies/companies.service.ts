@@ -10,6 +10,49 @@ import { UpdateCompanyDto } from './dto/update-company.dto.js';
 @Injectable()
 export class CompaniesService {
   constructor(private prisma: PrismaService) {}
+
+  // get my company jobs;
+  async getMyCompanyJobs(userId: string) {
+    const company = await this.getMyCompany(userId);
+    const jobs = await this.prisma.job.findMany({
+      where: {
+        companyId: company.id,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return jobs.map((job) => ({
+      ...job,
+      salaryMin: job.salaryMin?.toNumber() ?? null,
+      salaryMax: job.salaryMax?.toNumber() ?? null,
+    }));
+  }
+
+  // get my company;
+  async getMyCompany(userId: string) {
+    const company = await this.prisma.company.findFirst({
+      where: {
+        companyMembers: {
+          some: {
+            userId,
+          },
+        },
+      },
+      include: {
+        companyMembers: {
+          where: { userId },
+        },
+      },
+    });
+
+    if (!company) {
+      throw new NotFoundException('No company found.');
+    }
+
+    return company;
+  }
+
   // fetch one ;
   async findOne(slug: string) {
     const company = await this.getBySlug(slug);

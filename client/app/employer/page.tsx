@@ -1,29 +1,28 @@
 'use client';
 
-import { useAuth } from '@/features/auth/hooks/useAuth';
+import useMyCompany from '@/features/employer/hooks/useMyCompany';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function EmployerPage() {
-  const { data, isPending, isError } = useAuth();
+  const { data: company, isPending, error } = useMyCompany();
   const router = useRouter();
-  const user = data?.data;
-  const isEmployer = user?.roles.some(
-    (role) => role === 'COMPANY_ADMIN' || role === 'RECRUITER',
-  );
 
   useEffect(() => {
     if (isPending) return;
-    if (isError || !user) {
-      router.replace('/login');
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        router.replace('/employer/onboarding');
+        return;
+      }
+      return;
     }
 
-    if (isEmployer) {
+    if (company) {
       router.replace('/employer/dashboard');
-    } else {
-      router.replace('/employer/onboarding');
     }
-  }, [isPending, isError, user, router, isEmployer]);
+  }, [isPending, company, router, error]);
 
   return null;
 }

@@ -62,3 +62,6 @@ export type EmploymentType =
   | 'APPRENTICESHIP'
   | 'FREELANCE'
   | 'VOLUNTEER';
+
+export type CompanyRole =
+  'COMPANY_ADMIN' | 'RECRUITER' | 'HIRING_MANAGER' | 'MEMBER';

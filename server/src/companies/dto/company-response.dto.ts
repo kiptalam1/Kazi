@@ -1,5 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CompanyRole } from '../../generated/prisma/enums.js';
+import {
+  CompanyRole,
+  ExperienceLevel,
+  JobStatus,
+} from '../../generated/prisma/enums.js';
 import { UserDto } from '../../users/dto/user-response.dto.js';
 import { Meta } from '../../common/dto/meta.dto.js';
 
@@ -42,4 +46,38 @@ export class GetAllCompaniesResponseDto {
 
   @ApiProperty({ type: Meta })
   meta!: Meta;
+}
+
+class CompanyMember {
+  id!: string;
+  @ApiProperty({ enum: CompanyRole })
+  role!: CompanyRole;
+  joinedAt!: Date;
+}
+
+export class MyCompany extends CompanyDto {
+  @ApiProperty({
+    type: () => CompanyMember,
+    isArray: true,
+  })
+  companyMembers!: CompanyMember[];
+}
+
+export class CompanyJobResponseDto {
+  id!: string;
+  title!: string;
+  description!: string;
+  @ApiProperty({ enum: ExperienceLevel })
+  experienceLevel!: ExperienceLevel | null;
+  location!: string | null;
+  salaryMin!: number | null;
+  salaryMax!: number | null;
+  currency!: string | null;
+  isRemote!: boolean;
+  @ApiProperty({ enum: JobStatus })
+  status!: JobStatus;
+  companyId!: string;
+  createdById!: string;
+  createdAt!: Date;
+  updatedAt!: Date;
 }
