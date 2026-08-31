@@ -26,7 +26,7 @@ import { UpdateEducationDto } from './dto/update-education.dto.js';
 
 @Controller('api/v1/candidates/me/education')
 export class EducationController {
-  constructor(private readonly educationService: EducationService) { }
+  constructor(private readonly educationService: EducationService) {}
 
   // get my education;
   @Get()

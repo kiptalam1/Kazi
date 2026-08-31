@@ -20,7 +20,7 @@ export class ResumesService {
     private readonly candidatesService: CandidatesService,
     private readonly prisma: PrismaService,
     private cloudinary: CloudinaryService,
-  ) { }
+  ) {}
 
   // fetch candidate resumes;
   async getMyResumes(userId: string): Promise<ResumeUploaded[]> {
@@ -30,7 +30,6 @@ export class ResumesService {
         candidateId: candidate.id,
         type: FileType.RESUME,
       },
-
     });
     return resumes;
   }
@@ -54,10 +53,7 @@ export class ResumesService {
       throw new BadRequestException('You can have a maximum of 5 resumes.');
     }
 
-    const resourceType =
-      file.mimetype === 'application/pdf'
-        ? 'image'
-        : 'raw';
+    const resourceType = file.mimetype === 'application/pdf' ? 'image' : 'raw';
 
     const cloudinaryResponse = await this.cloudinary.uploadFile(
       file,

@@ -31,7 +31,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) { }
+  ) {}
 
   // employer fetch single application;
   async employerFetchSingleApplication(
@@ -226,9 +226,7 @@ export class ApplicationsService {
       });
 
       if (!resume) {
-        throw new BadRequestException(
-          'Resume not found.'
-        );
+        throw new BadRequestException('Resume not found.');
       }
     }
     const application = await this.prisma.application.create({

@@ -9,10 +9,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { CompaniesService } from './companies.service.js';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import {
   CompanyDto,
   GetAllCompaniesResponseDto,
+  MyCompany,
 } from './dto/company-response.dto.js';
 import { CreateCompanyDto } from './dto/create-company.dto.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
@@ -21,8 +22,19 @@ import { UpdateCompanyDto } from './dto/update-company.dto.js';
 
 @Controller('/api/v1/companies')
 export class CompaniesController {
-  constructor(private readonly companiesService: CompaniesService) {}
+  constructor(private readonly companiesService: CompaniesService) { }
 
+  // get my company;
+  @Get('me')
+  @ApiOperation({
+    summary: 'Employer get his company',
+  })
+  @ApiOkResponse({
+    type: MyCompany,
+  })
+  async getMyCompany(@CurrentUser('id') userId: string): Promise<MyCompany> {
+    return await this.companiesService.getMyCompany(userId);
+  }
   // get a single company;
   @Get(':slug')
   @ApiOkResponse({ type: CompanyDto })

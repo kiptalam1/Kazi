@@ -13,7 +13,7 @@ export class EducationService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly candidatesService: CandidatesService,
-  ) { }
+  ) {}
 
   // get my education;
   async getMyEducation(userId: string): Promise<CreatedEducationDto[]> {

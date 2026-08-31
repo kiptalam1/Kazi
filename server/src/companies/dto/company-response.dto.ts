@@ -43,3 +43,18 @@ export class GetAllCompaniesResponseDto {
   @ApiProperty({ type: Meta })
   meta!: Meta;
 }
+
+class CompanyMember {
+  id!: string;
+  @ApiProperty({ enum: CompanyRole })
+  role!: CompanyRole;
+  joinedAt!: Date;
+}
+
+export class MyCompany extends CompanyDto {
+  @ApiProperty({
+    type: () => CompanyMember,
+    isArray: true,
+  })
+  companyMembers!: CompanyMember[];
+}
