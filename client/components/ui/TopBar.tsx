@@ -59,6 +59,11 @@ export default function TopBar() {
           <Bell size={20} className="sm:hidden" />
           <span className="hidden sm:block">Notifications</span>
         </NavLink>
+        <NavLink href={'/employer'}>
+          <Bell size={20} className="sm:hidden" />
+          <span className="hidden sm:block">For Employers</span>
+        </NavLink>
+
       </div>
       <div ref={dropDownRef} className="relative">
         <button
