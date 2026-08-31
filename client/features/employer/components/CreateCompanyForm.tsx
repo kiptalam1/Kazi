@@ -1,26 +1,32 @@
 'use client';
 
-import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
-import Label from "@/components/ui/Label";
-import Textarea from "@/components/ui/Textarea";
-import { useForm } from "react-hook-form";
-import type { CreateCompanyBody, CreatedCompany } from "../types/create-company.types";
-import { useEffect } from "react";
-import useCreateCompany from "../hooks/useCreateCompany";
-import { useRouter } from "next/navigation";
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
+import Label from '@/components/ui/Label';
+import Textarea from '@/components/ui/Textarea';
+import { useForm } from 'react-hook-form';
+import type {
+  CreateCompanyBody,
+  CreatedCompany,
+} from '../types/create-company.types';
+import { useEffect } from 'react';
+import useCreateCompany from '../hooks/useCreateCompany';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   company?: CreatedCompany;
-}
+};
 
 type FormFields = CreateCompanyBody;
 
-export default function CreateCompanyForm({
-  company
-}: Props) {
+export default function CreateCompanyForm({ company }: Props) {
   const router = useRouter();
-  const { register, reset, handleSubmit, formState: { errors } } = useForm<FormFields>();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormFields>();
   const { mutate: createCompany, isPending: isCreating } = useCreateCompany();
 
   useEffect(() => {
@@ -41,7 +47,7 @@ export default function CreateCompanyForm({
         location: '',
         logoUrl: '',
         website: '',
-      })
+      });
     }
   }, [company, reset]);
 
@@ -49,9 +55,9 @@ export default function CreateCompanyForm({
     const payload: FormFields = {
       ...data,
       website: data.website || null,
-    }
-    if (company) { }
-    else {
+    };
+    if (company) {
+    } else {
       createCompany(payload, {
         onSuccess: () => router.replace('/employer/dashboard'),
       });
@@ -59,14 +65,12 @@ export default function CreateCompanyForm({
   }
 
   return (
-    <div className='space-y-6 px-4 py-6 sm:px-6 sm:py-8 w-full max-w-lg rounded-sm shadow-xs '>
+    <div className="space-y-6 px-4 py-6 sm:px-6 sm:py-8 w-full max-w-lg rounded-sm shadow-xs ">
       <h1 className="text-xl sm:text-2xl text-text-primary font-semibold">
         Create Your Company
       </h1>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex flex-col gap-1">
           <Label>
             Company Name
@@ -76,14 +80,13 @@ export default function CreateCompanyForm({
             {...register('name', {
               required: 'Company name is required',
               validate: (value) =>
-                value.trim().length > 0 || 'Company name is required'
+                value.trim().length > 0 || 'Company name is required',
             })}
-            className="border-border-muted" />
-          {
-            errors.name && <p className="text-xs text-danger">
-              {errors.name.message}
-            </p>
-          }
+            className="border-border-muted"
+          />
+          {errors.name && (
+            <p className="text-xs text-danger">{errors.name.message}</p>
+          )}
         </div>
         <div className="flex flex-col gap-1">
           <Label>Description</Label>
@@ -104,38 +107,26 @@ export default function CreateCompanyForm({
                 message: 'Enter a valid website URL',
               },
             })}
-            className="border-border-muted" />
-          {
-            errors.website &&
-            <p className="text-xs text-danger">
-              {errors.website.message}
-            </p>
-          }
+            className="border-border-muted"
+          />
+          {errors.website && (
+            <p className="text-xs text-danger">{errors.website.message}</p>
+          )}
         </div>
         <div className="flex flex-col gap-1">
           <Label>Industry</Label>
-          <Input
-            {...register('industry')}
-            className="border-border-muted" />
+          <Input {...register('industry')} className="border-border-muted" />
         </div>
         <div className="flex flex-col gap-1">
           <Label>Location</Label>
-          <Input
-            {...register('location')}
-            className="border-border-muted" />
+          <Input {...register('location')} className="border-border-muted" />
         </div>
         <div className="flex justify-self-end mt-6">
-          <Button
-            type="submit"
-            disabled={isCreating}
-          >
-            {isCreating
-              ? 'Submitting...'
-              : 'Submit'}
+          <Button type="submit" disabled={isCreating}>
+            {isCreating ? 'Submitting...' : 'Submit'}
           </Button>
         </div>
       </form>
-    </div >
-  )
+    </div>
+  );
 }
-

@@ -1,4 +1,3 @@
-
 export type CreateCompanyBody = {
   name: string;
   description: string | null;
