@@ -1,3 +1,5 @@
+import { CompanyRole } from '@/features/common/types/common.types';
+
 export type CreateCompanyBody = {
   name: string;
   description: string | null;
@@ -23,4 +25,14 @@ export type CreatedCompany = {
 export type CreateCompanyResponse = {
   message: string;
   data: CreatedCompany;
+};
+
+type CompanyMember = {
+  id: string;
+  joinedAt: string;
+  role: CompanyRole;
+};
+
+export type MyCompany = CreatedCompany & {
+  companyMembers: CompanyMember[];
 };
