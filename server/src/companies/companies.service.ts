@@ -9,7 +9,26 @@ import { UpdateCompanyDto } from './dto/update-company.dto.js';
 
 @Injectable()
 export class CompaniesService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
+
+  // get my company jobs;
+  async getMyCompanyJobs(userId: string) {
+    const company = await this.getMyCompany(userId);
+    const jobs = await this.prisma.job.findMany({
+      where: {
+        companyId: company.id,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return jobs.map((job) => ({
+      ...job,
+      salaryMin: job.salaryMin?.toNumber() ?? null,
+      salaryMax: job.salaryMax?.toNumber() ?? null,
+    }));
+  }
+
   // get my company;
   async getMyCompany(userId: string) {
     const company = await this.prisma.company.findFirst({
@@ -84,11 +103,11 @@ export class CompaniesService {
     const skip = (page - 1) * limit;
     const where: Prisma.CompanyWhereInput = search
       ? {
-        name: {
-          contains: search,
-          mode: 'insensitive',
-        },
-      }
+          name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        }
       : {};
     const [data, total] = await this.prisma.$transaction([
       this.prisma.company.findMany({

@@ -12,6 +12,7 @@ import { CompaniesService } from './companies.service.js';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import {
   CompanyDto,
+  CompanyJobResponseDto,
   GetAllCompaniesResponseDto,
   MyCompany,
 } from './dto/company-response.dto.js';
@@ -22,7 +23,22 @@ import { UpdateCompanyDto } from './dto/update-company.dto.js';
 
 @Controller('/api/v1/companies')
 export class CompaniesController {
-  constructor(private readonly companiesService: CompaniesService) { }
+  constructor(private readonly companiesService: CompaniesService) {}
+
+  // get my company's jobs;
+  @Get('me/jobs')
+  @ApiOperation({
+    summary: 'Employer fetches company jobs',
+  })
+  @ApiOkResponse({
+    type: CompanyJobResponseDto,
+    isArray: true,
+  })
+  async getMyCompanyJobs(
+    @CurrentUser('id') userId: string,
+  ): Promise<CompanyJobResponseDto[]> {
+    return await this.companiesService.getMyCompanyJobs(userId);
+  }
 
   // get my company;
   @Get('me')
