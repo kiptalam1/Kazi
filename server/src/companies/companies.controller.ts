@@ -20,10 +20,25 @@ import { CreateCompanyDto } from './dto/create-company.dto.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { GetCompanyQueryDto } from './dto/candidate-query.dto.js';
 import { UpdateCompanyDto } from './dto/update-company.dto.js';
+import { AnalyticsResponseDto } from './dto/analytics-response.dto.js';
 
 @Controller('/api/v1/companies')
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
+
+  // get employer dashboard analytics;
+  @Get('me/analytics')
+  @ApiOperation({
+    summary: 'Employer get dashboard analytics',
+  })
+  @ApiOkResponse({
+    type: AnalyticsResponseDto,
+  })
+  async getAnalytics(
+    @CurrentUser('id') userId: string,
+  ): Promise<AnalyticsResponseDto> {
+    return await this.companiesService.getAnalytics(userId);
+  }
 
   // get my company's jobs;
   @Get('me/jobs')
