@@ -9,11 +9,14 @@ import useMyCompany from "@/features/employer/hooks/useMyCompany";
 import useAnalytics from "@/features/employer/hooks/useAnalytics";
 import { getApiErrorMessage } from "@/lib/api/error";
 import { Plus, TrendingUp } from "lucide-react";
+import { useState } from "react";
+import PostjobModal from "@/features/employer/components/modals/PostjobModal";
 
 export default function EmployerDashboard() {
   const { data: company, isPending: isCompanyPending, isError: isCompanyError, error: companyError } = useMyCompany();
   const { data: jobs, isPending: isJobsPending, isError: isJobsError, error: jobsError } = useCompanyJobs();
   const { data: analytics, isPending: isAnalyticsPending, isError: isAnalyticsError, error: analyticsError } = useAnalytics();
+  const [openjobModal, setOpenJobModal] = useState(false);
 
   if (isCompanyPending || isJobsPending || isAnalyticsPending) {
     return <div className="min-h-[50vh] flex items-center justify-center">
@@ -55,7 +58,10 @@ export default function EmployerDashboard() {
             {company?.location && <p>{company.location}</p>}
           </div>
         </div>
-        <Button className="flex text-sm items-center gap-1 font-extralight rounded-none">
+        <Button
+          type='button'
+          onClick={() => setOpenJobModal(true)}
+          className="flex text-sm items-center gap-1 font-extralight rounded-none">
           <Plus className="size-5" />
           Post a Job
         </Button>
@@ -65,7 +71,7 @@ export default function EmployerDashboard() {
       {analytics && (
         <section className="space-y-4">
           <h2 className="text-lg font-semibold">Dashboard Overview</h2>
-          
+
           {/* Key Metrics Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Active Jobs */}
@@ -155,6 +161,12 @@ export default function EmployerDashboard() {
           </div>
         </section>
       )}
+      {
+        <PostjobModal
+          open={openjobModal}
+          onClose={() => setOpenJobModal(false)}
+        />
+      }
     </main>
   );
 }
