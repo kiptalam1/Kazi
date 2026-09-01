@@ -36,3 +36,5 @@ type CompanyMember = {
 export type MyCompany = CreatedCompany & {
   companyMembers: CompanyMember[];
 };
+
+
