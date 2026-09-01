@@ -17,13 +17,13 @@ export default function JobsPage() {
   }
 
   return (
-    <main className="p-4 sm:py-8 space-y-6 ">
+    <div className="p-4 sm:py-8 space-y-6 overflow-hidden">
       <h1 className="text-text-primary text-xl sm:text-2xl font-semibold">
         Jobs
       </h1>
       <section className="grid gap-4">
         {isPending && (
-          <div className="flex items-center justify-center h-screen">
+          <div className="flex items-center justify-center min-h-[50vh]">
             <Spinner />
           </div>
         )}
@@ -76,6 +76,6 @@ export default function JobsPage() {
           </Button>
         </section>
       )}
-    </main>
+    </div>
   );
 }
