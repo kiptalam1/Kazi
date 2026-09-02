@@ -165,6 +165,7 @@ export default function EmployerDashboard() {
         <PostjobModal
           open={openjobModal}
           onClose={() => setOpenJobModal(false)}
+          companySlug={company.slug}
         />
       }
     </main>
