@@ -8,10 +8,15 @@ import Textarea from "@/components/ui/Textarea";
 import { ExperienceLevel, JobStatus } from "@/features/common/types/common.types";
 import { useForm } from "react-hook-form";
 import { CreateJobBody } from "../../types/create-job.types";
+import { useEffect } from "react";
+import { Job } from "@/features/jobs/types/get-job.types";
+import useCreateJob from "../../hooks/useCreateJob";
 
 type Props = {
   open: boolean;
   onClose: () => void;
+  job?: Omit<Job, 'company'>;
+  companySlug: string;
 };
 
 const experienceLevels: {
@@ -36,8 +41,65 @@ const jobStatuses: {
     { label: 'Archived', value: 'ARCHIVED' },
   ];
 
-export default function PostJobModal({ open, onClose }: Props) {
+export default function PostJobModal({ open, onClose, job, companySlug }: Props) {
   const { reset, register, handleSubmit, formState: { errors } } = useForm<CreateJobBody>();
+  const { mutate: postJob, isPending: isCreatingPost } = useCreateJob();
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (job) {
+      reset({
+        title: job.title,
+        description: job.description,
+        currency: job.currency,
+        experienceLevel: job.experienceLevel,
+        isRemote: job.isRemote,
+        location: job.location,
+        status: job.status,
+        salaryMax: job.salaryMax ?? undefined,
+        salaryMin: job.salaryMin ?? undefined,
+
+      });
+    } else {
+      reset({
+        title: '',
+        description: '',
+        currency: '',
+        experienceLevel: '' as ExperienceLevel,
+        isRemote: false,
+        location: '',
+        status: 'PUBLISHED',
+        salaryMin: 0,
+        salaryMax: 0,
+      });
+    }
+
+  }, []);
+
+  const onSubmit = (data: CreateJobBody) => {
+    const payload: CreateJobBody = {
+      ...data,
+      salaryMin: Number(data.salaryMin),
+      salaryMax: Number(data.salaryMax),
+    }
+    if (job) { }
+    else {
+      postJob({
+        slug: companySlug,
+        data: payload,
+      }, {
+        onSuccess: () => onClose(),
+      });
+    }
+  }
 
   if (!open) return null;
 
@@ -47,13 +109,24 @@ export default function PostJobModal({ open, onClose }: Props) {
         onClick={(e) => e.stopPropagation()}
         className="bg-background w-full max-w-xl overflow-y-auto p-4 sm:p-6 max-h-[calc(100dvh-2rem)] animate-emerge"
       >
-        <form className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4">
           {/* Title */}
           <div className="flex flex-col gap-1">
             <Label htmlFor="title">Job Title</Label>
             <Input id="title" placeholder="e.g. Frontend Developer"
-              {...register('title')}
+              {...register('title', {
+                required: 'Title is required',
+                validate: (value) => value.trim().length > 0 || 'Title is required'
+              })}
             />
+            {
+              errors.title &&
+              <p className="text-xs text-danger">
+                {errors.title.message}
+              </p>
+            }
           </div>
 
           {/* Experience Level */}
@@ -167,8 +240,10 @@ export default function PostJobModal({ open, onClose }: Props) {
               Cancel
             </Button>
 
-            <Button type="submit">
-              Save
+            <Button
+              disabled={isCreatingPost}
+              type="submit">
+              {isCreatingPost ? 'Submitting...' : 'Submit'}
             </Button>
           </div>
         </form>

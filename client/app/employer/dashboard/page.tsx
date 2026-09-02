@@ -52,7 +52,7 @@ export default function EmployerDashboard() {
             }
             <h1 className="text-2xl font-semibold">{company?.name}</h1>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm text-text-secondary">
+          <div className="space-y-1 text-sm text-text-secondary  items-center">
             {company?.industry && <p>{company.industry}</p>}
             {company?.website && <p>{company.website}</p>}
             {company?.location && <p>{company.location}</p>}
@@ -61,7 +61,7 @@ export default function EmployerDashboard() {
         <Button
           type='button'
           onClick={() => setOpenJobModal(true)}
-          className="flex text-sm items-center gap-1 font-extralight rounded-none">
+          className="flex text-sm items-center gap-1 font-extralight rounded-none self-start">
           <Plus className="size-5" />
           Post a Job
         </Button>
@@ -137,7 +137,7 @@ export default function EmployerDashboard() {
                 <tr>
                   <th className="text-left p-4 font-semibold text-text-primary">Candidate</th>
                   <th className="text-left p-4 font-semibold text-text-primary">Position</th>
-                  <th className="text-left p-4 font-semibold text-text-primary">Applied</th>
+                  <th className="text-left p-4 font-semibold text-text-primary hidden sm:block">Applied</th>
                   <th className="text-left p-4 font-semibold text-text-primary">Status</th>
                 </tr>
               </thead>
@@ -146,7 +146,7 @@ export default function EmployerDashboard() {
                   <tr key={app.id} className={idx !== analytics.recentApplications.length - 1 ? "border-b border-border-muted" : ""}>
                     <td className="p-4 text-text-primary">{app.candidateName}</td>
                     <td className="p-4 text-text-secondary">{app.jobTitle}</td>
-                    <td className="p-4 text-text-muted text-xs">
+                    <td className="p-4 text-text-muted text-xs hidden sm:block">
                       {new Date(app.appliedDate).toLocaleDateString()}
                     </td>
                     <td className="p-4">
@@ -165,6 +165,7 @@ export default function EmployerDashboard() {
         <PostjobModal
           open={openjobModal}
           onClose={() => setOpenJobModal(false)}
+          companySlug={company.slug}
         />
       }
     </main>
