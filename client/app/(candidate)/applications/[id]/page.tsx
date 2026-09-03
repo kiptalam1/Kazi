@@ -25,7 +25,7 @@ export default function ApplicationPage() {
 
   if (isPending) {
     return (
-      <div className="p-4 flex items-center justify-center min-h-[50vh]">
+      <div className="flex min-h-[50vh] items-center justify-center p-4">
         <Spinner />
       </div>
     );
@@ -33,7 +33,7 @@ export default function ApplicationPage() {
 
   if (isError) {
     return (
-      <p className="text-center mx-auto p-6">{getApiErrorMessage(error)}</p>
+      <p className="mx-auto p-6 text-center">{getApiErrorMessage(error)}</p>
     );
   }
 
@@ -46,13 +46,13 @@ export default function ApplicationPage() {
   }
 
   return (
-    <main className="p-4 sm:py-8 space-y-4 sm:space-y-6 ">
+    <main className="space-y-4 p-4 sm:space-y-6 sm:py-8">
       <section>
-        <div className="mb-5 flex items-center justify-between ">
+        <div className="mb-5 flex items-center justify-between">
           <Link
             href={'/applications'}
             aria-label="Back to applications"
-            className="size-8 inline-flex items-center justify-center rounded-md text-text-secondary  hover:bg-background-muted hover:text-text-primary duration-75"
+            className="text-text-secondary hover:bg-background-muted hover:text-text-primary inline-flex size-8 items-center justify-center rounded-md duration-75"
           >
             <ArrowLeft className="size-4" />
           </Link>
@@ -60,13 +60,13 @@ export default function ApplicationPage() {
             <Button
               onClick={() => handleWithdraw(application.id)}
               disabled={withdrawMutation.isPending}
-              className="text-xs font-semibold p-1"
+              className="p-1 text-xs font-semibold"
             >
               {withdrawMutation.isPending ? 'Withdrawing...' : 'Withdraw'}
             </Button>
           )}
         </div>
-        <h1 className="mb-6 text-sm font-semibold uppercase text-text-muted tracking-wide">
+        <h1 className="text-text-muted mb-6 text-sm font-semibold tracking-wide uppercase">
           Application
         </h1>
 
@@ -78,40 +78,40 @@ export default function ApplicationPage() {
                 alt={company.name}
                 width={32}
                 height={32}
-                className="w-auto h-auto"
+                className="h-auto w-auto"
               />
             ) : (
-              <div className="rounded-full flex items-center justify-center p-2 size-8 border border-border-muted">
+              <div className="border-border-muted flex size-8 items-center justify-center rounded-full border p-2">
                 {getInitials(company.name)}
               </div>
             )}
             <p>{company.name}</p>
           </div>
           <div className="pl-11">
-            <h2 className=" text-xl sm:text-2xl tracking-tight font-semibold">
+            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
               {job.title}
             </h2>
-            <div className="flex items-center gap-4 text-sm text-text-secondary ">
+            <div className="text-text-secondary flex items-center gap-4 text-sm">
               <p>{job.location}</p>
-              <span className="w-fit bg-background-muted text-xs py-1 px-2 text-text-muted">
+              <span className="bg-background-muted text-text-muted w-fit px-2 py-1 text-xs">
                 {job.isRemote ? 'REMOTE' : 'ON-SITE'}
               </span>
             </div>
             <span
-              className={`mt-3 inline-flex w-fit px-2 py-1 text-xs bg-background-muted ${application.status === 'REJECTED' ? 'text-danger' : 'text-text-secondary'}`}
+              className={`bg-background-muted mt-3 inline-flex w-fit px-2 py-1 text-xs ${application.status === 'REJECTED' ? 'text-danger' : 'text-text-secondary'}`}
             >
               {application.status}
             </span>
           </div>
-          <p className="mt-6 text-sm text-text-secondary">
+          <p className="text-text-secondary mt-6 text-sm">
             Applied on {formattedDate(application.createdAt)}
           </p>
         </div>
       </section>
 
-      <section className="border-t border-border-muted pt-6">
+      <section className="border-border-muted border-t pt-6">
         <h2 className="text-sm font-medium">Cover letter</h2>
-        <p className="mt-3 text-sm leading-6 text-text-secondary whitespace-pre-line">
+        <p className="text-text-secondary mt-3 text-sm leading-6 whitespace-pre-line">
           {application.coverLetter}
         </p>
       </section>

@@ -15,7 +15,7 @@ export const ApplyModal = ({ jobId, open, onClose }: Props) => {
       aria-modal="true"
       aria-labelledby="apply-modal-title"
       onClick={onClose}
-      className="z-50 inset-0 fixed flex items-center justify-center bg-black/40 backdrop-blur-xl h-full w-full p-4"
+      className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-black/40 p-4 backdrop-blur-xl"
     >
       <ApplyForm jobId={jobId} onClose={onClose} />
     </div>

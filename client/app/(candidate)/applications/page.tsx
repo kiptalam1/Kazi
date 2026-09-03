@@ -12,7 +12,7 @@ export default function ApplicationsPage() {
 
   if (isPending) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh]">
+      <div className="flex min-h-[50vh] items-center justify-center">
         <Spinner />
       </div>
     );
@@ -20,7 +20,7 @@ export default function ApplicationsPage() {
 
   if (isError) {
     return (
-      <p className="text-center mx-auto p-6">{getApiErrorMessage(error)}</p>
+      <p className="mx-auto p-6 text-center">{getApiErrorMessage(error)}</p>
     );
   }
 
@@ -28,13 +28,13 @@ export default function ApplicationsPage() {
   // const meta = data?.meta ?? {};
 
   return (
-    <main className="p-4 sm:py-8 space-y-6">
-      <h1 className="text-text-primary text-xl sm:text-2xl font-semibold">
+    <main className="space-y-6 p-4 sm:py-8">
+      <h1 className="text-text-primary text-xl font-semibold sm:text-2xl">
         My Applications
       </h1>
       <section className="space-y-4">
         {applications.length === 0 && (
-          <div className="text-center text-text-secondary text-sm">
+          <div className="text-text-secondary text-center text-sm">
             You have no applications yet
           </div>
         )}
@@ -42,13 +42,13 @@ export default function ApplicationsPage() {
           <Link
             href={`/applications/${app.id}`}
             key={app.id}
-            className="block space-y-2 border border-border-muted hover:border-focus duration-150 px-2 py-4 "
+            className="border-border-muted hover:border-focus block space-y-2 border px-2 py-4 duration-150"
           >
             <h2 className="text-sm font-medium">{app.job.title}</h2>
-            <span className="inline-block text-xs text-text-muted w-fit py-1 px-2 bg-background-muted rounded-full">
+            <span className="text-text-muted bg-background-muted inline-block w-fit rounded-full px-2 py-1 text-xs">
               {app.status}
             </span>
-            <p className="text-xs text-text-secondary my-2">
+            <p className="text-text-secondary my-2 text-xs">
               Applied on {formattedDate(app.createdAt)}
             </p>
             <div className="flex items-center gap-4">
@@ -58,14 +58,14 @@ export default function ApplicationsPage() {
                   alt={app.job.company.name}
                   width={28}
                   height={28}
-                  className="w-auto h-auto"
+                  className="h-auto w-auto"
                 />
               ) : (
-                <div className="border border-border p-2 rounded-full size-8 flex items-center justify-center">
+                <div className="border-border flex size-8 items-center justify-center rounded-full border p-2">
                   {getInitials(app.job.company.name)}
                 </div>
               )}
-              <p className="text-sm text-text-secondary">
+              <p className="text-text-secondary text-sm">
                 {app.job.company.name}
               </p>
             </div>

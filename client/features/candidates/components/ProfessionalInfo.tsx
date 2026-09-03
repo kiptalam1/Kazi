@@ -16,7 +16,7 @@ export const ProfessionalInfo = () => {
 
   if (isCandidatePending) {
     return (
-      <div className="flex items-center justify-center  min-h-[50vh] w-full ">
+      <div className="flex min-h-[50vh] w-full items-center justify-center">
         <Spinner />
       </div>
     );
@@ -24,21 +24,21 @@ export const ProfessionalInfo = () => {
 
   if (isCandidateError) {
     return (
-      <p className="text-center mx-auto p-6">
+      <p className="mx-auto p-6 text-center">
         {getApiErrorMessage(candidateError)}
       </p>
     );
   }
 
   return (
-    <section className="relative border border-border-muted p-4 sm:p-6 md:p-8">
-      <div className="mb-4 flex justify-between items-center">
-        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide ">
+    <section className="border-border-muted relative border p-4 sm:p-6 md:p-8">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-text-muted text-sm font-semibold tracking-wide uppercase">
           Professional Information
         </h2>
         <button
           onClick={() => setOpenUpdateModal(true)}
-          className="text-text-muted text-sm p-2 hover:bg-background-muted rounded-full duration-100"
+          className="text-text-muted hover:bg-background-muted rounded-full p-2 text-sm duration-100"
           aria-label="update Professional information"
         >
           <Edit2 className="size-4" />
@@ -69,7 +69,7 @@ export const ProfessionalInfo = () => {
           </div>
           <div>
             <p className="text-text-muted text-xs">Experience Level</p>
-            <p className="mt-1 text-sm p-1 bg-background-muted w-fit text-text-secondary">
+            <p className="bg-background-muted text-text-secondary mt-1 w-fit p-1 text-sm">
               {candidate.experienceLevel ?? 'Add experience level'}
             </p>
           </div>
@@ -89,7 +89,7 @@ export const ProfessionalInfo = () => {
                 ].map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-full bg-background-muted px-2 py-1 text-sm"
+                    className="bg-background-muted rounded-full px-2 py-1 text-sm"
                   >
                     {skill}
                   </span>

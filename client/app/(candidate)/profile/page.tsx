@@ -9,7 +9,7 @@ import ProfileHeader from '@/features/user/components/ProfileHeader';
 
 export default function ProfilePage() {
   return (
-    <main className="p-4 sm:py-8 space-y-4 sm:space-y-6 max-w-6xl mx-auto">
+    <main className="mx-auto max-w-6xl space-y-4 p-4 sm:space-y-6 sm:py-8">
       <ProfileHeader />
       <ProfessionalInfo />
       <ProfileLinks />

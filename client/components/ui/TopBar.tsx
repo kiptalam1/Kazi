@@ -2,7 +2,7 @@
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { CompanyLogo } from './CompanyLogo';
 import { Avatar } from './Avatar';
-import { Bell, BriefcaseBusiness, FileText } from 'lucide-react';
+import { Bell, BriefcaseBusiness, FileText, User } from 'lucide-react';
 import NavLink from './NavLink';
 import FallbackAvatar from './FallbackAvatar';
 import { useEffect, useRef, useState } from 'react';
@@ -38,13 +38,13 @@ export default function TopBar() {
   const user = data.data;
 
   return (
-    <nav className="flex items-center justify-between border-b border-border-muted  text-sm px-6 sm:px-8 py-4 sm:py-6">
+    <nav className="border-border-muted flex items-center justify-between border-b px-6 py-4 text-sm sm:px-8 sm:py-6">
       <CompanyLogo
         src="/favicon.ico"
         alt="Kazi logo"
         width={40}
         height={40}
-        className="w-fit h-fit justify-self-start"
+        className="h-fit w-fit justify-self-start"
       />
       <div className="flex items-center gap-10">
         <NavLink href={'/jobs'}>
@@ -60,7 +60,7 @@ export default function TopBar() {
           <span className="hidden sm:block">Notifications</span>
         </NavLink>
         <NavLink href={'/employer'}>
-          <Bell size={20} className="sm:hidden" />
+          <User size={20} className="sm:hidden" />
           <span className="hidden sm:block">For Employers</span>
         </NavLink>
       </div>

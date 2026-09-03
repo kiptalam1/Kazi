@@ -1,13 +1,13 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import createJob from "../api/create-job";
-import { getApiErrorMessage } from "@/lib/api/error";
-import { toast } from "sonner";
-import { CreateJobBody } from "../types/create-job.types";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import createJob from '../api/create-job';
+import { getApiErrorMessage } from '@/lib/api/error';
+import { toast } from 'sonner';
+import { CreateJobBody } from '../types/create-job.types';
 
 type Props = {
   slug: string;
   data: CreateJobBody;
-}
+};
 export default function useCreateJob() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -18,13 +18,13 @@ export default function useCreateJob() {
     },
     onSuccess: (result) => {
       queryClient.invalidateQueries({
-        queryKey: ['company-jobs']
+        queryKey: ['company-jobs'],
       });
 
       queryClient.invalidateQueries({
-        queryKey: ['dashboard-analytics']
+        queryKey: ['dashboard-analytics'],
       });
       toast.success(result.message);
-    }
+    },
   });
 }

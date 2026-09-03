@@ -52,16 +52,16 @@ export default function ResumeModal({ open, onClose }: Props) {
     <Modal onClose={handleCloseModal}>
       <div
         onClick={(e) => e.stopPropagation()}
-        className="p-4 sm:p-6 bg-background space-y-4 rounded-sm shadow-lg w-full max-w-2xl animate-emerge"
+        className="bg-background animate-emerge w-full max-w-2xl space-y-4 rounded-sm p-4 shadow-lg sm:p-6"
       >
-        <div className="flex items-center justify-between gap-2 text-text-secondary">
-          <h2 className=" uppercase font-semibold text-sm tracking-wide">
+        <div className="text-text-secondary flex items-center justify-between gap-2">
+          <h2 className="text-sm font-semibold tracking-wide uppercase">
             Upload Resume
           </h2>
           <button
             type="button"
             onClick={handleCloseModal}
-            className="p-2 rounded-full hover:bg-background-subtle "
+            className="hover:bg-background-subtle rounded-full p-2"
           >
             <X className="size-4" />
           </button>
@@ -90,7 +90,7 @@ export default function ResumeModal({ open, onClose }: Props) {
               variant="basic"
               onClick={() => inputRef.current?.click()}
               disabled={isUploading}
-              className="flex gap-2 items-center text-sm w-fit shrink-0 hover:ring-2 hover:ring-border-strong text-text-secondary disabled:text-text-disabled"
+              className="hover:ring-border-strong text-text-secondary disabled:text-text-disabled flex w-fit shrink-0 items-center gap-2 text-sm hover:ring-2"
             >
               {isUploading ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -100,7 +100,7 @@ export default function ResumeModal({ open, onClose }: Props) {
               Pick a Resume
             </Button>
             {file && (
-              <span className="text-sm text-accent flex-1 min-w-0 truncate">
+              <span className="text-accent min-w-0 flex-1 truncate text-sm">
                 {file.name}
               </span>
             )}

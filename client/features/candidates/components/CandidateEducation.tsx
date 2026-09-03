@@ -21,7 +21,7 @@ export default function CandidateEducation() {
 
   if (isPending) {
     return (
-      <div className="flex items-center justify-center  min-h-[50vh] w-full ">
+      <div className="flex min-h-[50vh] w-full items-center justify-center">
         <Spinner />
       </div>
     );
@@ -29,7 +29,7 @@ export default function CandidateEducation() {
 
   if (isError) {
     return (
-      <p className="text-center mx-auto p-6">{getApiErrorMessage(error)}</p>
+      <p className="mx-auto p-6 text-center">{getApiErrorMessage(error)}</p>
     );
   }
 
@@ -58,34 +58,34 @@ export default function CandidateEducation() {
     });
   };
   return (
-    <section className="p-4 sm:p-6 border border-border-muted min-h-32 ">
-      <div className="flex items-center justify-between  mb-4">
-        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide">
+    <section className="border-border-muted min-h-32 border p-4 sm:p-6">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-text-muted text-sm font-semibold tracking-wide uppercase">
           Education
         </h2>
         <button
           type="button"
           aria-label="add new education"
           onClick={handleAdd}
-          className="p-2 hover:bg-background-muted duration-100 rounded-full text-text-muted"
+          className="hover:bg-background-muted text-text-muted rounded-full p-2 duration-100"
         >
           <Plus className="size-4" />
         </button>
       </div>
-      <div className="divide-y divide-border-muted">
+      <div className="divide-border-muted divide-y">
         {data.map((edu) => (
           <article
             key={edu.id}
-            className="text-sm space-y-2 py-5 first:pt-0 last:pb-0"
+            className="space-y-2 py-5 text-sm first:pt-0 last:pb-0"
           >
-            <div className="flex items-center gap-4 justify-between">
+            <div className="flex items-center justify-between gap-4">
               <h3 className="font-semibold">{edu.schoolName}</h3>
-              <div className="flex items-start gap-1 text-sm text-text-muted">
+              <div className="text-text-muted flex items-start gap-1 text-sm">
                 <button
                   type="button"
                   aria-label={`Edit ${edu.schoolName}`}
                   onClick={() => handleEdit(edu)}
-                  className="p-3 hover:bg-accent-soft hover:text-accent-hover rounded-full duration-100"
+                  className="hover:bg-accent-soft hover:text-accent-hover rounded-full p-3 duration-100"
                 >
                   <Pencil className="size-3" />
                 </button>
@@ -96,7 +96,7 @@ export default function CandidateEducation() {
                     setOpenDeleteModal(true);
                     setSelectedEducation(edu);
                   }}
-                  className="p-3 hover:bg-red-50 hover:text-danger rounded-full duration-100"
+                  className="hover:text-danger rounded-full p-3 duration-100 hover:bg-red-50"
                 >
                   <Trash2 className="size-3" />
                 </button>
@@ -106,7 +106,7 @@ export default function CandidateEducation() {
             {edu.fieldOfStudy && (
               <p className="text-text-secondary">{edu.fieldOfStudy}</p>
             )}
-            <p className="text-text-secondary text-xs bg-background-subtle w-fit py-1 px-1.5 rounded-full">
+            <p className="text-text-secondary bg-background-subtle w-fit rounded-full px-1.5 py-1 text-xs">
               {edu.qualification.trim().split('_').join(' ')}
             </p>
             {(edu.city || edu.country) && (
@@ -116,7 +116,7 @@ export default function CandidateEducation() {
                 {edu.country}
               </p>
             )}
-            <p className="text-xs text-text-muted">
+            <p className="text-text-muted text-xs">
               {formattedDate(edu.startDate)} –{' '}
               {edu.endDate ? formattedDate(edu.endDate) : 'Present'}
             </p>
