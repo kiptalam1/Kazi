@@ -2,7 +2,7 @@
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { CompanyLogo } from './CompanyLogo';
 import { Avatar } from './Avatar';
-import { Bell, BriefcaseBusiness, FileText } from 'lucide-react';
+import { Bell, BriefcaseBusiness, FileText, User } from 'lucide-react';
 import NavLink from './NavLink';
 import FallbackAvatar from './FallbackAvatar';
 import { useEffect, useRef, useState } from 'react';
@@ -60,7 +60,7 @@ export default function TopBar() {
           <span className="hidden sm:block">Notifications</span>
         </NavLink>
         <NavLink href={'/employer'}>
-          <Bell size={20} className="sm:hidden" />
+          <User size={20} className="sm:hidden" />
           <span className="hidden sm:block">For Employers</span>
         </NavLink>
       </div>
