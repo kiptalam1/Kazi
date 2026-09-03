@@ -11,7 +11,7 @@ export default function FallbackAvatar({
 }: FallbackAvatarProps) {
   return (
     <div
-      className={`border border-border p-2 rounded-full size-8 flex items-center justify-center ${className}`}
+      className={`border-border flex size-8 items-center justify-center rounded-full border p-2 ${className}`}
     >
       {getInitials(value)}
     </div>

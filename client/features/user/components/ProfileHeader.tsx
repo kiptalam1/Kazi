@@ -23,7 +23,7 @@ export default function ProfileHeader() {
 
   if (isPending) {
     return (
-      <div className="w-full flex items-center justify-center  min-h-[50vh]">
+      <div className="flex min-h-[50vh] w-full items-center justify-center">
         <Spinner />
       </div>
     );
@@ -31,7 +31,7 @@ export default function ProfileHeader() {
 
   if (isError) {
     return (
-      <p className="text-center mx-auto p-6">{getApiErrorMessage(error)}</p>
+      <p className="mx-auto p-6 text-center">{getApiErrorMessage(error)}</p>
     );
   }
 
@@ -51,7 +51,7 @@ export default function ProfileHeader() {
   const user = data.data;
 
   return (
-    <section className="flex items-center gap-4 border border-border-muted p-4 sm:p-6 md:p-8">
+    <section className="border-border-muted flex items-center gap-4 border p-4 sm:p-6 md:p-8">
       <div className="relative">
         {avatarPreview ? (
           <Avatar
@@ -67,14 +67,14 @@ export default function ProfileHeader() {
             width={80}
             height={80}
             loading="eager"
-            className="hover:scale-110 transition-transform duration-300"
+            className="transition-transform duration-300 hover:scale-110"
           />
         ) : (
           <FallbackAvatar value={user.firstName} className="size-20" />
         )}
         {isUploadPending && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full">
-            <span className="size-5 border-2 border-white rounded-full border-t-transparent animate-spin" />
+          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
+            <span className="size-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
           </div>
         )}
         <button
@@ -82,7 +82,7 @@ export default function ProfileHeader() {
           aria-label="Update avatar"
           onClick={() => inputRef.current?.click()}
           disabled={isUploadPending}
-          className="p-1 rounded-full bg-background absolute bottom-0 right-0 text-text-secondary hover:bg-background hover:scale-105 transistion-all duration-100  disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-background text-text-secondary hover:bg-background transistion-all absolute right-0 bottom-0 rounded-full p-1 duration-100 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <UserPlus className="size-5" />
         </button>
@@ -96,8 +96,8 @@ export default function ProfileHeader() {
           className="hidden"
         />
       </div>
-      <div className="text-sm text-text-secondary">
-        <h1 className="text-lg font-semibold text-text-primary">
+      <div className="text-text-secondary text-sm">
+        <h1 className="text-text-primary text-lg font-semibold">
           {user.firstName} {user.lastName}
         </h1>
         <p>{user.email}</p>

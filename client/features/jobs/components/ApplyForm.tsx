@@ -57,7 +57,7 @@ export const ApplyForm = ({ jobId, onClose }: Props) => {
     <form
       onClick={(e) => e.stopPropagation()}
       onSubmit={handleSubmit}
-      className="p-4 sm:p-6 md:p-8 bg-background w-full max-w-lg space-y-6 shadow-sm"
+      className="bg-background w-full max-w-lg space-y-6 p-4 shadow-sm sm:p-6 md:p-8"
     >
       <h2 id="apply-modal-title" className="font-semibold">
         Apply for this job
@@ -65,9 +65,9 @@ export const ApplyForm = ({ jobId, onClose }: Props) => {
       <div className="flex flex-col gap-1">
         <Label htmlFor="resume">Resume</Label>
         {isPendingResume ? (
-          <div className="text-xs text-text-muted">Loading resume...</div>
+          <div className="text-text-muted text-xs">Loading resume...</div>
         ) : isErrorResume ? (
-          <div className="text-xs text-text-muted">Unable to load resumes.</div>
+          <div className="text-text-muted text-xs">Unable to load resumes.</div>
         ) : resumes && resumes.length > 0 ? (
           <Select
             id="resume"
@@ -86,7 +86,7 @@ export const ApplyForm = ({ jobId, onClose }: Props) => {
             ))}
           </Select>
         ) : (
-          <div className="flex items-center justify-between gap-4 text-xs text-text-muted">
+          <div className="text-text-muted flex items-center justify-between gap-4 text-xs">
             <span>No resume uploaded</span>
             <Button variant="basic" type="button" className="text-xs">
               Upload
@@ -113,7 +113,7 @@ export const ApplyForm = ({ jobId, onClose }: Props) => {
           wrap="soft"
         />
       </div>
-      <div className="flex justify-end gap-4 items-center text-sm">
+      <div className="flex items-center justify-end gap-4 text-sm">
         <Button variant="basic" type="button" onClick={onClose}>
           Cancel
         </Button>

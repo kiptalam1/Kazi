@@ -121,9 +121,9 @@ export default function EducationModal({ open, onClose, education }: Props) {
     <Modal onClose={onClose}>
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-3xl border border-border-muted rounded-sm bg-background p-4 sm:p-6 shadow-lg animate-emerge max-h-[calc(100dvh-2rem)] overflow-y-auto"
+        className="border-border-muted bg-background animate-emerge max-h-[calc(100dvh-2rem)] w-full max-w-3xl overflow-y-auto rounded-sm border p-4 shadow-lg sm:p-6"
       >
-        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-5">
+        <h2 className="text-text-muted mb-5 text-sm font-semibold tracking-wide uppercase">
           {education ? 'Edit Education' : 'Add Education'}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-sm">
@@ -138,7 +138,7 @@ export default function EducationModal({ open, onClose, education }: Props) {
               })}
             />
             {errors.schoolName && (
-              <p className="text-xs text-danger">{errors.schoolName.message}</p>
+              <p className="text-danger text-xs">{errors.schoolName.message}</p>
             )}
           </div>
           <div className="flex flex-col gap-1">
@@ -153,7 +153,7 @@ export default function EducationModal({ open, onClose, education }: Props) {
               })}
             />
             {errors.fieldOfStudy && (
-              <p className="text-xs text-danger">
+              <p className="text-danger text-xs">
                 {errors.fieldOfStudy.message}
               </p>
             )}
@@ -173,7 +173,7 @@ export default function EducationModal({ open, onClose, education }: Props) {
               ))}
             </Select>
             {errors.qualification && (
-              <p className="text-xs text-danger">
+              <p className="text-danger text-xs">
                 {errors.qualification.message}
               </p>
             )}
@@ -194,11 +194,11 @@ export default function EducationModal({ open, onClose, education }: Props) {
               })}
             />
             {errors.country && (
-              <p className="text-xs text-danger">{errors.country.message}</p>
+              <p className="text-danger text-xs">{errors.country.message}</p>
             )}
           </div>
           <div className="flex flex-wrap items-center gap-4">
-            <div className="flex-1 flex flex-col gap-1">
+            <div className="flex flex-1 flex-col gap-1">
               <Label>Start Date</Label>
               <Input
                 type="date"
@@ -207,12 +207,12 @@ export default function EducationModal({ open, onClose, education }: Props) {
                 })}
               />
               {errors.startDate && (
-                <p className="text-xs text-danger">
+                <p className="text-danger text-xs">
                   {errors.startDate.message}
                 </p>
               )}
             </div>
-            <div className="flex-1 flex flex-col gap-1">
+            <div className="flex flex-1 flex-col gap-1">
               <Label>End Date</Label>
               <Input type="date" {...register('endDate')} />
             </div>

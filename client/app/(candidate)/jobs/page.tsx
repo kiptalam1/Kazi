@@ -17,13 +17,13 @@ export default function JobsPage() {
   }
 
   return (
-    <div className="p-4 sm:py-8 space-y-6 overflow-hidden">
-      <h1 className="text-text-primary text-xl sm:text-2xl font-semibold">
+    <div className="space-y-6 overflow-hidden p-4 sm:py-8">
+      <h1 className="text-text-primary text-xl font-semibold sm:text-2xl">
         Jobs
       </h1>
       <section className="grid gap-4">
         {isPending && (
-          <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="flex min-h-[50vh] items-center justify-center">
             <Spinner />
           </div>
         )}
@@ -31,7 +31,7 @@ export default function JobsPage() {
         {jobs.map((job) => (
           <Link key={job.id} href={`/jobs/${job.id}`} className="block">
             <Card className="space-y-2">
-              <div className="flex items-center gap-3 ">
+              <div className="flex items-center gap-3">
                 {job.company.logoUrl ? (
                   <Avatar
                     className="size-10"
@@ -41,20 +41,20 @@ export default function JobsPage() {
                     height={50}
                   />
                 ) : (
-                  <span className="font-bold border border-border text-text-muted rounded-full size-10 flex items-center justify-center">
+                  <span className="border-border text-text-muted flex size-10 items-center justify-center rounded-full border font-bold">
                     {job.company.name.charAt(0).toUpperCase()}
                   </span>
                 )}
-                <h2 className="text-sm text-text-secondary font-medium">
+                <h2 className="text-text-secondary text-sm font-medium">
                   {job.company.name}
                 </h2>
               </div>
               <h3 className="text-lg font-semibold">{job.title}</h3>
-              <p className="text-sm text-text-muted">
+              <p className="text-text-muted text-sm">
                 {job.location ?? 'Location not specified.'}
               </p>
               {job.isRemote && (
-                <span className="text-xs text-text-secondary font-medium border border-border-muted shadow-xs inline-flex bg-background-subtle py-1 px-2.5 rounded-full">
+                <span className="text-text-secondary border-border-muted bg-background-subtle inline-flex rounded-full border px-2.5 py-1 text-xs font-medium shadow-xs">
                   Remote
                 </span>
               )}

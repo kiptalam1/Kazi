@@ -21,7 +21,7 @@ export default function CandidateExperiences() {
 
   if (isPending) {
     return (
-      <div className="flex items-center justify-center  min-h-[50vh] w-full ">
+      <div className="flex min-h-[50vh] w-full items-center justify-center">
         <Spinner />
       </div>
     );
@@ -29,7 +29,7 @@ export default function CandidateExperiences() {
 
   if (isError) {
     return (
-      <p className="text-center mx-auto p-6">{getApiErrorMessage(error)}</p>
+      <p className="mx-auto p-6 text-center">{getApiErrorMessage(error)}</p>
     );
   }
 
@@ -59,34 +59,34 @@ export default function CandidateExperiences() {
   }
 
   return (
-    <section className="p-4 sm:p-6 border border-border-muted min-h-32 ">
-      <div className="flex items-center justify-between  mb-4 ">
-        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide ">
+    <section className="border-border-muted min-h-32 border p-4 sm:p-6">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-text-muted text-sm font-semibold tracking-wide uppercase">
           Work Experience
         </h2>
         <button
           type="button"
           aria-label="add new experience"
           onClick={handleAdd}
-          className="p-2 hover:bg-background-muted duration-100 rounded-full text-text-muted"
+          className="hover:bg-background-muted text-text-muted rounded-full p-2 duration-100"
         >
           <Plus className="size-4" />
         </button>
       </div>
-      <div className="divide-y divide-border-muted">
+      <div className="divide-border-muted divide-y">
         {data.map((exp) => (
           <article
             key={exp.id}
-            className="text-sm space-y-2 py-5 first:pt-0 last:pb-0"
+            className="space-y-2 py-5 text-sm first:pt-0 last:pb-0"
           >
-            <div className="flex items-start justify-between gap-4 ">
+            <div className="flex items-start justify-between gap-4">
               <h3 className="font-semibold">{exp.jobTitle}</h3>
-              <div className="flex items-start gap-1 text-sm text-text-muted">
+              <div className="text-text-muted flex items-start gap-1 text-sm">
                 <button
                   type="button"
                   aria-label={`Edit ${exp.jobTitle}`}
                   onClick={() => handleEdit(exp)}
-                  className="p-3 hover:bg-accent-soft hover:text-accent-hover rounded-full duration-100"
+                  className="hover:bg-accent-soft hover:text-accent-hover rounded-full p-3 duration-100"
                 >
                   <Pencil className="size-3" />
                 </button>
@@ -97,7 +97,7 @@ export default function CandidateExperiences() {
                     setOpenDeleteModal(true);
                     setSelectedExperience(exp);
                   }}
-                  className="p-3 hover:bg-red-50 hover:text-danger rounded-full duration-100"
+                  className="hover:text-danger rounded-full p-3 duration-100 hover:bg-red-50"
                 >
                   <Trash2 className="size-3" />
                 </button>
@@ -106,7 +106,7 @@ export default function CandidateExperiences() {
             <p className="text-text-secondary">{exp.companyName}</p>
             <div className="flex flex-wrap items-center gap-2">
               {exp.employmentType && (
-                <span className="rounded-full bg-background-subtle p-1 px-1.5 text-text-secondary text-xs">
+                <span className="bg-background-subtle text-text-secondary rounded-full p-1 px-1.5 text-xs">
                   {exp.employmentType.trim().split('_').join(' ')}
                 </span>
               )}
@@ -115,12 +115,12 @@ export default function CandidateExperiences() {
                 <span className="text-text-secondary">{exp.location}</span>
               )}
             </div>{' '}
-            <p className="text-xs text-text-muted">
+            <p className="text-text-muted text-xs">
               {formattedDate(exp.startDate)} –{' '}
               {exp.isCurrent ? 'Present' : formattedDate(exp.endDate!)}
             </p>
             {exp.description && (
-              <p className="pt-2 leading-6 text-text-secondary">
+              <p className="text-text-secondary pt-2 leading-6">
                 {exp.description}
               </p>
             )}

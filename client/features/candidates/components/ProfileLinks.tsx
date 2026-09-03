@@ -31,7 +31,7 @@ export const ProfileLinks = () => {
 
   if (isCandidatePending) {
     return (
-      <div className="flex items-center justify-center  min-h-[50vh] w-full">
+      <div className="flex min-h-[50vh] w-full items-center justify-center">
         <Spinner />
       </div>
     );
@@ -39,21 +39,21 @@ export const ProfileLinks = () => {
 
   if (isCandidateError) {
     return (
-      <p className="text-center mx-auto p-6">
+      <p className="mx-auto p-6 text-center">
         {getApiErrorMessage(candidateError)}
       </p>
     );
   }
 
   return (
-    <section className="border border-border-muted p-4 sm:p-6 md:p-8">
-      <div className="mb-4 flex justify-between items-center">
-        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide ">
+    <section className="border-border-muted border p-4 sm:p-6 md:p-8">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-text-muted text-sm font-semibold tracking-wide uppercase">
           Links
         </h2>
         <button
           onClick={() => setOpenUpdateModal(true)}
-          className="text-text-muted text-sm p-2 hover:bg-background-muted rounded-full duration-100"
+          className="text-text-muted hover:bg-background-muted rounded-full p-2 text-sm duration-100"
           aria-label="update Professional links"
         >
           <Edit2 className="size-4" />
@@ -65,19 +65,19 @@ export const ProfileLinks = () => {
           const url = candidate[link.value];
           return (
             <div key={link.value}>
-              <p className="text-xs text-text-muted">{link.name}</p>
+              <p className="text-text-muted text-xs">{link.name}</p>
 
               {url ? (
                 <a
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm hover:underline truncate"
+                  className="truncate text-sm hover:underline"
                 >
                   {url}
                 </a>
               ) : (
-                <p className="text-sm text-text-muted">Empty</p>
+                <p className="text-text-muted text-sm">Empty</p>
               )}
             </div>
           );

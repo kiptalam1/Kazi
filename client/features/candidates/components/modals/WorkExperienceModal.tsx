@@ -134,12 +134,12 @@ export default function WorkExperienceModal({
     <Modal onClose={onClose}>
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-3xl border border-border-muted rounded-sm bg-background p-4 sm:p-6 shadow-lg animate-emerge max-h-[calc(100dvh-2rem)] overflow-y-auto"
+        className="border-border-muted bg-background animate-emerge max-h-[calc(100dvh-2rem)] w-full max-w-3xl overflow-y-auto rounded-sm border p-4 shadow-lg sm:p-6"
       >
-        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-5">
+        <h2 className="text-text-muted mb-5 text-sm font-semibold tracking-wide uppercase">
           {experience ? 'Edit Work Experience' : 'Add work experience'}
         </h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="text-sm space-y-4 ">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-sm">
           <div className="flex flex-col gap-1">
             <Label>Job Title</Label>
             <Input
@@ -175,7 +175,7 @@ export default function WorkExperienceModal({
             <Input {...register('location')} />
           </div>
 
-          <div className="flex flex-col gap-1 ">
+          <div className="flex flex-col gap-1">
             <Label>Employment Type</Label>
             <Select
               {...register('employmentType', {
@@ -206,7 +206,7 @@ export default function WorkExperienceModal({
             )}
           </div>
 
-          <div className="flex gap-4 items-center">
+          <div className="flex items-center gap-4">
             <Label>I am currently working here</Label>
             <Checkbox {...register('isCurrent')} />
           </div>

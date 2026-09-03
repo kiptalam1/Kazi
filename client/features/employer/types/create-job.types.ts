@@ -1,4 +1,7 @@
-import { ExperienceLevel, JobStatus } from "@/features/common/types/common.types";
+import {
+  ExperienceLevel,
+  JobStatus,
+} from '@/features/common/types/common.types';
 
 export type CreateJobBody = {
   title: string;
@@ -10,4 +13,4 @@ export type CreateJobBody = {
   salaryMin: number;
   salaryMax: number;
   currency: string | null;
-}
+};

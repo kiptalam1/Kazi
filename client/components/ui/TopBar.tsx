@@ -38,13 +38,13 @@ export default function TopBar() {
   const user = data.data;
 
   return (
-    <nav className="flex items-center justify-between border-b border-border-muted  text-sm px-6 sm:px-8 py-4 sm:py-6">
+    <nav className="border-border-muted flex items-center justify-between border-b px-6 py-4 text-sm sm:px-8 sm:py-6">
       <CompanyLogo
         src="/favicon.ico"
         alt="Kazi logo"
         width={40}
         height={40}
-        className="w-fit h-fit justify-self-start"
+        className="h-fit w-fit justify-self-start"
       />
       <div className="flex items-center gap-10">
         <NavLink href={'/jobs'}>

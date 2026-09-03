@@ -1,16 +1,19 @@
-import Button from "@/components/ui/Button";
-import Checkbox from "@/components/ui/Checkbox";
-import Input from "@/components/ui/Input";
-import Label from "@/components/ui/Label";
-import Modal from "@/components/ui/Modal";
-import Select from "@/components/ui/Select";
-import Textarea from "@/components/ui/Textarea";
-import { ExperienceLevel, JobStatus } from "@/features/common/types/common.types";
-import { useForm } from "react-hook-form";
-import { CreateJobBody } from "../../types/create-job.types";
-import { useEffect } from "react";
-import { Job } from "@/features/jobs/types/get-job.types";
-import useCreateJob from "../../hooks/useCreateJob";
+import Button from '@/components/ui/Button';
+import Checkbox from '@/components/ui/Checkbox';
+import Input from '@/components/ui/Input';
+import Label from '@/components/ui/Label';
+import Modal from '@/components/ui/Modal';
+import Select from '@/components/ui/Select';
+import Textarea from '@/components/ui/Textarea';
+import {
+  ExperienceLevel,
+  JobStatus,
+} from '@/features/common/types/common.types';
+import { useForm } from 'react-hook-form';
+import { CreateJobBody } from '../../types/create-job.types';
+import { useEffect } from 'react';
+import { Job } from '@/features/jobs/types/get-job.types';
+import useCreateJob from '../../hooks/useCreateJob';
 
 type Props = {
   open: boolean;
@@ -41,8 +44,18 @@ const jobStatuses: {
     { label: 'Archived', value: 'ARCHIVED' },
   ];
 
-export default function PostJobModal({ open, onClose, job, companySlug }: Props) {
-  const { reset, register, handleSubmit, formState: { errors } } = useForm<CreateJobBody>();
+export default function PostJobModal({
+  open,
+  onClose,
+  job,
+  companySlug,
+}: Props) {
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateJobBody>();
   const { mutate: postJob, isPending: isCreatingPost } = useCreateJob();
 
   useEffect(() => {
@@ -51,7 +64,7 @@ export default function PostJobModal({ open, onClose, job, companySlug }: Props)
     }
     return () => {
       document.body.style.overflow = '';
-    }
+    };
   }, [open]);
 
   useEffect(() => {
@@ -66,7 +79,6 @@ export default function PostJobModal({ open, onClose, job, companySlug }: Props)
         status: job.status,
         salaryMax: job.salaryMax ?? undefined,
         salaryMin: job.salaryMin ?? undefined,
-
       });
     } else {
       reset({
@@ -81,25 +93,27 @@ export default function PostJobModal({ open, onClose, job, companySlug }: Props)
         salaryMax: 0,
       });
     }
-
-  }, []);
+  }, [reset, job]);
 
   const onSubmit = (data: CreateJobBody) => {
     const payload: CreateJobBody = {
       ...data,
       salaryMin: Number(data.salaryMin),
       salaryMax: Number(data.salaryMax),
+    };
+    if (job) {
+    } else {
+      postJob(
+        {
+          slug: companySlug,
+          data: payload,
+        },
+        {
+          onSuccess: () => onClose(),
+        },
+      );
     }
-    if (job) { }
-    else {
-      postJob({
-        slug: companySlug,
-        data: payload,
-      }, {
-        onSuccess: () => onClose(),
-      });
-    }
-  }
+  };
 
   if (!open) return null;
 
@@ -107,26 +121,24 @@ export default function PostJobModal({ open, onClose, job, companySlug }: Props)
     <Modal onClose={onClose}>
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-background w-full max-w-xl overflow-y-auto p-4 sm:p-6 max-h-[calc(100dvh-2rem)] animate-emerge"
+        className="bg-background animate-emerge max-h-[calc(100dvh-2rem)] w-full max-w-xl overflow-y-auto p-4 sm:p-6"
       >
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Title */}
           <div className="flex flex-col gap-1">
             <Label htmlFor="title">Job Title</Label>
-            <Input id="title" placeholder="e.g. Frontend Developer"
+            <Input
+              id="title"
+              placeholder="e.g. Frontend Developer"
               {...register('title', {
                 required: 'Title is required',
-                validate: (value) => value.trim().length > 0 || 'Title is required'
+                validate: (value) =>
+                  value.trim().length > 0 || 'Title is required',
               })}
             />
-            {
-              errors.title &&
-              <p className="text-xs text-danger">
-                {errors.title.message}
-              </p>
-            }
+            {errors.title && (
+              <p className="text-danger text-xs">{errors.title.message}</p>
+            )}
           </div>
 
           {/* Experience Level */}
@@ -173,9 +185,7 @@ export default function PostJobModal({ open, onClose, job, companySlug }: Props)
 
           {/* Remote */}
           <div className="flex items-center gap-2">
-            <Checkbox id="isRemote"
-              {...register('isRemote')}
-            />
+            <Checkbox id="isRemote" {...register('isRemote')} />
             <Label htmlFor="isRemote">Remote position</Label>
           </div>
 
@@ -207,11 +217,7 @@ export default function PostJobModal({ open, onClose, job, companySlug }: Props)
           {/* Currency */}
           <div className="flex flex-col gap-1">
             <Label htmlFor="currency">Currency</Label>
-            <Select
-              id="currency"
-              defaultValue="KES"
-              {...register('currency')}
-            >
+            <Select id="currency" defaultValue="KES" {...register('currency')}>
               <option value="KES">KES</option>
               <option value="USD">USD</option>
               <option value="EUR">EUR</option>
@@ -222,10 +228,7 @@ export default function PostJobModal({ open, onClose, job, companySlug }: Props)
           <div className="flex flex-col gap-1">
             <Label htmlFor="status">Status</Label>
 
-            <Select
-              id="status"
-              {...register('status')}
-            >
+            <Select id="status" {...register('status')}>
               {jobStatuses.map((status) => (
                 <option key={status.value} value={status.value}>
                   {status.label}
@@ -240,9 +243,7 @@ export default function PostJobModal({ open, onClose, job, companySlug }: Props)
               Cancel
             </Button>
 
-            <Button
-              disabled={isCreatingPost}
-              type="submit">
+            <Button disabled={isCreatingPost} type="submit">
               {isCreatingPost ? 'Submitting...' : 'Submit'}
             </Button>
           </div>

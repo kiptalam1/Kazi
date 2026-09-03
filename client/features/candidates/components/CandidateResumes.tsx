@@ -18,7 +18,7 @@ export default function CandidateResumes() {
 
   if (isPending) {
     return (
-      <div className="flex items-center justify-center  min-h-[50vh] w-full ">
+      <div className="flex min-h-[50vh] w-full items-center justify-center">
         <Spinner />
       </div>
     );
@@ -26,7 +26,7 @@ export default function CandidateResumes() {
 
   if (isError) {
     return (
-      <p className="text-center mx-auto p-6">{getApiErrorMessage(error)}</p>
+      <p className="mx-auto p-6 text-center">{getApiErrorMessage(error)}</p>
     );
   }
 
@@ -43,44 +43,44 @@ export default function CandidateResumes() {
   }
 
   return (
-    <section className="p-4 sm:p-6 border border-border-muted min-h-32 ">
-      <div className="flex items-center justify-between  mb-4">
-        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide">
+    <section className="border-border-muted min-h-32 border p-4 sm:p-6">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-text-muted text-sm font-semibold tracking-wide uppercase">
           Resumes
         </h2>
         <button
           type="button"
           aria-label="add new resume"
           onClick={() => setOpenResumeModal(true)}
-          className="p-2 hover:bg-background-muted duration-100 rounded-full text-text-muted"
+          className="hover:bg-background-muted text-text-muted rounded-full p-2 duration-100"
         >
           <Plus className="size-4" />
         </button>
       </div>
-      <div className="divide-y divide-border-muted">
+      <div className="divide-border-muted divide-y">
         {data.map((resume) => (
           <article
             key={resume.id}
-            className="text-sm space-y-3 py-5 first:pt-0 last:pb-0"
+            className="space-y-3 py-5 text-sm first:pt-0 last:pb-0"
           >
-            <div className="flex items-center justify-between gap-4 ">
+            <div className="flex items-center justify-between gap-4">
               <div className="min-w-0">
-                <h3 className="font-medium truncate">
+                <h3 className="truncate font-medium">
                   {resume.displayName || resume.fileName}
                 </h3>
-                <p className="text-xs text-text-muted">
+                <p className="text-text-muted text-xs">
                   {resume.mimeType === 'application/pdf'
                     ? 'PDF'
                     : 'Word document'}
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row sm:gap-4 sm:items-center">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
                 <a
                   href={resume.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="shrink-0 text-sm font-medium text-accent hover:text-accent-hover hover:underline underline-offset-2 duration-150"
+                  className="text-accent hover:text-accent-hover shrink-0 text-sm font-medium underline-offset-2 duration-150 hover:underline"
                 >
                   Open
                 </a>
@@ -91,7 +91,7 @@ export default function CandidateResumes() {
                     setSelectedResume(resume);
                     setOpenDeleteModal(true);
                   }}
-                  className="p-3 hover:bg-red-50 hover:text-danger rounded-full duration-100"
+                  className="hover:text-danger rounded-full p-3 duration-100 hover:bg-red-50"
                 >
                   <Trash2 className="size-3" />
                 </button>
@@ -102,7 +102,7 @@ export default function CandidateResumes() {
               <iframe
                 src={resume.url}
                 title={resume.displayName || resume.fileName || 'Resume'}
-                className="hidden sm:block h-[60vh] w-full border border-border-muted"
+                className="border-border-muted hidden h-[60vh] w-full border sm:block"
               />
             )}
           </article>

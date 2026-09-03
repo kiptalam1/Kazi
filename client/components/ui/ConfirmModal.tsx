@@ -19,9 +19,9 @@ export default function ConfirmModal({
 
   return (
     <Modal onClose={onClose}>
-      <div className="w-full max-w-md bg-background p-6 space-y-4 text-sm ">
-        <h2 className="text-base text-text-secondary text-wrap">{title}</h2>
-        <div className="flex items-center justify-between gap-4 ">
+      <div className="bg-background w-full max-w-md space-y-4 p-6 text-sm">
+        <h2 className="text-text-secondary text-base text-wrap">{title}</h2>
+        <div className="flex items-center justify-between gap-4">
           <Button type="button" variant="basic" onClick={onClose}>
             Cancel
           </Button>

@@ -65,8 +65,8 @@ export default function CreateCompanyForm({ company }: Props) {
   }
 
   return (
-    <div className="space-y-6 px-4 py-6 sm:px-6 sm:py-8 w-full max-w-lg rounded-sm shadow-xs ">
-      <h1 className="text-xl sm:text-2xl text-text-primary font-semibold">
+    <div className="w-full max-w-lg space-y-6 rounded-sm px-4 py-6 shadow-xs sm:px-6 sm:py-8">
+      <h1 className="text-text-primary text-xl font-semibold sm:text-2xl">
         Create Your Company
       </h1>
 
@@ -74,7 +74,7 @@ export default function CreateCompanyForm({ company }: Props) {
         <div className="flex flex-col gap-1">
           <Label>
             Company Name
-            <span className="text-danger ">*</span>
+            <span className="text-danger">*</span>
           </Label>
           <Input
             {...register('name', {
@@ -85,14 +85,14 @@ export default function CreateCompanyForm({ company }: Props) {
             className="border-border-muted"
           />
           {errors.name && (
-            <p className="text-xs text-danger">{errors.name.message}</p>
+            <p className="text-danger text-xs">{errors.name.message}</p>
           )}
         </div>
         <div className="flex flex-col gap-1">
           <Label>Description</Label>
           <Textarea
             rows={4}
-            className="min-h-32 border-border-muted"
+            className="border-border-muted min-h-32"
             {...register('description')}
           />
         </div>
@@ -110,7 +110,7 @@ export default function CreateCompanyForm({ company }: Props) {
             className="border-border-muted"
           />
           {errors.website && (
-            <p className="text-xs text-danger">{errors.website.message}</p>
+            <p className="text-danger text-xs">{errors.website.message}</p>
           )}
         </div>
         <div className="flex flex-col gap-1">
@@ -121,7 +121,7 @@ export default function CreateCompanyForm({ company }: Props) {
           <Label>Location</Label>
           <Input {...register('location')} className="border-border-muted" />
         </div>
-        <div className="flex justify-self-end mt-6">
+        <div className="mt-6 flex justify-self-end">
           <Button type="submit" disabled={isCreating}>
             {isCreating ? 'Submitting...' : 'Submit'}
           </Button>

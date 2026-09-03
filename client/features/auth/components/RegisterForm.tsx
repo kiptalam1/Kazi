@@ -67,9 +67,9 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className=" bg-background-muted p-6 flex flex-col gap-6 w-full max-w-lg rounded-xs"
+      className="bg-background-muted flex w-full max-w-lg flex-col gap-6 rounded-xs p-6"
     >
-      <h1 className="text-text-secondary text-lg font-semibold text-center">
+      <h1 className="text-text-secondary text-center text-lg font-semibold">
         Create an account
       </h1>
       <div>
@@ -139,12 +139,12 @@ export default function RegisterForm() {
             onClick={() => setShowPassword((prev) => !prev)}
             aria-label={showPassword ? 'Hide Password' : 'Show Password'}
             aria-pressed={showPassword}
-            className="absolute -translate-y-1/2 top-1/2 right-2"
+            className="absolute top-1/2 right-2 -translate-y-1/2"
           >
             {showPassword ? (
               <EyeOff className="text-text-muted size-4" />
             ) : (
-              <Eye className="size-4 text-text-muted" />
+              <Eye className="text-text-muted size-4" />
             )}
           </button>
         </div>
@@ -168,12 +168,12 @@ export default function RegisterForm() {
             onClick={() => setShowConfirmPassword((prev) => !prev)}
             aria-label={showConfirmPassword ? 'Hide Password' : 'Show Password'}
             aria-pressed={showConfirmPassword}
-            className="absolute -translate-y-1/2 top-1/2 right-2"
+            className="absolute top-1/2 right-2 -translate-y-1/2"
           >
             {showConfirmPassword ? (
               <EyeOff className="text-text-muted size-4" />
             ) : (
-              <Eye className="size-4 text-text-muted" />
+              <Eye className="text-text-muted size-4" />
             )}
           </button>
         </div>
@@ -187,10 +187,10 @@ export default function RegisterForm() {
         {registerMutation.isPending ? <Spinner /> : 'Sign Up'}
       </Button>
       <div className="flex flex-col gap-2">
-        <span className="mx-auto text-xs text-text-muted">Or</span>
+        <span className="text-text-muted mx-auto text-xs">Or</span>
         <Link
           href={'/login'}
-          className="text-accent hover:text-accent-hover duration-150 text-sm mx-auto"
+          className="text-accent hover:text-accent-hover mx-auto text-sm duration-150"
         >
           Log in to your account
         </Link>

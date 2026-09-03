@@ -22,17 +22,17 @@ export default function JobDetailsPage() {
     return <p>{error.message}</p>;
   }
   return (
-    <main className="p-4 sm:py-8 space-y-4 sm:space-y-6">
+    <main className="space-y-4 p-4 sm:space-y-6 sm:py-8">
       <section>
         <Link
           href={'/jobs'}
           aria-label="Back to jobs"
-          className="mb-5 size-8 inline-flex items-center justify-center rounded-md text-text-secondary  hover:bg-background-muted hover:text-text-primary duration-75"
+          className="text-text-secondary hover:bg-background-muted hover:text-text-primary mb-5 inline-flex size-8 items-center justify-center rounded-md duration-75"
         >
           <ArrowLeft className="size-4" />
         </Link>
         {isPending && (
-          <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="flex min-h-[50vh] items-center justify-center">
             <Spinner />
           </div>
         )}
@@ -48,11 +48,11 @@ export default function JobDetailsPage() {
                   className="size-10"
                 />
               ) : (
-                <span className="size-10  border border-border rounded-full flex items-center justify-center font-bold text-text-secondary">
+                <span className="border-border text-text-secondary flex size-10 items-center justify-center rounded-full border font-bold">
                   {getInitials(job.company.name)}
                 </span>
               )}
-              <h3 className="text-lg text-text-secondary  font-medium">
+              <h3 className="text-text-secondary text-lg font-medium">
                 {job.company.name}
               </h3>
             </div>
@@ -61,7 +61,7 @@ export default function JobDetailsPage() {
               <Button
                 type="button"
                 onClick={() => setOpenApplyModal(true)}
-                className="text-xs font-semibold cursor-pointer"
+                className="cursor-pointer text-xs font-semibold"
               >
                 Apply
               </Button>
@@ -79,26 +79,26 @@ export default function JobDetailsPage() {
               <p className="text-text-secondary text-sm font-medium">
                 {job.location ?? ''}
               </p>
-              <p className="text-sm text-text-muted">
+              <p className="text-text-muted text-sm">
                 Posted {formattedDate(job.createdAt)}
               </p>
-              <div className=" flex items-center gap-3">
+              <div className="flex items-center gap-3">
                 {job.isRemote && <Badge>Remote</Badge>}
                 {job.experienceLevel && <Badge>{job.experienceLevel}</Badge>}
                 {job.location && <Badge>{job.location}</Badge>}
               </div>
-              <hr className="border border-border-muted my-6" />
+              <hr className="border-border-muted my-6 border" />
             </div>
             <div className="space-y-2">
-              <h4 className="font-semibold text-text-muted">Description</h4>
-              <div className="text-text-secondary ">{job.description}</div>
-              <hr className="border border-border-muted my-6" />
+              <h4 className="text-text-muted font-semibold">Description</h4>
+              <div className="text-text-secondary">{job.description}</div>
+              <hr className="border-border-muted my-6 border" />
             </div>
             <div className="space-y-2">
-              <h4 className="font-semibold text-text-muted">
+              <h4 className="text-text-muted font-semibold">
                 About the company
               </h4>
-              <p className="text-sm font-medium text-text-secondary">
+              <p className="text-text-secondary text-sm font-medium">
                 {job.company.name}
               </p>
             </div>

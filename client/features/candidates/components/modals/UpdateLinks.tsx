@@ -61,17 +61,17 @@ export default function UpdateLinks({ open, onClose, candidate }: Props) {
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 p-4 backdrop-blur-2xl"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-2xl"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-6xl p-6 border border-border-muted bg-background-muted shadow-lg rounded animate-emerge"
+        className="border-border-muted bg-background-muted animate-emerge w-full max-w-6xl rounded border p-6 shadow-lg"
       >
-        <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-4">
+        <h2 className="text-text-muted mb-4 text-sm font-semibold tracking-wide uppercase">
           Links
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="text-sm space-y-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 text-sm">
           <div className="flex flex-col gap-1">
             <Label className="text-xs">Github</Label>
             <Input
