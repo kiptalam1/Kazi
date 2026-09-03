@@ -239,7 +239,7 @@ export default function PostJobModal({
 
           {/* Actions */}
           <div className="flex justify-end gap-2 pt-2">
-            <Button type="button" onClick={onClose}>
+            <Button variant="basic" type="button" onClick={onClose}>
               Cancel
             </Button>
 
