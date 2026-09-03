@@ -26,23 +26,23 @@ const experienceLevels: {
   label: string;
   value: ExperienceLevel;
 }[] = [
-    { label: 'Intern', value: 'INTERN' },
-    { label: 'Apprentice', value: 'APPRENTICE' },
-    { label: 'Junior', value: 'JUNIOR' },
-    { label: 'Mid Level', value: 'MID' },
-    { label: 'Senior', value: 'SENIOR' },
-    { label: 'Lead', value: 'LEAD' },
-  ];
+  { label: 'Intern', value: 'INTERN' },
+  { label: 'Apprentice', value: 'APPRENTICE' },
+  { label: 'Junior', value: 'JUNIOR' },
+  { label: 'Mid Level', value: 'MID' },
+  { label: 'Senior', value: 'SENIOR' },
+  { label: 'Lead', value: 'LEAD' },
+];
 
 const jobStatuses: {
   label: string;
   value: JobStatus;
 }[] = [
-    { label: 'Draft', value: 'DRAFT' },
-    { label: 'Published', value: 'PUBLISHED' },
-    { label: 'Closed', value: 'CLOSED' },
-    { label: 'Archived', value: 'ARCHIVED' },
-  ];
+  { label: 'Draft', value: 'DRAFT' },
+  { label: 'Published', value: 'PUBLISHED' },
+  { label: 'Closed', value: 'CLOSED' },
+  { label: 'Archived', value: 'ARCHIVED' },
+];
 
 export default function PostJobModal({
   open,

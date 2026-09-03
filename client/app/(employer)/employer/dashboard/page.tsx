@@ -8,7 +8,7 @@ import useCompanyJobs from '@/features/employer/hooks/useCompanyJobs';
 import useMyCompany from '@/features/employer/hooks/useMyCompany';
 import useAnalytics from '@/features/employer/hooks/useAnalytics';
 import { getApiErrorMessage } from '@/lib/api/error';
-import { Plus, } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import PostjobModal from '@/features/employer/components/modals/PostjobModal';
 import RecentApplications from '@/features/employer/components/RecentApplications';
@@ -53,7 +53,7 @@ export default function EmployerDashboard() {
   }
 
   return (
-    <main className="space-y-6 p-4 sm:py-6">
+    <>
       {/* Company Header */}
       <section className="border-border-muted flex items-center justify-between gap-4 border-b pb-6">
         {!company && <p>Company not found!</p>}
@@ -115,6 +115,6 @@ export default function EmployerDashboard() {
           companySlug={company.slug}
         />
       }
-    </main>
+    </>
   );
 }

@@ -5,7 +5,8 @@ export default function EmployerLayout({ children }: { children: ReactNode }) {
   return (
     <div>
       <EmployerTopbar />
-      {children}
+
+      <main className="space-y-6 p-4 sm:py-6">{children}</main>
     </div>
   );
 }
