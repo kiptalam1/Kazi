@@ -70,7 +70,7 @@ export default function EmployerDashboard() {
             ) : (
               <FallbackAvatar value={company?.name || ''} />
             )}
-            <h1 className="text-2xl font-semibold">{company?.name}</h1>
+            <h1 className="sm:text-2xl font-semibold">{company?.name}</h1>
           </div>
           <div className="text-text-secondary items-center space-y-1 text-sm">
             {company?.industry && <p>{company.industry}</p>}
@@ -81,7 +81,7 @@ export default function EmployerDashboard() {
         <Button
           type="button"
           onClick={() => setOpenJobModal(true)}
-          className="flex items-center gap-1 self-start rounded-none text-sm font-extralight"
+          className="flex items-center gap-1 self-start rounded-none text-xs sm:text-sm font-extralight"
         >
           <Plus className="size-5" />
           Post a Job
