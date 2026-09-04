@@ -14,12 +14,13 @@ import { CreateJobBody } from '../../types/create-job.types';
 import { useEffect } from 'react';
 import { Job } from '@/features/jobs/types/get-job.types';
 import useCreateJob from '../../hooks/useCreateJob';
+import useUpdateJob from '../../hooks/useUpdateJob';
 
 type Props = {
   open: boolean;
   onClose: () => void;
   job?: Omit<Job, 'company'>;
-  companySlug: string;
+  companySlug?: string;
 };
 
 const experienceLevels: {
@@ -57,6 +58,7 @@ export default function PostJobModal({
     formState: { errors },
   } = useForm<CreateJobBody>();
   const { mutate: postJob, isPending: isCreatingPost } = useCreateJob();
+  const { mutate: updateJob, isPending: isUpdatingJob } = useUpdateJob();
 
   useEffect(() => {
     if (open) {
@@ -102,10 +104,19 @@ export default function PostJobModal({
       salaryMax: Number(data.salaryMax),
     };
     if (job) {
+      updateJob(
+        {
+          jobId: job.id,
+          data: payload,
+        },
+        {
+          onSuccess: () => onClose(),
+        },
+      );
     } else {
       postJob(
         {
-          slug: companySlug,
+          slug: companySlug as string,
           data: payload,
         },
         {
@@ -243,8 +254,8 @@ export default function PostJobModal({
               Cancel
             </Button>
 
-            <Button disabled={isCreatingPost} type="submit">
-              {isCreatingPost ? 'Submitting...' : 'Submit'}
+            <Button disabled={isCreatingPost || isUpdatingJob} type="submit">
+              {isCreatingPost || isUpdatingJob ? 'Submitting...' : 'Submit'}
             </Button>
           </div>
         </form>
