@@ -2,6 +2,8 @@ import { Edit, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import PostJobModal from './modals/PostjobModal';
 import { CompanyJob } from '../types/get-company-jobs.types';
+import ConfirmModal from '@/components/ui/ConfirmModal';
+import useDeletejob from '../hooks/useDeleteJob';
 
 type Props = {
   jobs: CompanyJob[];
@@ -10,6 +12,8 @@ type Props = {
 export default function JobsTable({ jobs }: Props) {
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState<CompanyJob | undefined>();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const { mutate: deleteJob, isPending: isDeletingJob } = useDeletejob();
 
   const handleOpenUpdateModal = (job: CompanyJob) => {
     setOpenUpdateModal(true);
@@ -19,6 +23,18 @@ export default function JobsTable({ jobs }: Props) {
   const handleCloseUpdateModal = () => {
     setOpenUpdateModal(false);
     setSelectedJob(undefined);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false);
+    setSelectedJob(undefined);
+  };
+
+  const handleDeleteJob = () => {
+    if (!selectedJob) return;
+    deleteJob(selectedJob.id, {
+      onSuccess: handleCloseDeleteModal,
+    });
   };
 
   return (
@@ -58,7 +74,13 @@ export default function JobsTable({ jobs }: Props) {
                   onClick={() => handleOpenUpdateModal(job)}
                   className="text-brand-primary hover:text-brand-primary/50 size-5 duration-100"
                 />
-                <Trash2 className="text-danger hover:text-danger/50 size-5" />
+                <Trash2
+                  onClick={() => {
+                    setSelectedJob(job);
+                    setOpenDeleteModal(true);
+                  }}
+                  className="text-danger hover:text-danger/50 size-5"
+                />
               </td>
             </tr>
           ))}
@@ -70,6 +92,15 @@ export default function JobsTable({ jobs }: Props) {
           open={openUpdateModal}
           onClose={handleCloseUpdateModal}
           job={selectedJob}
+        />
+      }
+      {
+        <ConfirmModal
+          title="Are you sure you want to delete this job?"
+          open={openDeleteModal}
+          onClose={handleCloseDeleteModal}
+          isPending={isDeletingJob}
+          onConfirm={handleDeleteJob}
         />
       }
     </div>

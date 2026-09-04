@@ -15,15 +15,15 @@ export default function EmployerTopbar() {
   const { data: company } = useMyCompany();
 
   return (
-    <nav className="border-border-muted flex items-center justify-center lg:justify-between gap-8 border-b px-4 py-4 text-sm sm:px-6 sm:py-6">
+    <nav className="border-border-muted flex items-center justify-center gap-8 border-b px-4 py-4 text-sm sm:px-6 sm:py-6 lg:justify-between">
       <CompanyLogo
         src="/favicon.ico"
         alt="Kazi logo"
         width={40}
         height={40}
-        className="h-fit w-fit justify-self-start hidden lg:block"
+        className="hidden h-fit w-fit justify-self-start lg:block"
       />
-      <div className=" flex lg:flex-1 items-center justify-between w-full gap-4 sm:flex-0 sm:gap-10">
+      <div className="flex w-full items-center justify-between gap-4 sm:flex-0 sm:gap-10 lg:flex-1">
         <NavLink
           href={'/employer/dashboard'}
           className="flex flex-col items-center gap-1 sm:flex-row"
