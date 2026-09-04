@@ -1,7 +1,7 @@
-import { Edit, Trash2 } from "lucide-react";
-import { useState } from "react";
-import PostJobModal from "./modals/PostjobModal";
-import { CompanyJob } from "../types/get-company-jobs.types";
+import { Edit, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import PostJobModal from './modals/PostjobModal';
+import { CompanyJob } from '../types/get-company-jobs.types';
 
 type Props = {
   jobs: CompanyJob[];
@@ -14,12 +14,12 @@ export default function JobsTable({ jobs }: Props) {
   const handleOpenUpdateModal = (job: CompanyJob) => {
     setOpenUpdateModal(true);
     setSelectedJob(job);
-  }
+  };
 
   const handleCloseUpdateModal = () => {
     setOpenUpdateModal(false);
     setSelectedJob(undefined);
-  }
+  };
 
   return (
     <div className="border-border overflow-hidden border">
@@ -27,8 +27,12 @@ export default function JobsTable({ jobs }: Props) {
         <thead className="border-border-strong bg-background-subtle border-b">
           <tr>
             <th className="px-4 py-3 text-left font-medium">Title</th>
-            <th className="px-4 py-3 text-left font-medium hidden sm:table-cell">Level</th>
-            <th className="px-4 py-3 text-left font-medium hidden sm:table-cell">Status</th>
+            <th className="hidden px-4 py-3 text-left font-medium sm:table-cell">
+              Level
+            </th>
+            <th className="hidden px-4 py-3 text-left font-medium sm:table-cell">
+              Status
+            </th>
             <th className="px-4 py-3 text-left font-medium">Posted</th>
             <th className="px-4 py-3 text-left font-medium">Actions</th>
           </tr>
@@ -40,18 +44,21 @@ export default function JobsTable({ jobs }: Props) {
               className="hover:bg-background-muted transition-colors"
             >
               <td className="px-4 py-3 font-medium">{job.title}</td>
-              <td className="text-text-muted px-4 py-3 text-xs hidden sm:table-cell">
+              <td className="text-text-muted hidden px-4 py-3 text-xs sm:table-cell">
                 {job.experienceLevel}
               </td>
-              <td className="px-4 py-3 text-xs hidden sm:table-cell">{job.status}</td>
+              <td className="hidden px-4 py-3 text-xs sm:table-cell">
+                {job.status}
+              </td>
               <td className="text-text-muted px-4 py-3 text-xs">
                 {job.createdAt.split('T')[0]}
               </td>
-              <td className='px-4 py-3 text-xs flex gap-4 items-center justify-around'>
+              <td className="flex items-center justify-around gap-4 px-4 py-3 text-xs">
                 <Edit
                   onClick={() => handleOpenUpdateModal(job)}
-                  className='size-5 text-brand-primary hover:text-brand-primary/50 duration-100' />
-                <Trash2 className='size-5 text-danger hover:text-danger/50' />
+                  className="text-brand-primary hover:text-brand-primary/50 size-5 duration-100"
+                />
+                <Trash2 className="text-danger hover:text-danger/50 size-5" />
               </td>
             </tr>
           ))}
@@ -59,13 +66,12 @@ export default function JobsTable({ jobs }: Props) {
       </table>
 
       {
-        <PostJobModal open={openUpdateModal}
+        <PostJobModal
+          open={openUpdateModal}
           onClose={handleCloseUpdateModal}
           job={selectedJob}
         />
       }
     </div>
-  )
+  );
 }
-
-

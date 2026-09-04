@@ -28,11 +28,5 @@ export default function CompanyJobs() {
     );
   }
 
-  return (
-    <div>
-      {jobs &&
-        <JobsTable jobs={jobs} />
-      }
-    </div >
-  );
+  return <div>{jobs && <JobsTable jobs={jobs} />}</div>;
 }

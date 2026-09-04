@@ -14,6 +14,7 @@ import { CreateJobBody } from '../../types/create-job.types';
 import { useEffect } from 'react';
 import { Job } from '@/features/jobs/types/get-job.types';
 import useCreateJob from '../../hooks/useCreateJob';
+import useUpdateJob from '../../hooks/useUpdateJob';
 
 type Props = {
   open: boolean;
@@ -26,23 +27,23 @@ const experienceLevels: {
   label: string;
   value: ExperienceLevel;
 }[] = [
-    { label: 'Intern', value: 'INTERN' },
-    { label: 'Apprentice', value: 'APPRENTICE' },
-    { label: 'Junior', value: 'JUNIOR' },
-    { label: 'Mid Level', value: 'MID' },
-    { label: 'Senior', value: 'SENIOR' },
-    { label: 'Lead', value: 'LEAD' },
-  ];
+  { label: 'Intern', value: 'INTERN' },
+  { label: 'Apprentice', value: 'APPRENTICE' },
+  { label: 'Junior', value: 'JUNIOR' },
+  { label: 'Mid Level', value: 'MID' },
+  { label: 'Senior', value: 'SENIOR' },
+  { label: 'Lead', value: 'LEAD' },
+];
 
 const jobStatuses: {
   label: string;
   value: JobStatus;
 }[] = [
-    { label: 'Draft', value: 'DRAFT' },
-    { label: 'Published', value: 'PUBLISHED' },
-    { label: 'Closed', value: 'CLOSED' },
-    { label: 'Archived', value: 'ARCHIVED' },
-  ];
+  { label: 'Draft', value: 'DRAFT' },
+  { label: 'Published', value: 'PUBLISHED' },
+  { label: 'Closed', value: 'CLOSED' },
+  { label: 'Archived', value: 'ARCHIVED' },
+];
 
 export default function PostJobModal({
   open,
@@ -57,6 +58,7 @@ export default function PostJobModal({
     formState: { errors },
   } = useForm<CreateJobBody>();
   const { mutate: postJob, isPending: isCreatingPost } = useCreateJob();
+  const { mutate: updateJob, isPending: isUpdatingJob } = useUpdateJob();
 
   useEffect(() => {
     if (open) {
@@ -102,6 +104,15 @@ export default function PostJobModal({
       salaryMax: Number(data.salaryMax),
     };
     if (job) {
+      updateJob(
+        {
+          jobId: job.id,
+          data: payload,
+        },
+        {
+          onSuccess: () => onClose(),
+        },
+      );
     } else {
       postJob(
         {
@@ -243,8 +254,8 @@ export default function PostJobModal({
               Cancel
             </Button>
 
-            <Button disabled={isCreatingPost} type="submit">
-              {isCreatingPost ? 'Submitting...' : 'Submit'}
+            <Button disabled={isCreatingPost || isUpdatingJob} type="submit">
+              {isCreatingPost || isUpdatingJob ? 'Submitting...' : 'Submit'}
             </Button>
           </div>
         </form>
