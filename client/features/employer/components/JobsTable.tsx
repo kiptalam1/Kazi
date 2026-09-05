@@ -4,6 +4,7 @@ import PostJobModal from './modals/PostjobModal';
 import { CompanyJob } from '../types/get-company-jobs.types';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import useDeletejob from '../hooks/useDeleteJob';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   jobs: CompanyJob[];
@@ -14,6 +15,7 @@ export default function JobsTable({ jobs }: Props) {
   const [selectedJob, setSelectedJob] = useState<CompanyJob | undefined>();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const { mutate: deleteJob, isPending: isDeletingJob } = useDeletejob();
+  const router = useRouter();
 
   const handleOpenUpdateModal = (job: CompanyJob) => {
     setOpenUpdateModal(true);
@@ -59,7 +61,9 @@ export default function JobsTable({ jobs }: Props) {
               key={job.id}
               className="hover:bg-background-muted transition-colors"
             >
-              <td className="px-4 py-3 font-medium">{job.title}</td>
+              <td
+                onClick={() => router.push(`/employer/jobs/${job.id}`)}
+                className="px-4 py-3 font-medium hover:text-brand-hover hover:cursor-pointer">{job.title}</td>
               <td className="text-text-muted hidden px-4 py-3 text-xs sm:table-cell">
                 {job.experienceLevel}
               </td>
