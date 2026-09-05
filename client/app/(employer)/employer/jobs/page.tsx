@@ -33,29 +33,32 @@ export default function CompanyJobs() {
     );
   }
 
-  return <div>{jobs ? (
-    <JobsTable jobs={jobs} />
-  ) : (
-    <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 text-center">
-      <h2 className="text-lg font-semibold">No jobs posted yet</h2>
-      <p className="text-sm text-text-muted">
-        Post your first job to start receiving applications.
-      </p>
-      <Button
-        type="button"
-        onClick={() => setOpenJobModal(true)}
-        className="flex items-center gap-1 self-start rounded-none text-xs font-extralight sm:text-sm"
-      >
-        <Plus className="size-5" />
-        Post a Job
-      </Button>
+  return (
+    <div>
+      {jobs ? (
+        <JobsTable jobs={jobs} />
+      ) : (
+        <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 text-center">
+          <h2 className="text-lg font-semibold">No jobs posted yet</h2>
+          <p className="text-text-muted text-sm">
+            Post your first job to start receiving applications.
+          </p>
+          <Button
+            type="button"
+            onClick={() => setOpenJobModal(true)}
+            className="flex items-center gap-1 self-start rounded-none text-xs font-extralight sm:text-sm"
+          >
+            <Plus className="size-5" />
+            Post a Job
+          </Button>
+        </div>
+      )}
+      {
+        <PostJobModal
+          open={openJobModal}
+          onClose={() => setOpenJobModal(false)}
+        />
+      }
     </div>
-  )}
-    {
-      <PostJobModal
-        open={openJobModal}
-        onClose={() => setOpenJobModal(false)}
-      />
-    }
-  </div>;
+  );
 }

@@ -61,11 +61,11 @@ export default function JobsTable({ jobs }: Props) {
               key={job.id}
               className="hover:bg-background-muted transition-colors"
             >
-              <td
-                className="px-4 py-3 font-medium ">
+              <td className="px-4 py-3 font-medium">
                 <NavLink
                   href={`/employer/jobs/${job.id}`}
-                  className=' cursor-pointer'>
+                  className="cursor-pointer"
+                >
                   {job.title}
                 </NavLink>
               </td>
@@ -80,26 +80,23 @@ export default function JobsTable({ jobs }: Props) {
               </td>
               <td className="flex items-center justify-around gap-4 px-4 py-3 text-xs">
                 <button
-                  type='button'
+                  type="button"
                   aria-label={`Edit ${job.title} job`}
-                  className='text-brand-primary hover:text-brand-primary/50 duration-100'
-                  onClick={() => handleOpenUpdateModal(job)}>
-                  <Edit
-                    className="size-5"
-                  />
+                  className="text-brand-primary hover:text-brand-primary/50 duration-100"
+                  onClick={() => handleOpenUpdateModal(job)}
+                >
+                  <Edit className="size-5" />
                 </button>
                 <button
-                  type='button'
+                  type="button"
                   aria-label={`Delete ${job.title} job`}
-                  className='text-danger hover:text-danger/50 '
+                  className="text-danger hover:text-danger/50"
                   onClick={() => {
                     setSelectedJob(job);
                     setOpenDeleteModal(true);
                   }}
                 >
-                  <Trash2
-                    className="size-5"
-                  />
+                  <Trash2 className="size-5" />
                 </button>
               </td>
             </tr>
@@ -119,6 +116,6 @@ export default function JobsTable({ jobs }: Props) {
         isPending={isDeletingJob}
         onConfirm={handleDeleteJob}
       />
-    </div >
+    </div>
   );
 }

@@ -1,4 +1,7 @@
-import { ApplicationStatus, ExperienceLevel } from "@/features/common/types/common.types";
+import {
+  ApplicationStatus,
+  ExperienceLevel,
+} from '@/features/common/types/common.types';
 
 export type ApplicationCandidate = {
   id: string;
