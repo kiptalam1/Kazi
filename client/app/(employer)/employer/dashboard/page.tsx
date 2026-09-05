@@ -4,7 +4,6 @@ import Button from '@/components/ui/Button';
 import { CompanyLogo } from '@/components/ui/CompanyLogo';
 import FallbackAvatar from '@/components/ui/FallbackAvatar';
 import Spinner from '@/components/ui/Spinner';
-import useCompanyJobs from '@/features/employer/hooks/useCompanyJobs';
 import useMyCompany from '@/features/employer/hooks/useMyCompany';
 import useAnalytics from '@/features/employer/hooks/useAnalytics';
 import { getApiErrorMessage } from '@/lib/api/error';
@@ -22,12 +21,7 @@ export default function EmployerDashboard() {
     isError: isCompanyError,
     error: companyError,
   } = useMyCompany();
-  const {
-    data: jobs,
-    isPending: isJobsPending,
-    isError: isJobsError,
-    error: jobsError,
-  } = useCompanyJobs();
+
   const {
     data: analytics,
     isPending: isAnalyticsPending,
@@ -36,7 +30,7 @@ export default function EmployerDashboard() {
   } = useAnalytics();
   const [openjobModal, setOpenJobModal] = useState(false);
 
-  if (isCompanyPending || isJobsPending || isAnalyticsPending) {
+  if (isCompanyPending || isAnalyticsPending) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
         <Spinner />
@@ -44,10 +38,10 @@ export default function EmployerDashboard() {
     );
   }
 
-  if (isCompanyError || isJobsError || isAnalyticsError) {
+  if (isCompanyError || isAnalyticsError) {
     return (
       <p className="text-text-muted text-center text-sm">
-        {getApiErrorMessage(companyError || jobsError || analyticsError)}
+        {getApiErrorMessage(companyError || analyticsError)}
       </p>
     );
   }

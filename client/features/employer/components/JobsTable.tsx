@@ -4,6 +4,8 @@ import PostJobModal from './modals/PostjobModal';
 import { CompanyJob } from '../types/get-company-jobs.types';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import useDeletejob from '../hooks/useDeleteJob';
+import { useRouter } from 'next/navigation';
+import NavLink from '@/components/ui/NavLink';
 
 type Props = {
   jobs: CompanyJob[];
@@ -59,7 +61,14 @@ export default function JobsTable({ jobs }: Props) {
               key={job.id}
               className="hover:bg-background-muted transition-colors"
             >
-              <td className="px-4 py-3 font-medium">{job.title}</td>
+              <td className="px-4 py-3 font-medium">
+                <NavLink
+                  href={`/employer/jobs/${job.id}`}
+                  className="cursor-pointer"
+                >
+                  {job.title}
+                </NavLink>
+              </td>
               <td className="text-text-muted hidden px-4 py-3 text-xs sm:table-cell">
                 {job.experienceLevel}
               </td>
@@ -70,39 +79,43 @@ export default function JobsTable({ jobs }: Props) {
                 {job.createdAt.split('T')[0]}
               </td>
               <td className="flex items-center justify-around gap-4 px-4 py-3 text-xs">
-                <Edit
+                <button
+                  type="button"
+                  aria-label={`Edit ${job.title} job`}
+                  className="text-brand-primary hover:text-brand-primary/50 duration-100"
                   onClick={() => handleOpenUpdateModal(job)}
-                  className="text-brand-primary hover:text-brand-primary/50 size-5 duration-100"
-                />
-                <Trash2
+                >
+                  <Edit className="size-5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label={`Delete ${job.title} job`}
+                  className="text-danger hover:text-danger/50"
                   onClick={() => {
                     setSelectedJob(job);
                     setOpenDeleteModal(true);
                   }}
-                  className="text-danger hover:text-danger/50 size-5"
-                />
+                >
+                  <Trash2 className="size-5" />
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {
-        <PostJobModal
-          open={openUpdateModal}
-          onClose={handleCloseUpdateModal}
-          job={selectedJob}
-        />
-      }
-      {
-        <ConfirmModal
-          title="Are you sure you want to delete this job?"
-          open={openDeleteModal}
-          onClose={handleCloseDeleteModal}
-          isPending={isDeletingJob}
-          onConfirm={handleDeleteJob}
-        />
-      }
+      <PostJobModal
+        open={openUpdateModal}
+        onClose={handleCloseUpdateModal}
+        job={selectedJob}
+      />
+      <ConfirmModal
+        title="Are you sure you want to delete this job?"
+        open={openDeleteModal}
+        onClose={handleCloseDeleteModal}
+        isPending={isDeletingJob}
+        onConfirm={handleDeleteJob}
+      />
     </div>
   );
 }
