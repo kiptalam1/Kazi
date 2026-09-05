@@ -6,7 +6,7 @@ import updateJob from '../api/update-job';
 
 type Props = {
   jobId: string;
-  data: CreateJobBody;
+  data: Partial<CreateJobBody>;
 };
 export default function useUpdateJob() {
   const queryClient = useQueryClient();
@@ -16,13 +16,17 @@ export default function useUpdateJob() {
       console.error(error);
       toast.error(getApiErrorMessage(error));
     },
-    onSuccess: (result) => {
+    onSuccess: (result, variables) => {
       queryClient.invalidateQueries({
         queryKey: ['company-jobs'],
       });
 
       queryClient.invalidateQueries({
         queryKey: ['dashboard-analytics'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['job', variables.jobId],
       });
       toast.success(result.message);
     },

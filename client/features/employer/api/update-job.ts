@@ -4,7 +4,7 @@ import { Job } from '@/features/jobs/types/get-job.types';
 
 export default async function updateJob(
   jobId: string,
-  data: CreateJobBody,
+  data: Partial<CreateJobBody>,
 ): Promise<{
   data: Omit<Job, 'company'>;
   message: string;
