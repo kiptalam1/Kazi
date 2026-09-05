@@ -4,16 +4,24 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import NavLink from "@/components/ui/NavLink";
 import Spinner from "@/components/ui/Spinner";
+import { JobStatus } from "@/features/common/types/common.types";
+import PostJobModal from "@/features/employer/components/modals/PostjobModal";
+import useApplicationsPerJob from "@/features/employer/hooks/useApplicationsPerJob";
+import useUpdateJob from "@/features/employer/hooks/useUpdateJob";
 import { CompanyJob } from "@/features/employer/types/get-company-jobs.types";
 import { useOneJob } from "@/features/jobs/hooks/useOneJob"
 import { getApiErrorMessage } from "@/lib/api/error";
-import { ArrowLeft, MoveRight } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { ArrowLeft, Loader2, MoveRight } from "lucide-react";
+import { useParams, } from "next/navigation";
+import { useState } from "react";
 
 export default function JobPage() {
   const { id } = useParams();
   const { data: job, isPending, isError, error: jobError } = useOneJob(String(id));
-  const router = useRouter();
+  const { data: apps, isPending: isAppsPending, isError: isAppsError, error: appsError } = useApplicationsPerJob(String(id));
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const { mutate: updateJob, isPending: isUpdatingJob } = useUpdateJob();
+
 
   if (isPending) {
     return (
@@ -41,19 +49,33 @@ export default function JobPage() {
         return 'Publish';
     }
   }
+  const handleOpenUpdateModal = () => {
+    setOpenUpdateModal(true);
+  };
+
+  const handleCloseUpdateModal = () => {
+    setOpenUpdateModal(false);
+  };
+
+  const handleUpdateJobStatus = (status: JobStatus) => {
+    updateJob({
+      jobId: job.id,
+      data: { status }
+    })
+  }
+
+
 
   return (
     <div className="space-y-4">
-      <button
-        type='button'
-        onClick={() => router.push('/employer/jobs')}
-        className="p-2 rounded-full hover:bg-background-muted flex items-center justify-center">
+      <NavLink href='/employer/jobs'
+        className="p-2 rounded-full hover:bg-background-muted flex items-center justify-center w-fit">
         <ArrowLeft className="size-4" />
-      </button>
+      </NavLink>
       <header className="space-y-3">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold">{job.title}</h2>
+            <h1 className="text-2xl font-semibold">{job.title}</h1>
             <div className="flex flex-wrap items-center gap-2">
               <Badge>{job.experienceLevel}</Badge>
               <Badge>{job.status}</Badge>
@@ -62,8 +84,20 @@ export default function JobPage() {
           </div>
           {/* actions */}
           <div className="flex items-center gap-2 text-xs">
-            <Button>Edit</Button>
-            <Button>{getButtonLabel(job)}</Button>
+            <Button
+              type="button"
+              onClick={handleOpenUpdateModal}
+            >Edit</Button>
+            <Button
+              type="button"
+              disabled={isUpdatingJob}
+              onClick={() => handleUpdateJobStatus(job.status === 'PUBLISHED' ? 'CLOSED' : 'PUBLISHED')}
+            >
+              {isUpdatingJob
+                ? <Loader2
+                  className="size-3 animate-spin" />
+                : getButtonLabel(job)}
+            </Button>
           </div>
         </div>
       </header>
@@ -95,7 +129,6 @@ export default function JobPage() {
           wasUpdated && (
             <div>
               <p className="text-text-muted text-xs">Updated on</p>
-
               <p className="text-sm font-medium">
                 {updatedAt.toLocaleDateString()}
               </p>
@@ -111,14 +144,36 @@ export default function JobPage() {
       </section>
 
       <section className="border-t border-border-muted p-4">
-
-        <div className="flex items-center justify-between gap-2">
-          <p> Applicants</p>
-          <NavLink href="/" className="text-text-secondary flex items-center gap-1">View Applicants
-            <MoveRight className="size-4" />
-          </NavLink>
-        </div>
+        {isAppsPending && (
+          <div className="flex justify-center py-4">
+            <Spinner />
+          </div>
+        )}
+        {
+          isAppsError && (
+            <p className="text-xs text-danger text-center">{getApiErrorMessage(appsError)}</p>
+          )
+        }
+        {
+          apps &&
+          <div className="flex items-center justify-between gap-2">
+            <p> Applicants ({apps.meta.total})</p>
+            {apps.meta.total === 0 ? (
+              <p className="text-sm text-text-muted">No applications yet.</p>
+            ) : (
+              <NavLink href={`/employer/jobs/${job.id}/applicants`} className="text-text-secondary flex items-center gap-1">View Applicants
+                <MoveRight className="size-4" />
+              </NavLink>
+            )}
+          </div>}
       </section>
+      {
+        <PostJobModal
+          open={openUpdateModal}
+          onClose={handleCloseUpdateModal}
+          job={job}
+        />
+      }
     </div >
   )
 }
