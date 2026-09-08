@@ -4,7 +4,6 @@ import PostJobModal from './modals/PostjobModal';
 import { CompanyJob } from '../types/get-company-jobs.types';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import useDeletejob from '../hooks/useDeleteJob';
-import { useRouter } from 'next/navigation';
 import NavLink from '@/components/ui/NavLink';
 
 type Props = {

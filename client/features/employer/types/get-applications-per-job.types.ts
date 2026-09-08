@@ -9,12 +9,9 @@ export type ApplicationCandidate = {
   currentJobTitle: string;
   experienceLevel: ExperienceLevel;
   user: {
-    roles: {
-      role: string;
-    }[];
     firstName: string;
     lastName: string;
-    avatar: string;
+    email: string;
   };
 };
 
