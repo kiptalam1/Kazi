@@ -1,4 +1,4 @@
-import { Education, } from "@/features/candidates/types/candidate.types";
+import { Education, Experience, } from "@/features/candidates/types/candidate.types";
 import { ApplicationStatus, ExperienceLevel, JobStatus, } from "@/features/common/types/common.types";
 
 type AppCandidate = {
@@ -20,7 +20,8 @@ type AppCandidate = {
     firstName: string;
     lastName: string;
   };
-  education: Education[] | null;
+  education: Education[];
+  experiences: Experience[];
 };
 
 type AppJob = {

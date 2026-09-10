@@ -10,6 +10,7 @@ import useGetSingleCandidateApplication from "@/features/employer/hooks/useGetSi
 import formattedDate from "@/lib/utils/formattedDate";
 import { useParams } from "next/navigation";
 import CandidateEducation from "./CandidateEducation";
+import CandidateExperience from "./CandidateExperience";
 
 export default function SingleApplicationPage() {
   const { applicationId } = useParams();
@@ -23,7 +24,7 @@ export default function SingleApplicationPage() {
     return <QueryError error={error} />
   }
 
-  const { candidate, job } = data;
+  const { candidate, } = data;
   const { user } = candidate;
   const uniqueSkills = [
     ... new Set(
@@ -31,31 +32,27 @@ export default function SingleApplicationPage() {
         .map((skill) => skill.trim())
         .filter(Boolean))];
 
-  console.log(data);
 
   return (
     <div className="space-y-4 divide-y divide-border ">
       {/* candidate */}
       <section className="space-y-2 py-2">
-        <h2 className="text-text-muted text-sm">Candidate</h2>
 
         <div className="flex items-start gap-4">
-          <div className="">
-            {
-              candidate.user.avatar ? (
-                <Avatar
-                  src={candidate.user.avatar}
-                  height={32}
-                  width={32}
-                  alt={candidate.user.firstName}
-                  className="w-auto h-auto"
-                />
-              ) : (
-                <FallbackAvatar
-                  value={candidate.user.firstName}
-                />)
-            }
-          </div>
+          {
+            user.avatar ? (
+              <Avatar
+                src={user.avatar}
+                height={32}
+                width={32}
+                alt={user.firstName}
+                className="w-auto h-auto"
+              />
+            ) : (
+              <FallbackAvatar
+                value={user.firstName}
+              />)
+          }
 
           <div className="flex-1">
             <h1 className="text-lg sm:text-xl font-semibold ">{user.firstName} {user.lastName}</h1>
@@ -64,7 +61,7 @@ export default function SingleApplicationPage() {
             }
             {
               candidate.headline &&
-              <p>{candidate.headline}</p>
+              <p className="text-text-secondary text-sm">{candidate.headline}</p>
             }
             <div className="flex items-center gap-4">
               {
@@ -100,12 +97,12 @@ export default function SingleApplicationPage() {
             </NavLink>
           }
         </div>
-      </section>
+      </section >
 
       {/* application */}
-      <section className="space-y-4 py-2">
+      < section className="space-y-4 py-2" >
         <div className="space-y-2">
-          <h2 className="text-text-muted text-sm ">
+          <h2 className="text-text-secondary font-medium text-sm">
             Application</h2>
           <p>Applied:          <span className="text-sm">{formattedDate(data.createdAt)}</span>
           </p>
@@ -113,11 +110,11 @@ export default function SingleApplicationPage() {
           <p>Status: <span className="text-sm">{data.status}</span></p>
         </div>
         <p className="whitespace-pre-wrap wrap-break-word">{data.coverLetter ?? 'No cover letter provided'}</p>
-      </section>
+      </section >
 
       {/* Professional Summary */}
-      <section className="space-y-4 py-2">
-        <h2 className="text-text-muted text-sm ">
+      < section className="space-y-4 py-2" >
+        <h2 className="text-text-secondary font-medium text-sm ">
           Professional Summary
         </h2>
         <p>{candidate.bio}</p>
@@ -127,32 +124,58 @@ export default function SingleApplicationPage() {
               <Badge key={skill}>{skill}</Badge>
             ))}
         </div>
-      </section>
+      </section >
 
       {/* experience  */}
-      {/* education */}
-      {candidate.education?.length ? (
-        <section className="space-y-4 py-2">
-          <h2 className="text-text-muted text-sm ">
-            Education
-          </h2>
+      {
+        candidate.experiences.length > 0 && (
+          <section className="space-y-4 py-2">
+            <h2 className="text-text-secondary font-medium text-sm ">
 
-          <div className="space-y-6 ">
-            {
-              candidate.education &&
-              candidate.education.map((educ) => (
-                <CandidateEducation
-                  key={educ.id}
-                  edu={educ} />
-              )
-              )}
-          </div>
-        </section>
-      ) : null}
-      <p className="text-sm">Salary Expectation: {' '}
-        <span>{candidate.salaryExpectation ?? '-'}</span>
-      </p>
-    </div>
+              Experience
+            </h2>
+
+            <div className="space-y-6">
+              {
+                candidate.experiences.map((exp) => (
+                  <CandidateExperience
+                    key={exp.id}
+                    exp={exp}
+                  />
+                ))
+              }
+            </div>
+          </section>
+        )
+      }
+      {/* education */}
+      {
+        candidate.education.length > 0 && (
+          <section className="space-y-4 py-2">
+            <h2 className="text-sm font-medium text-text-secondary">
+              Education
+            </h2>
+
+            <div className="space-y-6 ">
+              {
+                candidate.education.map((educ) => (
+                  <CandidateEducation
+                    key={educ.id}
+                    edu={educ} />
+                )
+                )}
+            </div>
+          </section>
+        )
+      }
+      <section className="py-2">
+        <h2 className="text-sm font-medium text-text-secondary">
+          Salary Expectation
+        </h2>
+        <p className="mt-2">
+          {candidate.salaryExpectation ?? '-'}
+        </p>
+      </section>    </div >
   )
 }
 
