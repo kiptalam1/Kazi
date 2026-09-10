@@ -1,9 +1,7 @@
-import { Experience } from "@/features/candidates/types/candidate.types";
-import formattedDate from "@/lib/utils/formattedDate";
+import { Experience } from '@/features/candidates/types/candidate.types';
+import formattedDate from '@/lib/utils/formattedDate';
 
-export default function CandidateExperience({ exp }: {
-  exp: Experience
-}) {
+export default function CandidateExperience({ exp }: { exp: Experience }) {
   return (
     <article
       key={exp.id}
@@ -29,11 +27,8 @@ export default function CandidateExperience({ exp }: {
         {exp.isCurrent ? 'Present' : formattedDate(exp.endDate!)}
       </p>
       {exp.description && (
-        <p className="text-text-secondary pt-2 leading-6">
-          {exp.description}
-        </p>
+        <p className="text-text-secondary pt-2 leading-6">{exp.description}</p>
       )}
     </article>
-  )
+  );
 }
-

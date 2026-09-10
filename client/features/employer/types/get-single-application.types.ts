@@ -1,5 +1,12 @@
-import { Education, Experience, } from "@/features/candidates/types/candidate.types";
-import { ApplicationStatus, ExperienceLevel, JobStatus, } from "@/features/common/types/common.types";
+import {
+  Education,
+  Experience,
+} from '@/features/candidates/types/candidate.types';
+import {
+  ApplicationStatus,
+  ExperienceLevel,
+  JobStatus,
+} from '@/features/common/types/common.types';
 
 type AppCandidate = {
   availability: boolean;
@@ -42,4 +49,4 @@ export type SingleApplicationResponse = {
   reviewedAt: string | null;
   createdAt: string;
   updatedAt: string;
-}
+};

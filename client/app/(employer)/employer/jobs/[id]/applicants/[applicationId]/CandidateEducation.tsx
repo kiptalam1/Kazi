@@ -1,9 +1,7 @@
-import { Education } from "@/features/candidates/types/candidate.types";
-import formattedDate from "@/lib/utils/formattedDate";
+import { Education } from '@/features/candidates/types/candidate.types';
+import formattedDate from '@/lib/utils/formattedDate';
 
-export default function CandidateEducation({ edu }: {
-  edu: Education
-}) {
+export default function CandidateEducation({ edu }: { edu: Education }) {
   return (
     <article
       key={edu.id}
@@ -31,6 +29,5 @@ export default function CandidateEducation({ edu }: {
         {edu.endDate ? formattedDate(edu.endDate) : 'Present'}
       </p>
     </article>
-  )
+  );
 }
-
