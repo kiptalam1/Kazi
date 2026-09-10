@@ -1,11 +1,11 @@
 'use client';
 
-import { getApiErrorMessage } from "@/lib/api/error";
+import { getApiErrorMessage } from '@/lib/api/error';
 
 export default function QueryError({ error }: { error: unknown }) {
   return (
-    <p className="text-center text-sm text-danger p-6">{getApiErrorMessage(error)}</p>
-
-  )
+    <p className="text-danger p-6 text-center text-sm">
+      {getApiErrorMessage(error)}
+    </p>
+  );
 }
-
