@@ -69,18 +69,34 @@ export default function SingleApplicationPage() {
                 </p>
               )}
             </div>
+            <div className="flex flex-wrap items-center gap-4 py-1">
+              {candidate.githubUrl && (
+                <NavLink
+                  href={candidate.githubUrl}
+                  className="text-brand-active text-sm italic"
+                >
+                  Github
+                </NavLink>
+              )}
+              {candidate.linkedinUrl && (
+                <NavLink
+                  href={candidate.linkedinUrl}
+                  className="text-brand-active text-sm italic"
+                >
+                  Linkedin
+                </NavLink>
+              )}
+              {candidate.portfolioUrl && (
+                <NavLink
+                  href={candidate.portfolioUrl}
+                  className="text-brand-active text-sm italic"
+                >
+                  {' '}
+                  Portfolio
+                </NavLink>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="flex flex-wrap items-center gap-4">
-          {candidate.githubUrl && (
-            <NavLink href={candidate.githubUrl}>Github</NavLink>
-          )}
-          {candidate.linkedinUrl && (
-            <NavLink href={candidate.linkedinUrl}>Linkedin</NavLink>
-          )}
-          {candidate.portfolioUrl && (
-            <NavLink href={candidate.portfolioUrl}>Portfolio</NavLink>
-          )}
         </div>
       </section>
       {/* application */}
@@ -98,9 +114,15 @@ export default function SingleApplicationPage() {
             Status: <span className="text-sm">{data.status}</span>
           </p>
         </div>
-        <p className="wrap-break-word whitespace-pre-wrap">
-          {data.coverLetter ?? 'No cover letter provided'}
-        </p>
+        {data.coverLetter ? (
+          <p className="wrap-break-word whitespace-pre-wrap">
+            {data.coverLetter}
+          </p>
+        ) : (
+          <p className="text-text-muted text-sm italic">
+            No cover letter provided.
+          </p>
+        )}
       </section>
       {/* Professional Summary */}
       <section className="space-y-4 py-2">

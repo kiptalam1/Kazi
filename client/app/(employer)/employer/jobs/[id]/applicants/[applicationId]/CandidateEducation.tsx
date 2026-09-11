@@ -1,3 +1,4 @@
+import Badge from '@/components/ui/Badge';
 import { Education } from '@/features/candidates/types/candidate.types';
 import formattedDate from '@/lib/utils/formattedDate';
 
@@ -14,9 +15,7 @@ export default function CandidateEducation({ edu }: { edu: Education }) {
       {edu.fieldOfStudy && (
         <p className="text-text-secondary">{edu.fieldOfStudy}</p>
       )}
-      <p className="text-text-secondary bg-background-subtle w-fit rounded-full px-1.5 py-1 text-xs">
-        {edu.qualification.trim().split('_').join(' ')}
-      </p>
+      <Badge>{edu.qualification.trim().split('_').join(' ')}</Badge>
       {(edu.city || edu.country) && (
         <p className="text-text-secondary">
           {edu.city}
