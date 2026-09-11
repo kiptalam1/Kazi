@@ -46,6 +46,7 @@ export type SingleApplicationResponse = {
   candidate: AppCandidate;
   coverLetter: string | null;
   status: ApplicationStatus;
+  employerNotes?: string;
   reviewedAt: string | null;
   createdAt: string;
   updatedAt: string;
