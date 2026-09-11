@@ -11,12 +11,16 @@ import formattedDate from '@/lib/utils/formattedDate';
 import { useParams } from 'next/navigation';
 import CandidateEducation from './CandidateEducation';
 import CandidateExperience from './CandidateExperience';
+import Button from '@/components/ui/Button';
+import { useState } from 'react';
+import UpdateApplicationModal from '@/features/employer/components/modals/UpdateApplicationModal';
 
 export default function SingleApplicationPage() {
   const { applicationId } = useParams();
   const { data, isPending, isError, error } = useGetSingleCandidateApplication(
     String(applicationId),
   );
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   if (isPending) {
     return <Loader />;
@@ -42,13 +46,16 @@ export default function SingleApplicationPage() {
           {user.avatar ? (
             <Avatar
               src={user.avatar}
-              height={32}
-              width={32}
+              height={48}
+              width={48}
               alt={user.firstName}
               className="h-auto w-auto"
             />
           ) : (
-            <FallbackAvatar value={user.firstName} />
+            <FallbackAvatar
+              className="size-12 shrink-0"
+              value={user.firstName}
+            />
           )}
 
           <div className="flex-1">
@@ -69,39 +76,93 @@ export default function SingleApplicationPage() {
                 </p>
               )}
             </div>
+            <div className="flex flex-wrap items-center gap-4 py-1">
+              {candidate.githubUrl && (
+                <NavLink
+                  href={candidate.githubUrl}
+                  className="text-brand-active text-sm italic"
+                >
+                  Github
+                </NavLink>
+              )}
+              {candidate.linkedinUrl && (
+                <NavLink
+                  href={candidate.linkedinUrl}
+                  className="text-brand-active text-sm italic"
+                >
+                  Linkedin
+                </NavLink>
+              )}
+              {candidate.portfolioUrl && (
+                <NavLink
+                  href={candidate.portfolioUrl}
+                  className="text-brand-active text-sm italic"
+                >
+                  {' '}
+                  Portfolio
+                </NavLink>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="flex flex-wrap items-center gap-4">
-          {candidate.githubUrl && (
-            <NavLink href={candidate.githubUrl}>Github</NavLink>
-          )}
-          {candidate.linkedinUrl && (
-            <NavLink href={candidate.linkedinUrl}>Linkedin</NavLink>
-          )}
-          {candidate.portfolioUrl && (
-            <NavLink href={candidate.portfolioUrl}>Portfolio</NavLink>
-          )}
         </div>
       </section>
       {/* application */}
       <section className="space-y-4 py-2">
-        <div className="space-y-2">
-          <h2 className="text-text-secondary text-sm font-medium">
-            Application
-          </h2>
-          <p>
-            Applied:{' '}
-            <span className="text-sm">{formattedDate(data.createdAt)}</span>
-          </p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-2">
+            <h2 className="text-text-secondary text-sm font-medium">
+              Application
+            </h2>
+            <p className="flex items-center gap-1">
+              <span>Status:</span>
+              <Badge className="text-sm">{data.status}</Badge>
+            </p>
 
-          <p>
-            Status: <span className="text-sm">{data.status}</span>
-          </p>
+            <p>
+              Applied:{' '}
+              <span className="text-sm">{formattedDate(data.createdAt)}</span>
+            </p>
+          </div>
+          <Button
+            type="button"
+            onClick={() => setOpenUpdateModal(true)}
+            className="text-sm sm:text-base"
+          >
+            Update
+          </Button>
         </div>
-        <p className="wrap-break-word whitespace-pre-wrap">
-          {data.coverLetter ?? 'No cover letter provided'}
-        </p>
+        {data.coverLetter ? (
+          <p className="wrap-break-word whitespace-pre-wrap">
+            {data.coverLetter}
+          </p>
+        ) : (
+          <p className="text-text-muted text-sm italic">
+            No cover letter provided.
+          </p>
+        )}
       </section>
+
+      {/* modal */}
+      <UpdateApplicationModal
+        open={openUpdateModal}
+        onClose={() => setOpenUpdateModal(false)}
+        application={data}
+      />
+
+      {/* Employer notes */}
+      <section className="space-y-4 py-2">
+        <h2 className="text-text-secondary text-sm font-medium">
+          Employer Notes
+        </h2>
+        {data.employerNotes ? (
+          <p className="text-accent-content wrap-break-word whitespace-pre-wrap italic">
+            {data.employerNotes}
+          </p>
+        ) : (
+          <p className="text-accent-content text-sm italic">No notes yet ...</p>
+        )}
+      </section>
+
       {/* Professional Summary */}
       <section className="space-y-4 py-2">
         <h2 className="text-text-secondary text-sm font-medium">
@@ -145,7 +206,7 @@ export default function SingleApplicationPage() {
           Salary Expectation
         </h2>
         <p className="mt-2">{candidate.salaryExpectation ?? '-'}</p>
-      </section>{' '}
+      </section>
     </div>
   );
 }

@@ -49,6 +49,7 @@ export class ApplicationsService {
         createdAt: true,
         updatedAt: true,
         reviewedAt: true,
+        employerNotes: true,
         job: {
           select: {
             id: true,

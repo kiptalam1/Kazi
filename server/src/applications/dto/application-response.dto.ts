@@ -331,6 +331,9 @@ export class EmployerFetchSingleApplicationResponseDto {
   @ApiProperty()
   updatedAt!: Date;
 
+  @ApiProperty()
+  employerNotes?: string | null;
+
   @ApiProperty({ nullable: true })
   reviewedAt!: Date | null;
 

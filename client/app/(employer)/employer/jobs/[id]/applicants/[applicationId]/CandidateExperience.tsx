@@ -1,3 +1,4 @@
+import Badge from '@/components/ui/Badge';
 import { Experience } from '@/features/candidates/types/candidate.types';
 import formattedDate from '@/lib/utils/formattedDate';
 
@@ -13,9 +14,7 @@ export default function CandidateExperience({ exp }: { exp: Experience }) {
       <p className="text-text-secondary">{exp.companyName}</p>
       <div className="flex flex-wrap items-center gap-2">
         {exp.employmentType && (
-          <span className="bg-background-subtle text-text-secondary rounded-full p-1 px-1.5 text-xs">
-            {exp.employmentType.trim().split('_').join(' ')}
-          </span>
+          <Badge>{exp.employmentType.trim().split('_').join(' ')}</Badge>
         )}
 
         {exp.location && (
