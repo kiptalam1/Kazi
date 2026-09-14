@@ -1,26 +1,53 @@
 'use client';
 
+import QueryError from '@/app/error';
+import Loader from '@/app/loading';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
 import { CompanyLogo } from '@/components/ui/CompanyLogo';
-import Spinner from '@/components/ui/Spinner';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { ApplyModal } from '@/features/jobs/components/modals/ApplyModal';
 import { useOneJob } from '@/features/jobs/hooks/useOneJob';
 import formattedDate from '@/lib/utils/formattedDate';
 import { getInitials } from '@/lib/utils/getInitials';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function JobDetailsPage() {
   const { id } = useParams();
-  const { data: job, isPending, isError, error } = useOneJob(id as string);
+  const {
+    data: job,
+    isPending: isJobPending,
+    isError: isJobError,
+    error: jobError,
+  } = useOneJob(id as string);
   const [openApplyModal, setOpenApplyModal] = useState(false);
+  const {
+    data: user,
+    isPending: isAuthPending,
+    isError: isAuthError,
+  } = useAuth();
+  const router = useRouter();
 
-  if (isError) {
-    return <p>{error.message}</p>;
+  if (isJobPending) {
+    return <Loader />;
   }
+
+  if (isJobError || !job) {
+    return <QueryError error={jobError} />;
+  }
+
+  function handleClickApply() {
+    if (!user || isAuthError) {
+      router.push(`/login?callbackUrl=/jobs/${job?.id}`);
+      return;
+    } else {
+      setOpenApplyModal(true);
+    }
+  }
+
   return (
     <main className="space-y-4 p-4 sm:space-y-6 sm:py-8">
       <section>
@@ -31,11 +58,7 @@ export default function JobDetailsPage() {
         >
           <ArrowLeft className="size-4" />
         </Link>
-        {isPending && (
-          <div className="flex min-h-[50vh] items-center justify-center">
-            <Spinner />
-          </div>
-        )}
+
         {job && (
           <div className="space-y-4">
             <div className="flex items-center gap-4">
@@ -60,10 +83,11 @@ export default function JobDetailsPage() {
               <h2 className="text-xl font-semibold">{job.title}</h2>
               <Button
                 type="button"
-                onClick={() => setOpenApplyModal(true)}
+                onClick={handleClickApply}
+                disabled={isAuthPending}
                 className="cursor-pointer text-xs font-semibold"
               >
-                Apply
+                {isAuthPending ? 'Checking' : 'Apply'}
               </Button>
             </div>
             {openApplyModal && (
