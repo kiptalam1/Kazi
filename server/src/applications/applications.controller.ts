@@ -30,16 +30,15 @@ export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) { }
 
   // employer fetch all company applications 
-  @Get('employer/all/:companyId')
+  @Get('employer/all')
   @ApiOperation({
     summary: 'Employer fetch all company applications',
   })
   @ApiOkResponse({})
   async employerFetchAllCompanyApplications(
     @CurrentUser('id') userId: string,
-    @Param('companyId', ParseUUIDPipe) companyId: string,
   ) {
-    return await this.applicationsService.getAllCompanyApplications(userId, companyId);
+    return await this.applicationsService.getAllCompanyApplications(userId);
   }
 
 

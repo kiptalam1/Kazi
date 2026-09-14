@@ -35,8 +35,12 @@ export class ApplicationsService {
   ) { }
 
   // employer fetch all company Applications 
-  async getAllCompanyApplications(userId: string, companyId: string) {
-    const member = await this.companyMembersService.getMember(userId, companyId);
+  async getAllCompanyApplications(userId: string,) {
+    const member = await this.prisma.companyMember.findFirst({
+      where: {
+        userId,
+      }
+    })
 
     if (!member) {
       throw new UnauthorizedException('You are not a member of this company');
