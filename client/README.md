@@ -8,7 +8,7 @@
    ↓
 4. Root layout ✅
    ↓
-5. Public / Candidate / Employer layouts
+5. Public / Candidate / Employer layouts 🟡
    ↓
 6. Base UI components ✅
    ↓
@@ -22,7 +22,7 @@
     ↓
 11. Candidate workflow ✅
     ↓
-12. Employer workflow
+12. Employer workflow 🟡
     ↓
 13. API integration ✅
     ↓
@@ -30,9 +30,9 @@
     ↓
 15. Responsive refinement ✅
     ↓
-16. Accessibility + polish
+16. Accessibility + polish 🟡
     ↓
-17. Production hardening
+17. Production hardening 🟡
 
 ## Primitives
 
@@ -47,7 +47,15 @@ Spinner ✅
 Dropdown ✅
 Modal ✅
 Checkbox ✅
-Badge
+Badge ✅
 Radio
 Separator
 Tooltip
+
+## TODO
+🟡 fetch all company applications
+🟡 resume upload in apply-to-job modal
+🟡 company profile
+🟡 landing page
+🟡 public route
+🟡 polish ui

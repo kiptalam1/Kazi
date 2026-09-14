@@ -4,6 +4,7 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateApplicationDto } from './dto/create-application.dto.js';
 import { UpdateApplicationStatusDto } from './dto/update-application.dto.js';
@@ -32,6 +33,68 @@ export class ApplicationsService {
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
   ) { }
+
+  // employer fetch all company Applications 
+  async getAllCompanyApplications(userId: string, companyId: string) {
+    const member = await this.companyMembersService.getMember(userId, companyId);
+
+    if (!member) {
+      throw new UnauthorizedException('You are not a member of this company');
+    }
+
+    const allowed = this.companyMembersService.canManageOperations(member.role);
+
+    if (!allowed) {
+      throw new UnauthorizedException('Permission denied');
+    }
+
+    const applications = await this.prisma.application.findMany({
+      where: {
+        job: {
+          companyId: member.companyId,
+        }
+      },
+      select: {
+        id: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        job: {
+          select: {
+            id: true,
+            title: true,
+            companyId: true,
+            status: true,
+          },
+        },
+        candidate: {
+          select: {
+            id: true,
+            experienceLevel: true,
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                avatar: {
+                  select: {
+                    url: true,
+                  }
+                },
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return applications;
+  }
+
 
   // employer fetch single application;
   async employerFetchSingleApplication(
