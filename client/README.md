@@ -53,7 +53,8 @@ Separator
 Tooltip
 
 ## TODO
-🟡 fetch all company applications
+
+✅ fetch all company applications
 🟡 resume upload in apply-to-job modal
 🟡 company profile
 🟡 landing page
