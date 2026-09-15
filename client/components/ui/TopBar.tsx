@@ -2,13 +2,7 @@
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { CompanyLogo } from './CompanyLogo';
 import { Avatar } from './Avatar';
-import {
-  Bell,
-  BriefcaseBusiness,
-  FileText,
-  LayoutGrid,
-  User,
-} from 'lucide-react';
+import { Bell, BriefcaseBusiness, FileText, User } from 'lucide-react';
 import NavLink from './NavLink';
 import FallbackAvatar from './FallbackAvatar';
 import { useEffect, useRef, useState } from 'react';
@@ -98,6 +92,7 @@ export default function TopBar() {
           <ProfileDropdown
             isOpen={isOpenDropdown}
             onClose={() => setIsOpenDropdown(false)}
+            href={'/profile'}
           />
         )}
       </div>
