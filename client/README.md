@@ -56,8 +56,8 @@ Tooltip
 
 ✅ fetch all company applications
 ✅ resume upload in apply-to-job modal
+✅ public route
 🟡 company profile
 🟡 landing page
-🟡 public route
 🟡 polish ui
 ✅

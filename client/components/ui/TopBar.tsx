@@ -2,7 +2,13 @@
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { CompanyLogo } from './CompanyLogo';
 import { Avatar } from './Avatar';
-import { Bell, BriefcaseBusiness, FileText, User } from 'lucide-react';
+import {
+  Bell,
+  BriefcaseBusiness,
+  FileText,
+  LayoutGrid,
+  User,
+} from 'lucide-react';
 import NavLink from './NavLink';
 import FallbackAvatar from './FallbackAvatar';
 import { useEffect, useRef, useState } from 'react';
@@ -38,7 +44,7 @@ export default function TopBar() {
   const user = data.data;
 
   return (
-    <nav className="border-border-muted flex items-center justify-between border-b px-6 py-4 text-sm sm:px-8 sm:py-6">
+    <nav className="border-border-muted flex items-center justify-between gap-4 border-b px-6 py-4 text-sm sm:px-8 sm:py-6">
       <CompanyLogo
         src="/favicon.ico"
         alt="Kazi logo"
@@ -46,22 +52,34 @@ export default function TopBar() {
         height={40}
         className="h-fit w-fit justify-self-start"
       />
-      <div className="flex items-center gap-10">
-        <NavLink href={'/jobs'}>
-          <BriefcaseBusiness size={20} className="sm:hidden" />
-          <span className="hidden sm:block">Jobs</span>
+      <div className="flex items-center gap-4 sm:gap-6 md:gap-8 lg:gap-10">
+        <NavLink
+          href={'/jobs'}
+          className="flex flex-col items-center gap-1 sm:flex-row"
+        >
+          <BriefcaseBusiness size={20} className="" />
+          <span className="text-[9px] sm:text-sm">Jobs</span>
         </NavLink>
-        <NavLink href={'/applications'}>
-          <FileText size={20} className="sm:hidden" />
-          <span className="hidden sm:block">Applications</span>
+        <NavLink
+          href={'/applications'}
+          className="flex flex-col items-center gap-1 sm:flex-row"
+        >
+          <FileText size={20} className="" />
+          <span className="text-[9px] sm:text-sm">Applications</span>
         </NavLink>
-        <NavLink href={'/notifications'}>
-          <Bell size={20} className="sm:hidden" />
-          <span className="hidden sm:block">Notifications</span>
+        <NavLink
+          href={'/notifications'}
+          className="flex flex-col items-center gap-1 sm:flex-row"
+        >
+          <Bell size={20} className="" />
+          <span className="text-[9px] sm:text-sm">Notifications</span>
         </NavLink>
-        <NavLink href={'/employer'}>
-          <User size={20} className="sm:hidden" />
-          <span className="hidden sm:block">For Employers</span>
+        <NavLink
+          href={'/employer'}
+          className="flex flex-col items-center gap-1 sm:flex-row"
+        >
+          <User size={20} className="" />
+          <span className="text-[9px] sm:text-sm">Employers</span>
         </NavLink>
       </div>
       <div ref={dropDownRef} className="relative">
