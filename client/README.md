@@ -58,7 +58,7 @@ Tooltip
 ✅ resume upload in apply-to-job modal
 ✅ public route
 ✅ company profile
-🟡 update company profile
+✅ update company profile
 🟡 landing page
 🟡 polish ui
 ✅
