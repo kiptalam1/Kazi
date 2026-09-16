@@ -6,6 +6,7 @@ type LogoProps = {
   width: number;
   height: number;
   className?: string;
+  // loading: 'lazy' | 'eager';
 };
 export const CompanyLogo = ({
   src,
@@ -23,6 +24,7 @@ export const CompanyLogo = ({
         alt={alt}
         width={width}
         height={height}
+        loading="eager"
         className="object-cover"
       />
     </div>
