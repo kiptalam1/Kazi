@@ -1,7 +1,6 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -23,13 +22,13 @@ export default function GlobalNotFound() {
             className="flex w-full max-w-md flex-col items-center text-center"
           >
             {/* Brand */}
-            <Link
-              href="/"
+            <a
+              href={'/'}
               aria-label="Kazi home"
               className="text-brand-primary hover:text-brand-hover mb-16 text-xl font-bold tracking-tight transition-colors"
             >
               Kazi
-            </Link>
+            </a>
 
             {/* Error Indicator */}
             <div
@@ -48,18 +47,18 @@ export default function GlobalNotFound() {
             </h1>
 
             <p className="text-text-secondary mt-3 max-w-sm text-sm leading-6 sm:text-base">
-              The page you are looking for doesn't exist or may have been moved
-              to another location.
+              The page you are looking for doesn&apos;t exist or may have been
+              moved to another location.
             </p>
 
             {/* Action */}
             <div className="mt-8">
-              <Link
-                href="/"
+              <a
+                href={'/'}
                 className="bg-brand-primary text-text-inverse hover:bg-brand-hover focus-visible:outline-focus inline-flex h-11 items-center justify-center rounded-lg px-6 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 Return to Home
-              </Link>
+              </a>
             </div>
           </section>
         </main>
