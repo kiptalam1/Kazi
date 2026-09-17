@@ -59,6 +59,6 @@ Tooltip
 ✅ public route
 ✅ company profile
 ✅ update company profile
-🟡 landing page
+✅ landing page
 🟡 polish ui
 ✅
