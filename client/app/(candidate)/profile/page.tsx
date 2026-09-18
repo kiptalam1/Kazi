@@ -9,13 +9,19 @@ import ProfileHeader from '@/features/user/components/ProfileHeader';
 
 export default function ProfilePage() {
   return (
-    <main className="mx-auto max-w-6xl space-y-4 p-4 sm:space-y-6 sm:py-8">
+    <main className="mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
       <ProfileHeader />
-      <ProfessionalInfo />
-      <ProfileLinks />
-      <CandidateExperiences />
-      <CandidateEducation />
-      <CandidateResumes />
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)] lg:items-start">
+        <div className="space-y-6">
+          <ProfessionalInfo />
+          <CandidateExperiences />
+          <CandidateEducation />
+        </div>
+        <aside className="space-y-6">
+          <ProfileLinks />
+          <CandidateResumes />
+        </aside>
+      </div>
     </main>
   );
 }

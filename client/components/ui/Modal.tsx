@@ -11,6 +11,11 @@ export default function Modal({
   ariaLabel = 'Dialog',
 }: ModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   useEffect(() => {
     const previousActiveElement = document.activeElement;
@@ -18,7 +23,7 @@ export default function Modal({
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
       }
     }
 
@@ -30,7 +35,7 @@ export default function Modal({
         previousActiveElement.focus();
       }
     };
-  }, [onClose]);
+  }, []);
 
   return (
     <div

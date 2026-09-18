@@ -73,8 +73,12 @@ export default function UpdateLinks({ open, onClose, candidate }: Props) {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 text-sm">
           <div className="flex flex-col gap-1">
-            <Label className="text-xs">Github</Label>
+            <Label className="text-xs" htmlFor="github-url">
+              GitHub
+            </Label>
             <Input
+              id="github-url"
+              placeholder="https://github.com/username"
               {...register('githubUrl', {
                 pattern: {
                   value: /^https?:\/\/.+/i,
@@ -87,8 +91,12 @@ export default function UpdateLinks({ open, onClose, candidate }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <Label className="text-xs">Linkedin</Label>
+            <Label className="text-xs" htmlFor="linkedin-url">
+              LinkedIn
+            </Label>
             <Input
+              id="linkedin-url"
+              placeholder="https://linkedin.com/in/username"
               {...register('linkedinUrl', {
                 pattern: {
                   value: /^https?:\/\/.+/i,
@@ -101,8 +109,12 @@ export default function UpdateLinks({ open, onClose, candidate }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <Label className="text-xs">Portfolio</Label>
+            <Label className="text-xs" htmlFor="portfolio-url">
+              Portfolio
+            </Label>
             <Input
+              id="portfolio-url"
+              placeholder="https://yourportfolio.com"
               {...register('portfolioUrl', {
                 pattern: {
                   value: /^https?:\/\/.+/i,

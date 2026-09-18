@@ -46,7 +46,7 @@ export const ProfileLinks = () => {
   }
 
   return (
-    <section className="border-border-muted border p-4 sm:p-6 md:p-8">
+    <section className="border-border border p-4 sm:p-6 md:p-8">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-text-muted text-sm font-semibold tracking-wide uppercase">
           Links
@@ -72,7 +72,7 @@ export const ProfileLinks = () => {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="truncate text-sm hover:underline"
+                  className="text-sm break-all hover:underline"
                 >
                   {url}
                 </a>

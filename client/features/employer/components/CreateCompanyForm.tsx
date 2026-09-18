@@ -65,40 +65,52 @@ export default function CreateCompanyForm({ company }: Props) {
   }
 
   return (
-    <div className="w-full max-w-lg space-y-6 rounded-sm px-4 py-6 shadow-xs sm:px-6 sm:py-8">
-      <h1 className="text-text-primary text-xl font-semibold sm:text-2xl">
-        Create Your Company
-      </h1>
+    <div className="border-border bg-background w-full max-w-2xl space-y-8 border px-5 py-6 shadow-sm sm:px-8 sm:py-10">
+      <div>
+        <p className="text-brand-primary text-xs font-semibold tracking-[0.14em] uppercase">
+          Company setup
+        </p>
+        <h1 className="text-text-primary mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+          Create your company
+        </h1>
+        <p className="text-text-secondary mt-3 max-w-xl text-sm leading-6">
+          Set up your company profile so candidates can understand who is hiring
+          and what your team does.
+        </p>
+      </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div className="flex flex-col gap-1">
-          <Label>
-            Company Name
+          <Label htmlFor="company-name">
+            Company name
             <span className="text-danger">*</span>
           </Label>
           <Input
+            id="company-name"
             {...register('name', {
               required: 'Company name is required',
               validate: (value) =>
                 value.trim().length > 0 || 'Company name is required',
             })}
-            className="border-border-muted"
+            className="border-border-strong"
           />
           {errors.name && (
             <p className="text-danger text-xs">{errors.name.message}</p>
           )}
         </div>
         <div className="flex flex-col gap-1">
-          <Label>Description</Label>
+          <Label htmlFor="company-description">Description</Label>
           <Textarea
+            id="company-description"
             rows={4}
-            className="border-border-muted min-h-32"
+            className="border-border-strong min-h-32 rounded-none"
             {...register('description')}
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label>Website</Label>
+          <Label htmlFor="company-website">Website</Label>
           <Input
+            id="company-website"
             type="url"
             placeholder="https://example.com"
             {...register('website', {
@@ -107,23 +119,35 @@ export default function CreateCompanyForm({ company }: Props) {
                 message: 'Enter a valid website URL',
               },
             })}
-            className="border-border-muted"
+            className="border-border-strong"
           />
           {errors.website && (
             <p className="text-danger text-xs">{errors.website.message}</p>
           )}
         </div>
         <div className="flex flex-col gap-1">
-          <Label>Industry</Label>
-          <Input {...register('industry')} className="border-border-muted" />
+          <Label htmlFor="company-industry">Industry</Label>
+          <Input
+            id="company-industry"
+            {...register('industry')}
+            className="border-border-strong"
+          />
         </div>
         <div className="flex flex-col gap-1">
-          <Label>Location</Label>
-          <Input {...register('location')} className="border-border-muted" />
+          <Label htmlFor="company-location">Location</Label>
+          <Input
+            id="company-location"
+            {...register('location')}
+            className="border-border-strong"
+          />
         </div>
-        <div className="mt-6 flex justify-self-end">
-          <Button type="submit" disabled={isCreating}>
-            {isCreating ? 'Submitting...' : 'Submit'}
+        <div className="border-border-muted mt-7 border-t pt-5">
+          <Button
+            type="submit"
+            disabled={isCreating}
+            className="min-h-11 w-full rounded-none"
+          >
+            {isCreating ? 'Creating company...' : 'Create company'}
           </Button>
         </div>
       </form>

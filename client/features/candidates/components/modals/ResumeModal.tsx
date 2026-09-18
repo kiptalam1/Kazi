@@ -25,6 +25,9 @@ export default function ResumeModal({ open, onClose }: Props) {
     onClose();
     setFile(undefined);
     setDisplayName('');
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
   };
 
   function handleSubmit(e: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
@@ -68,9 +71,13 @@ export default function ResumeModal({ open, onClose }: Props) {
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <Label>Display Name (Optional)</Label>
+            <Label htmlFor="resume-display-name">Display name (optional)</Label>
             <Input
+              id="resume-display-name"
               type="text"
+              name="displayName"
+              placeholder="e.g. Frontend Developer Resume"
+              maxLength={100}
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
             />

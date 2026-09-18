@@ -44,7 +44,7 @@ export default function TopBar() {
         alt="Kazi logo"
         width={40}
         height={40}
-        className="h-fit w-fit justify-self-start"
+        className="h-auto w-auto justify-self-start"
       />
       <div className="flex items-center gap-4 sm:gap-6 md:gap-8 lg:gap-10">
         <NavLink
@@ -83,7 +83,7 @@ export default function TopBar() {
           aria-expanded={isOpenDropdown}
           aria-haspopup="menu"
           onClick={() => setIsOpenDropdown((prev) => !prev)}
-          className="focus-visible:outline-focus cursor-pointer rounded-full focus-visible:outline-2 focus-visible:outline-offset-4"
+          className="focus-visible:outline-focus flex size-9 cursor-pointer items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-4"
         >
           {user.avatar ? (
             <Avatar src={user.avatar} alt="avatar" width={36} height={36} />
