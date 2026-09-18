@@ -19,7 +19,15 @@ api.interceptors.response.use(
     const isRefreshRequest = originalRequest?.url?.includes(
       '/auth/refresh-tokens',
     );
-    if (!isUnauthorized || originalRequest?._retry || isRefreshRequest) {
+    const isAuthRequest =
+      originalRequest?.url?.includes('/auth/') ||
+      originalRequest?.url?.includes('/users/me');
+    if (
+      !isUnauthorized ||
+      originalRequest?._retry ||
+      isRefreshRequest ||
+      isAuthRequest
+    ) {
       return Promise.reject(error);
     }
     originalRequest._retry = true;
@@ -36,12 +44,9 @@ api.interceptors.response.use(
       pendingRequests.forEach((resolve) => resolve());
       pendingRequests = [];
       return api(originalRequest);
-    } catch (refreshError) {
+    } catch {
       pendingRequests = [];
-
-      console.error('refresh token:', refreshError);
-      return Promise.reject(refreshError);
-      // return new Promise(() => { });
+      return Promise.reject(error);
     } finally {
       isRefreshing = false;
     }

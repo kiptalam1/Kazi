@@ -28,7 +28,7 @@ export default function ProfileDropdown({
   }
 
   return (
-    <div className="border-border absolute top-full right-0 z-50 mt-6 flex h-auto w-60 flex-col border bg-white shadow-xs">
+    <div className="border-border bg-background absolute top-full right-0 z-50 mt-6 flex h-auto w-60 flex-col border shadow-xs">
       <Link
         href={href}
         onClick={onClose}

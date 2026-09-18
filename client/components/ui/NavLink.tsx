@@ -18,7 +18,7 @@ export default function NavLink({
   return (
     <Link
       href={href}
-      className={`${isActive ? 'text-brand-active font-medium' : 'hover:text-brand-hover'} ${className}`}
+      className={`focus-visible:outline-focus rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 ${isActive ? 'text-brand-active font-medium' : 'hover:text-brand-hover'} ${className}`}
     >
       {children}
     </Link>

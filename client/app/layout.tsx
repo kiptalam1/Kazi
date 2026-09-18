@@ -17,10 +17,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className={`${inter.variable} antialiased`}>
-      <body className="mx-auto flex min-h-screen max-w-7xl flex-col overflow-x-hidden scroll-smooth">
-        <Providers>
-          <main>{children}</main>
-        </Providers>
+      <body className="flex min-h-screen flex-col overflow-x-hidden scroll-smooth">
+        <Providers>{children}</Providers>
         <Toaster richColors position="top-center" />
       </body>
     </html>

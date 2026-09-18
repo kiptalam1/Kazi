@@ -1,13 +1,56 @@
+import { useEffect, useRef } from 'react';
+
 type ModalProps = React.ComponentProps<'div'> & {
   onClose: () => void;
+  ariaLabel?: string;
 };
-export default function Modal({ onClose, children }: ModalProps) {
+
+export default function Modal({
+  onClose,
+  children,
+  ariaLabel = 'Dialog',
+}: ModalProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const previousActiveElement = document.activeElement;
+    dialogRef.current?.focus();
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      if (previousActiveElement instanceof HTMLElement) {
+        previousActiveElement.focus();
+      }
+    };
+  }, [onClose]);
+
   return (
     <div
-      onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-2xl"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+      className="bg-overlay/50 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-2xl"
     >
-      {children}
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={ariaLabel}
+        tabIndex={-1}
+        className="max-h-[calc(100vh-2rem)] w-full overflow-y-auto outline-none"
+      >
+        {children}
+      </div>
     </div>
   );
 }

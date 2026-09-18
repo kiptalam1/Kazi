@@ -78,8 +78,12 @@ export default function TopBar() {
       </div>
       <div ref={dropDownRef} className="relative">
         <button
+          type="button"
+          aria-label="Open profile menu"
+          aria-expanded={isOpenDropdown}
+          aria-haspopup="menu"
           onClick={() => setIsOpenDropdown((prev) => !prev)}
-          className="cursor-pointer"
+          className="focus-visible:outline-focus cursor-pointer rounded-full focus-visible:outline-2 focus-visible:outline-offset-4"
         >
           {user.avatar ? (
             <Avatar src={user.avatar} alt="avatar" width={36} height={36} />
