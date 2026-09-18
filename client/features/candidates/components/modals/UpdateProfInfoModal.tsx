@@ -32,7 +32,7 @@ type ProfessionalInfoForm = {
   currentJobTitle: string;
   location: string;
   experienceLevel: ExperienceLevel | undefined;
-  skills: string[];
+  skills: string | string[];
   availability: boolean;
 };
 
@@ -50,7 +50,7 @@ export default function UpdateProfInfoModal({
         currentJobTitle: candidate.currentJobTitle ?? '',
         location: candidate.location ?? '',
         experienceLevel: candidate.experienceLevel ?? undefined,
-        skills: candidate.skills ?? [],
+        skills: candidate.skills?.join(', ') ?? '',
         availability: candidate.availability ?? true,
       },
     });
@@ -78,7 +78,9 @@ export default function UpdateProfInfoModal({
         location: data.location.trim() || null,
         experienceLevel: data.experienceLevel,
         availability: data.availability,
-        skills: data.skills.filter((skill) => skill.trim()),
+        skills: (Array.isArray(data.skills) ? data.skills : [data.skills])
+          .map((skill) => skill.trim())
+          .filter(Boolean),
       },
       {
         onSuccess: () => {
@@ -135,7 +137,7 @@ export default function UpdateProfInfoModal({
             <Input
               {...register('skills', {
                 setValueAs: (value) =>
-                  value
+                  (Array.isArray(value) ? value.join(',') : String(value ?? ''))
                     .split(',')
                     .map((skill: string) => skill.trim())
                     .filter(Boolean),

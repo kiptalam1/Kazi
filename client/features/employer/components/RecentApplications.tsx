@@ -1,4 +1,5 @@
 import { RecentApplication } from '../types/analytics.types';
+import ApplicationStatusBadge from '@/features/applications/components/ApplicationStatusBadge';
 
 export default function RecentApplications({
   recentApplications,
@@ -42,9 +43,7 @@ export default function RecentApplications({
                   {new Date(app.appliedDate).toLocaleDateString()}
                 </td>
                 <td className="p-4">
-                  <span className="border-border-muted text-text-primary inline-block border px-2 py-1 text-xs font-medium">
-                    {app.status}
-                  </span>
+                  <ApplicationStatusBadge status={app.status} />
                 </td>
               </tr>
             ))}

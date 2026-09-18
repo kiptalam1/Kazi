@@ -5,6 +5,7 @@ import { CompanyJob } from '../types/get-company-jobs.types';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import useDeletejob from '../hooks/useDeleteJob';
 import NavLink from '@/components/ui/NavLink';
+import JobStatusBadge from './JobStatusBadge';
 
 type Props = {
   jobs: CompanyJob[];
@@ -72,7 +73,7 @@ export default function JobsTable({ jobs }: Props) {
                 {job.experienceLevel}
               </td>
               <td className="hidden px-4 py-3 text-xs sm:table-cell">
-                {job.status}
+                <JobStatusBadge status={job.status} />
               </td>
               <td className="text-text-muted px-4 py-3 text-xs">
                 {job.createdAt.split('T')[0]}

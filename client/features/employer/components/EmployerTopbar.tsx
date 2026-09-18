@@ -36,70 +36,82 @@ export default function EmployerTopbar() {
   }, [isOpenDropdown]);
 
   return (
-    <nav className="border-border-muted flex items-center justify-center gap-10 border-b px-4 py-4 text-sm sm:px-6 sm:py-6 lg:justify-between">
+    <nav
+      aria-label="Employer navigation"
+      className="border-border-muted flex items-center justify-between gap-4 border-b px-6 py-4 text-sm sm:px-8 sm:py-6"
+    >
       <CompanyLogo
         src="/favicon.ico"
         alt="Kazi logo"
         width={40}
         height={40}
-        className="hidden h-fit w-fit justify-self-start sm:block"
+        className="h-fit w-fit shrink-0 justify-self-start"
       />
-      <div className="flex w-full items-center justify-between gap-4 sm:flex-0 sm:gap-10 lg:flex-1">
-        <NavLink
-          href={'/employer/dashboard'}
-          className="flex flex-col items-center gap-1 sm:flex-row"
-        >
-          <LayoutGrid size={20} />
-          <span className="text-[9px] sm:text-sm">Dashboard</span>
-        </NavLink>
-        <NavLink
-          href={'/employer/jobs'}
-          className="flex flex-col items-center gap-1 sm:flex-row"
-        >
-          <BriefcaseBusiness size={20} />
-          <span className="text-[9px] sm:text-sm">Jobs</span>
-        </NavLink>
-        <NavLink
-          href={'/employer/applicants'}
-          className="flex flex-col items-center gap-1 sm:flex-row"
-        >
-          <FileText size={20} />
-          <span className="text-[9px] sm:text-sm">Applicants</span>
-        </NavLink>
-        <NavLink
-          href={'/employer/notifications'}
-          className="flex flex-col items-center gap-1 sm:flex-row"
-        >
-          <Bell size={20} />
-          <span className="text-[9px] sm:text-sm">Notifications</span>
-        </NavLink>
-        <NavLink
-          href={'/jobs'}
-          className="flex flex-col items-center gap-1 sm:flex-row"
-        >
-          <User size={20} />
-          <span className="text-[9px] sm:text-sm">Candidate</span>
-        </NavLink>
-        <div ref={dropDownRef} className="relative">
-          <button type="button" onClick={() => setIsOpenDropdown(true)}>
-            {company?.logoUrl ? (
-              <CompanyLogo
-                src={company.logoUrl}
-                width={36}
-                height={36}
-                alt={company.name}
-                className="h-auto w-auto"
-              />
-            ) : company ? (
-              <FallbackAvatar value={company.name} className="size-9" />
-            ) : null}
-          </button>
-          <ProfileDropdown
-            isOpen={isOpenDropdown}
-            onClose={() => setIsOpenDropdown(false)}
-            href={'/employer/profile'}
-          />
+      <div className="min-w-0 overflow-x-auto">
+        <div className="flex min-w-max items-center gap-4 sm:gap-6 md:gap-8 lg:gap-10">
+          <NavLink
+            href={'/employer/dashboard'}
+            className="flex flex-col items-center gap-1 sm:flex-row"
+          >
+            <LayoutGrid size={20} />
+            <span className="text-[9px] sm:text-sm">Dashboard</span>
+          </NavLink>
+          <NavLink
+            href={'/employer/jobs'}
+            className="flex flex-col items-center gap-1 sm:flex-row"
+          >
+            <BriefcaseBusiness size={20} />
+            <span className="text-[9px] sm:text-sm">Jobs</span>
+          </NavLink>
+          <NavLink
+            href={'/employer/applicants'}
+            className="flex flex-col items-center gap-1 sm:flex-row"
+          >
+            <FileText size={20} />
+            <span className="text-[9px] sm:text-sm">Applicants</span>
+          </NavLink>
+          <NavLink
+            href={'/employer/notifications'}
+            className="flex flex-col items-center gap-1 sm:flex-row"
+          >
+            <Bell size={20} />
+            <span className="text-[9px] sm:text-sm">Notifications</span>
+          </NavLink>
+          <NavLink
+            href={'/jobs'}
+            className="flex flex-col items-center gap-1 sm:flex-row"
+          >
+            <User size={20} />
+            <span className="text-[9px] sm:text-sm">Candidate</span>
+          </NavLink>
         </div>
+      </div>
+      <div ref={dropDownRef} className="relative shrink-0">
+        <button
+          type="button"
+          aria-label="Open company profile menu"
+          aria-expanded={isOpenDropdown}
+          aria-haspopup="menu"
+          onClick={() => setIsOpenDropdown((previous) => !previous)}
+          className="focus-visible:outline-focus rounded-full focus-visible:outline-2 focus-visible:outline-offset-4"
+        >
+          {company?.logoUrl ? (
+            <CompanyLogo
+              src={company.logoUrl}
+              width={36}
+              height={36}
+              alt={company.name}
+              className="h-auto w-auto"
+            />
+          ) : company ? (
+            <FallbackAvatar value={company.name} className="size-9" />
+          ) : null}
+        </button>
+        <ProfileDropdown
+          isOpen={isOpenDropdown}
+          onClose={() => setIsOpenDropdown(false)}
+          href={'/employer/profile'}
+        />
       </div>
     </nav>
   );
