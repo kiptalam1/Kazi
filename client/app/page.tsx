@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -9,8 +11,25 @@ import {
   Sparkles,
   Users,
 } from 'lucide-react';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import Loader from './loading';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Home() {
+  const { data: user, isPending } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user?.data) {
+      router.replace('/jobs');
+    }
+  }, [router, user]);
+
+  if (isPending || user?.data) {
+    return <Loader />;
+  }
+
   return (
     <div className="bg-background min-h-screen">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-5 sm:px-8 lg:px-10">
