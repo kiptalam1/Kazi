@@ -4,7 +4,7 @@ import { AppsParams } from '../types/get-my-applications.types';
 
 export default function useMyApplications(params: AppsParams = {}) {
   return useQuery({
-    queryKey: ['myapps'],
+    queryKey: ['myapps', params],
     queryFn: () => getMyApplications(params),
   });
 }

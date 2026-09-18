@@ -47,7 +47,7 @@ export default function Modal({
         aria-modal="true"
         aria-label={ariaLabel}
         tabIndex={-1}
-        className="max-h-[calc(100vh-2rem)] w-full overflow-y-auto outline-none"
+        className="flex max-h-[calc(100vh-2rem)] w-full justify-center overflow-y-auto outline-none"
       >
         {children}
       </div>
