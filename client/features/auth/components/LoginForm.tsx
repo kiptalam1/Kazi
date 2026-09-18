@@ -4,10 +4,17 @@ import Input from '@/components/ui/Input';
 import Label from '@/components/ui/Label';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
-import { type ChangeEvent, type SyntheticEvent, useState } from 'react';
+import Image from 'next/image';
+import {
+  type ChangeEvent,
+  type SyntheticEvent,
+  useEffect,
+  useState,
+} from 'react';
 import Spinner from '@/components/ui/Spinner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLogin } from '../hooks/useLogin';
+import { useAuth } from '../hooks/useAuth';
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
@@ -18,6 +25,7 @@ export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const loginMutation = useLogin();
+  const { data: authData, isPending: isAuthPending } = useAuth();
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -25,13 +33,35 @@ export default function LoginForm() {
 
   function getSafeCallbackUrl(value: string | null) {
     if (!value) return '/jobs';
-    if (!value.startsWith('/') || value.startsWith('//')) {
+    if (
+      !value.startsWith('/') ||
+      value.startsWith('//') ||
+      value === '/login' ||
+      value.startsWith('/login?')
+    ) {
       return '/jobs';
     }
     return value;
   }
 
   const callbackUrl = getSafeCallbackUrl(searchParams.get('callbackUrl'));
+
+  useEffect(() => {
+    if (authData?.data) {
+      router.replace(callbackUrl);
+    }
+  }, [authData, callbackUrl, router]);
+
+  if (isAuthPending || authData?.data) {
+    return (
+      <div
+        className="flex items-center justify-center p-8"
+        aria-label="Loading"
+      >
+        <Spinner />
+      </div>
+    );
+  }
 
   function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -43,13 +73,25 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-background-muted flex w-full max-w-lg flex-col gap-6 rounded-xs p-6"
+      className="border-border bg-background flex w-full max-w-lg flex-col gap-6 border p-6 shadow-sm sm:p-8"
     >
-      <h1 className="text-text-secondary text-center text-lg font-semibold">
-        Log in to Kazi
-      </h1>
+      <div className="flex flex-col items-center gap-4">
+        <Image
+          src="/logo.png"
+          width={108}
+          height={39}
+          alt="Kazi"
+          priority
+          className="h-auto w-auto"
+        />
+        <h1 className="text-text-primary text-center text-2xl font-semibold tracking-tight">
+          Welcome back
+        </h1>
+      </div>
       <div>
-        <Label htmlFor="email">Email</Label>
+        <Label className="text-text-secondary mb-2 block" htmlFor="email">
+          Email address
+        </Label>
         <Input
           id="email"
           name="email"
@@ -58,10 +100,13 @@ export default function LoginForm() {
           type="email"
           autoComplete="email"
           required
+          className="border-border-strong bg-background rounded-none"
         />
       </div>
       <div>
-        <Label htmlFor="password">Password</Label>
+        <Label className="text-text-secondary mb-2 block" htmlFor="password">
+          Password
+        </Label>
         <div className="relative">
           <Input
             id="password"
@@ -71,7 +116,7 @@ export default function LoginForm() {
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
             required
-            className="pr-10"
+            className="border-border-strong bg-background rounded-none pr-10"
           />
 
           <button
@@ -79,24 +124,27 @@ export default function LoginForm() {
             onClick={() => setShowPassword((prev) => !prev)}
             aria-label={showPassword ? 'Hide Password' : 'Show Password'}
             aria-pressed={showPassword}
-            className="absolute top-1/2 right-2 -translate-y-1/2"
+            className="focus-visible:outline-focus absolute top-1/2 right-1 size-9 -translate-y-1/2 rounded-none focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             {showPassword ? (
-              <EyeOff className="text-text-muted size-4" />
+              <EyeOff className="text-text-muted size-5" />
             ) : (
-              <Eye className="text-text-muted size-4" />
+              <Eye className="text-text-muted size-5" />
             )}
           </button>
         </div>
       </div>
-      <Button type="submit" className="flex items-center justify-center">
+      <Button
+        type="submit"
+        className="flex min-h-11 w-full items-center justify-center rounded-none"
+      >
         {loginMutation.isPending ? <Spinner /> : 'Log in'}
       </Button>
-      <div className="flex flex-col gap-2">
+      <div className="border-border-muted flex flex-col gap-2 border-t pt-5 text-center">
         <span className="text-text-muted mx-auto text-xs">Or</span>
         <Link
           href={'/register'}
-          className="text-accent hover:text-accent-hover mx-auto text-sm duration-150"
+          className="text-brand-primary hover:text-brand-hover mx-auto text-sm duration-150"
         >
           Create an account
         </Link>

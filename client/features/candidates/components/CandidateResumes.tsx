@@ -43,7 +43,7 @@ export default function CandidateResumes() {
   }
 
   return (
-    <section className="border-border-muted min-h-32 border p-4 sm:p-6">
+    <section className="border-border min-h-32 border p-4 sm:p-6">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-text-muted text-sm font-semibold tracking-wide uppercase">
           Resumes

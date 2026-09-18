@@ -51,7 +51,7 @@ export default function ProfileHeader() {
   const user = data.data;
 
   return (
-    <section className="border-border-muted flex items-center gap-4 border p-4 sm:p-6 md:p-8">
+    <section className="border-border flex items-center gap-4 border p-4 sm:p-6 md:p-8">
       <div className="relative">
         {avatarPreview ? (
           <Avatar

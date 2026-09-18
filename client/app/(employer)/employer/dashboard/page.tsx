@@ -13,6 +13,7 @@ import PostjobModal from '@/features/employer/components/modals/PostjobModal';
 import RecentApplications from '@/features/employer/components/RecentApplications';
 import ApplicationByStatusCount from '@/features/employer/components/ApplicationByStatusCount';
 import DashboardOverview from '@/features/employer/components/DashboardOverview';
+import EmployerPageHeader from '@/features/employer/components/EmployerPageHeader';
 
 export default function EmployerDashboard() {
   const {
@@ -48,6 +49,20 @@ export default function EmployerDashboard() {
 
   return (
     <>
+      <EmployerPageHeader
+        title="Dashboard"
+        description="A quick view of your hiring activity."
+        action={
+          <Button
+            type="button"
+            onClick={() => setOpenJobModal(true)}
+            className="flex items-center gap-1 self-start rounded-none text-xs font-semibold sm:text-sm"
+          >
+            <Plus className="size-5" />
+            Post a job
+          </Button>
+        }
+      />
       {/* Company Header */}
       <section className="border-border-muted flex items-center justify-between gap-4 border-b pb-6">
         {!company && <p>Company not found!</p>}
@@ -72,14 +87,6 @@ export default function EmployerDashboard() {
             {company?.location && <p>{company.location}</p>}
           </div>
         </div>
-        <Button
-          type="button"
-          onClick={() => setOpenJobModal(true)}
-          className="flex items-center gap-1 self-start rounded-none text-xs font-extralight sm:text-sm"
-        >
-          <Plus className="size-5" />
-          Post a Job
-        </Button>
       </section>
 
       {/* Analytics Metrics */}

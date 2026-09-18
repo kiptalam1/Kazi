@@ -1,4 +1,6 @@
 import type { ApplicationStatusCount } from '../types/analytics.types';
+import { getApplicationStatusLabel } from '@/features/applications/components/ApplicationStatusBadge';
+import type { ApplicationStatus } from '@/features/common/types/common.types';
 
 export default function ApplicationByStatusCount({
   applicationsByStatus,
@@ -12,7 +14,9 @@ export default function ApplicationByStatusCount({
         <div className="divide-border-muted grid grid-cols-2 gap-0 divide-x sm:grid-cols-4 lg:grid-cols-8">
           {Object.entries(applicationsByStatus).map(([status, count]) => (
             <div key={status} className="space-y-1 p-4 text-center">
-              <p className="text-text-muted text-xs uppercase">{status}</p>
+              <p className="text-text-muted text-xs uppercase">
+                {getApplicationStatusLabel(status as ApplicationStatus)}
+              </p>
               <h3 className="text-text-primary text-2xl font-bold">{count}</h3>
             </div>
           ))}

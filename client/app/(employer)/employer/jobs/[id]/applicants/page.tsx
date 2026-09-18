@@ -7,6 +7,7 @@ import { getApiErrorMessage } from '@/lib/api/error';
 import formattedDate from '@/lib/utils/formattedDate';
 import { ArrowLeft } from 'lucide-react';
 import { useParams } from 'next/navigation';
+import ApplicationStatusBadge from '@/features/applications/components/ApplicationStatusBadge';
 
 export default function JobApplicantsPage() {
   const { id } = useParams();
@@ -31,13 +32,29 @@ export default function JobApplicantsPage() {
   const applications = data.data;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <NavLink
         href={`/employer/jobs/${id}`}
-        className="hover:bg-background-muted flex w-fit items-center justify-center rounded-full p-2"
+        aria-label="Back to job"
+        className="hover:bg-background-muted focus-visible:outline-focus flex w-fit items-center justify-center p-2 focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         <ArrowLeft className="size-4" />
       </NavLink>
+
+      <header className="border-border-muted flex items-end justify-between gap-4 border-b pb-6">
+        <div>
+          <h1 className="text-text-primary text-2xl font-semibold tracking-tight">
+            Job applicants
+          </h1>
+          <p className="text-text-muted mt-2 text-sm">
+            Review and manage candidates for this role.
+          </p>
+        </div>
+        <span className="text-text-muted shrink-0 text-sm">
+          {applications.length}{' '}
+          {applications.length === 1 ? 'applicant' : 'applicants'}
+        </span>
+      </header>
 
       <section className="border-border overflow-hidden border">
         <div className="overflow-x-auto">
@@ -60,7 +77,8 @@ export default function JobApplicantsPage() {
                     colSpan={5}
                     className="text-text-muted px-4 py-8 text-center text-sm"
                   >
-                    No applications yet.
+                    No applications yet. Candidates will appear here when they
+                    apply.
                   </td>
                 </tr>
               ) : (
@@ -77,14 +95,14 @@ export default function JobApplicantsPage() {
                         {app.candidate.user.lastName}
                       </NavLink>
                     </td>
-                    <td className="text-text-secondary px-4 py-3">
+                    <td className="text-text-secondary hidden px-4 py-3 sm:table-cell">
                       {app.candidate.user.email}
                     </td>
                     <td className="text-text-muted px-4 py-3 text-xs">
                       {app.candidate.experienceLevel}
                     </td>
                     <td className="text-text-muted px-4 py-3 text-xs">
-                      {app.status}
+                      <ApplicationStatusBadge status={app.status} />
                     </td>
                     <td className="text-text-muted hidden px-4 py-3 text-xs sm:table-cell">
                       {formattedDate(app.createdAt)}

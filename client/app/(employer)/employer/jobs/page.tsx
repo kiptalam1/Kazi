@@ -7,6 +7,7 @@ import useCompanyJobs from '@/features/employer/hooks/useCompanyJobs';
 import { getApiErrorMessage } from '@/lib/api/error';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
+import EmployerPageHeader from '@/features/employer/components/EmployerPageHeader';
 
 export default function CompanyJobs() {
   const [openJobModal, setOpenJobModal] = useState(false);
@@ -35,7 +36,21 @@ export default function CompanyJobs() {
 
   return (
     <div>
-      {jobs ? (
+      <EmployerPageHeader
+        title="Your job listings"
+        description="Manage your active and past job listings."
+        action={
+          <Button
+            type="button"
+            onClick={() => setOpenJobModal(true)}
+            className="flex items-center gap-1 self-start rounded-none text-xs font-semibold sm:text-sm"
+          >
+            <Plus className="size-5" />
+            Post a job
+          </Button>
+        }
+      />
+      {jobs && jobs.length > 0 ? (
         <JobsTable jobs={jobs} />
       ) : (
         <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 text-center">
@@ -43,14 +58,6 @@ export default function CompanyJobs() {
           <p className="text-text-muted text-sm">
             Post your first job to start receiving applications.
           </p>
-          <Button
-            type="button"
-            onClick={() => setOpenJobModal(true)}
-            className="flex items-center gap-1 self-start rounded-none text-xs font-extralight sm:text-sm"
-          >
-            <Plus className="size-5" />
-            Post a Job
-          </Button>
         </div>
       )}
       {

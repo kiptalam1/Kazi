@@ -14,6 +14,7 @@ import CandidateExperience from './CandidateExperience';
 import Button from '@/components/ui/Button';
 import { useState } from 'react';
 import UpdateApplicationModal from '@/features/employer/components/modals/UpdateApplicationModal';
+import ApplicationStatusBadge from '@/features/applications/components/ApplicationStatusBadge';
 
 export default function SingleApplicationPage() {
   const { applicationId } = useParams();
@@ -115,7 +116,7 @@ export default function SingleApplicationPage() {
             </h2>
             <p className="flex items-center gap-1">
               <span>Status:</span>
-              <Badge className="text-sm">{data.status}</Badge>
+              <ApplicationStatusBadge status={data.status} />
             </p>
 
             <p>

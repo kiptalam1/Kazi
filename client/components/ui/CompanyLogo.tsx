@@ -17,15 +17,16 @@ export const CompanyLogo = ({
 }: LogoProps) => {
   return (
     <div
-      className={`overflow-hidden rounded-full ${width} ${height} ${className ?? ''}`}
+      className={`relative overflow-hidden rounded-full ${className ?? ''}`}
+      style={{ width, height }}
     >
       <Image
         src={src}
         alt={alt}
-        width={width}
-        height={height}
+        fill
+        sizes={`${width}px`}
         loading="eager"
-        className="object-cover"
+        className="object-contain"
       />
     </div>
   );
