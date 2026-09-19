@@ -25,7 +25,7 @@ const allowedResumeTypes =
 
 @Controller('api/v1/candidates/me/resumes')
 export class ResumesController {
-  constructor(private readonly resumesService: ResumesService) {}
+  constructor(private readonly resumesService: ResumesService) { }
 
   // fetch my resumes;
   @ApiOkResponse({
@@ -71,7 +71,6 @@ export class ResumesController {
     file: Express.Multer.File,
     @Body() dto: UploadResumeDto,
   ): Promise<UploadAvatarApiResponse> {
-    console.log('api/v1/candidates/me/resumes/upload has been reached');
     return await this.resumesService.uploadResume(userId, file, dto);
   }
 

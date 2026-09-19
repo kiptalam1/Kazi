@@ -21,7 +21,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) {}
+  ) { }
   // refresh accesstoken.
   async refreshTokens(req: Request, res: Response) {
     const refreshToken = req.cookies?.refresh_token as string;
@@ -103,12 +103,12 @@ export class AuthService {
     if (!existsUser.isActive) {
       throw new ForbiddenException('Account is disabled');
     }
-    if (!existsUser.emailVerified) {
-      throw new UnauthorizedException(
-        'Please verify your email before signing in.',
-      );
-    }
-
+    // if (!existsUser.emailVerified) {
+    //   throw new UnauthorizedException(
+    //     'Please verify your email before signing in.',
+    //   );
+    // }
+    //
     // user and password correct, issue tokens;
     const roles = existsUser.roles.map(({ role }) => role);
     const { accessToken, refreshToken } = await this.generateTokens(
