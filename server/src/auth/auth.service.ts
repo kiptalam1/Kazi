@@ -74,13 +74,28 @@ export class AuthService {
   }
 
   // logout user.
-  async logout(id: string) {
+  async logout(id: string, res: Response) {
     await this.usersService.updateUser({
       where: { id },
       data: {
         refreshTokenHash: null,
       },
     });
+
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'none',
+      path: '/',
+    });
+
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'none',
+      path: '/',
+    });
+
     return {
       message: 'Logged out successfully',
     };

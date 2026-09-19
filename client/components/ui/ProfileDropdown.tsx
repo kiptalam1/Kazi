@@ -22,9 +22,12 @@ export default function ProfileDropdown({
   }
 
   async function handleLogout() {
-    await logout();
-    onClose();
-    router.replace('/');
+    try {
+      await logout();
+    } finally {
+      onClose();
+      router.replace('/');
+    }
   }
 
   return (

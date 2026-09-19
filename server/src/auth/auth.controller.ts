@@ -25,7 +25,7 @@ import { Public } from '../common/decorators/public.decorator.js';
 
 @Controller('api/v1/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   // login user.
   @Public()
@@ -62,9 +62,7 @@ export class AuthController {
     @CurrentUser('id') userId: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    res.clearCookie('access_token');
-    res.clearCookie('refresh_token');
-    return this.authService.logout(userId);
+    return this.authService.logout(userId, res);
   }
 
   // refresh and rotate tokens
