@@ -84,14 +84,14 @@ export class AuthService {
 
     res.clearCookie('access_token', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'none',
       path: '/',
     });
 
     res.clearCookie('refresh_token', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'none',
       path: '/',
     });
@@ -252,10 +252,9 @@ export class AuthService {
     const ACCESS_TOKEN_MAX_AGE = 15 * 60 * 1000;
     const REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
     const commonOptions = {
-      secure: process.env.NODE_ENV == 'production',
+      secure: true,
       sameSite: 'none' as const,
       httpOnly: true,
-      // partitioned: true,
       path: '/',
     };
     res.cookie('refresh_token', refreshToken, {
