@@ -32,15 +32,15 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) { }
+  ) {}
 
-  // employer fetch all company Applications 
-  async getAllCompanyApplications(userId: string,) {
+  // employer fetch all company Applications
+  async getAllCompanyApplications(userId: string) {
     const member = await this.prisma.companyMember.findFirst({
       where: {
         userId,
-      }
-    })
+      },
+    });
 
     if (!member) {
       throw new UnauthorizedException('You are not a member of this company');
@@ -56,7 +56,7 @@ export class ApplicationsService {
       where: {
         job: {
           companyId: member.companyId,
-        }
+        },
       },
       select: {
         id: true,
@@ -84,7 +84,7 @@ export class ApplicationsService {
                 avatar: {
                   select: {
                     url: true,
-                  }
+                  },
                 },
               },
             },
@@ -98,7 +98,6 @@ export class ApplicationsService {
 
     return applications;
   }
-
 
   // employer fetch single application;
   async employerFetchSingleApplication(
