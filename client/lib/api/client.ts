@@ -10,18 +10,18 @@ let isRefreshing = false;
 let pendingRequests: (() => void)[] = [];
 
 api.interceptors.response.use(
-  function (response) {
+  function(response) {
     return response;
   },
-  async function (error) {
+  async function(error) {
     const originalRequest = error.config;
     const isUnauthorized = error.response?.status === 401;
     const isRefreshRequest = originalRequest?.url?.includes(
       '/auth/refresh-tokens',
     );
     const isAuthRequest =
-      originalRequest?.url?.includes('/auth/') ||
-      originalRequest?.url?.includes('/users/me');
+      originalRequest?.url?.includes('/auth/')
+    // originalRequest?.url?.includes('/users/me');
     if (
       !isUnauthorized ||
       originalRequest?._retry ||

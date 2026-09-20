@@ -27,20 +27,17 @@ import { GetQueryDto } from '../common/dto/query.dto.js';
 
 @Controller('api/v1/applications')
 export class ApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) { }
+  constructor(private readonly applicationsService: ApplicationsService) {}
 
-  // employer fetch all company applications 
+  // employer fetch all company applications
   @Get('employer/all')
   @ApiOperation({
     summary: 'Employer fetch all company applications',
   })
   @ApiOkResponse({})
-  async employerFetchAllCompanyApplications(
-    @CurrentUser('id') userId: string,
-  ) {
+  async employerFetchAllCompanyApplications(@CurrentUser('id') userId: string) {
     return await this.applicationsService.getAllCompanyApplications(userId);
   }
-
 
   // employer fetch a candidate application;
   @Get('employer/:applicationId')

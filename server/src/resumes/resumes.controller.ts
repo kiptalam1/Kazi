@@ -25,7 +25,7 @@ const allowedResumeTypes =
 
 @Controller('api/v1/candidates/me/resumes')
 export class ResumesController {
-  constructor(private readonly resumesService: ResumesService) { }
+  constructor(private readonly resumesService: ResumesService) {}
 
   // fetch my resumes;
   @ApiOkResponse({
