@@ -1,13 +1,13 @@
 'use client';
 import Button from '@/components/ui/Button';
-import Spinner from '@/components/ui/Spinner';
 import JobsTable from '@/features/employer/components/JobsTable';
 import PostJobModal from '@/features/employer/components/modals/PostjobModal';
 import useCompanyJobs from '@/features/employer/hooks/useCompanyJobs';
-import { getApiErrorMessage } from '@/lib/api/error';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import EmployerPageHeader from '@/features/employer/components/EmployerPageHeader';
+import Loader from '@/app/loading';
+import QueryError from '@/app/error';
 
 export default function CompanyJobs() {
   const [openJobModal, setOpenJobModal] = useState(false);
@@ -19,19 +19,11 @@ export default function CompanyJobs() {
   } = useCompanyJobs();
 
   if (isJobsPending) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isJobsError) {
-    return (
-      <p className="text-text-muted text-center text-sm">
-        {getApiErrorMessage(jobsError)}
-      </p>
-    );
+    return <QueryError error={jobsError} />;
   }
 
   return (

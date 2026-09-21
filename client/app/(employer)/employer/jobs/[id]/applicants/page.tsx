@@ -1,32 +1,24 @@
 'use client';
 
 import NavLink from '@/components/ui/NavLink';
-import Spinner from '@/components/ui/Spinner';
 import useApplicationsPerJob from '@/features/employer/hooks/useApplicationsPerJob';
-import { getApiErrorMessage } from '@/lib/api/error';
 import formattedDate from '@/lib/utils/formattedDate';
 import { ArrowLeft } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import ApplicationStatusBadge from '@/features/applications/components/ApplicationStatusBadge';
+import Loader from '@/app/loading';
+import QueryError from '@/app/error';
 
 export default function JobApplicantsPage() {
   const { id } = useParams();
   const { data, isPending, isError, error } = useApplicationsPerJob(String(id));
 
   if (isPending) {
-    return (
-      <div className="flex min-h-[50vh] w-full items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isError) {
-    return (
-      <p className="text-danger text-center text-sm">
-        {getApiErrorMessage(error)}
-      </p>
-    );
+    return <QueryError error={error} />;
   }
 
   const applications = data.data;

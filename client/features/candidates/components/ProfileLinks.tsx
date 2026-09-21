@@ -1,9 +1,9 @@
-import Spinner from '@/components/ui/Spinner';
 import { useCandidate } from '../hooks/useCandidate';
-import { getApiErrorMessage } from '@/lib/api/error';
 import { useState } from 'react';
 import UpdateLinks from './modals/UpdateLinks';
 import { Edit2 } from 'lucide-react';
+import Loader from '@/app/loading';
+import QueryError from '@/app/error';
 
 const profileLinks = [
   {
@@ -30,19 +30,11 @@ export const ProfileLinks = () => {
   } = useCandidate();
 
   if (isCandidatePending) {
-    return (
-      <div className="flex min-h-[50vh] w-full items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isCandidateError) {
-    return (
-      <p className="mx-auto p-6 text-center">
-        {getApiErrorMessage(candidateError)}
-      </p>
-    );
+    return <QueryError error={candidateError} />;
   }
 
   return (

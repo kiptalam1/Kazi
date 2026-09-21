@@ -1,12 +1,12 @@
-import Spinner from '@/components/ui/Spinner';
 import { useCandidateResumes } from '../hooks/useCandidateResumes';
-import { getApiErrorMessage } from '@/lib/api/error';
 import { Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import ResumeModal from './modals/ResumeModal';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import useDeleteCandidateResume from '../hooks/useDeleteCandidateResume';
 import type { Resume } from '../types/candidate.types';
+import Loader from '@/app/loading';
+import QueryError from '@/app/error';
 
 export default function CandidateResumes() {
   const { data, isPending, isError, error } = useCandidateResumes();
@@ -17,17 +17,11 @@ export default function CandidateResumes() {
     useDeleteCandidateResume();
 
   if (isPending) {
-    return (
-      <div className="flex min-h-[50vh] w-full items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isError) {
-    return (
-      <p className="mx-auto p-6 text-center">{getApiErrorMessage(error)}</p>
-    );
+    return <QueryError error={error} />;
   }
 
   const handleCloseModal = () => {

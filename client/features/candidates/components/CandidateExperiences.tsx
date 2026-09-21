@@ -1,6 +1,4 @@
-import Spinner from '@/components/ui/Spinner';
 import { useCandidateExperiences } from '../hooks/useCandidateExperiences';
-import { getApiErrorMessage } from '@/lib/api/error';
 import formattedDate from '@/lib/utils/formattedDate';
 import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
@@ -8,6 +6,8 @@ import WorkExperienceModal from './modals/WorkExperienceModal';
 import type { Experience } from '../types/candidate.types';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import useDeleteCandidateExperience from '../hooks/useDeleteCandidateExperience';
+import Loader from '@/app/loading';
+import QueryError from '@/app/error';
 
 export default function CandidateExperiences() {
   const { data, isPending, isError, error } = useCandidateExperiences();
@@ -20,17 +20,11 @@ export default function CandidateExperiences() {
     useDeleteCandidateExperience();
 
   if (isPending) {
-    return (
-      <div className="flex min-h-[50vh] w-full items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isError) {
-    return (
-      <p className="mx-auto p-6 text-center">{getApiErrorMessage(error)}</p>
-    );
+    return <QueryError error={error} />;
   }
 
   const handleAdd = () => {
