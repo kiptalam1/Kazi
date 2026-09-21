@@ -1,15 +1,14 @@
-import { useAuth } from '@/features/auth/hooks/useAuth';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useUploadAvatar } from '../hooks/useUploadAvatar';
-import Spinner from '@/components/ui/Spinner';
-import { getApiErrorMessage } from '@/lib/api/error';
 import { Avatar } from '@/components/ui/Avatar';
 import FallbackAvatar from '@/components/ui/FallbackAvatar';
 import { UserPlus } from 'lucide-react';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import Loader from '@/app/loading';
 
 export default function ProfileHeader() {
-  const { data, isPending, isError, error } = useAuth();
   const [avatarPreview, setAvatarPreview] = useState('');
+  const { data, isPending } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
   const { mutate: upload, isPending: isUploadPending } = useUploadAvatar();
 
@@ -21,19 +20,11 @@ export default function ProfileHeader() {
     };
   }, [avatarPreview]);
 
-  if (isPending) {
-    return (
-      <div className="flex min-h-[50vh] w-full items-center justify-center">
-        <Spinner />
-      </div>
-    );
+  if (isPending || !data) {
+    return <Loader />;
   }
 
-  if (isError) {
-    return (
-      <p className="mx-auto p-6 text-center">{getApiErrorMessage(error)}</p>
-    );
-  }
+  const user = data.data;
 
   function handleAvatarChange(event: ChangeEvent<HTMLInputElement>) {
     const newFile = event.target.files?.[0];
@@ -47,8 +38,6 @@ export default function ProfileHeader() {
 
     upload(fd);
   }
-
-  const user = data.data;
 
   return (
     <section className="border-border flex items-center gap-4 border p-4 sm:p-6 md:p-8">
