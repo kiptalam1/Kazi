@@ -3,10 +3,8 @@
 import Button from '@/components/ui/Button';
 import { CompanyLogo } from '@/components/ui/CompanyLogo';
 import FallbackAvatar from '@/components/ui/FallbackAvatar';
-import Spinner from '@/components/ui/Spinner';
 import useMyCompany from '@/features/employer/hooks/useMyCompany';
 import useAnalytics from '@/features/employer/hooks/useAnalytics';
-import { getApiErrorMessage } from '@/lib/api/error';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import PostjobModal from '@/features/employer/components/modals/PostjobModal';
@@ -14,6 +12,8 @@ import RecentApplications from '@/features/employer/components/RecentApplication
 import ApplicationByStatusCount from '@/features/employer/components/ApplicationByStatusCount';
 import DashboardOverview from '@/features/employer/components/DashboardOverview';
 import EmployerPageHeader from '@/features/employer/components/EmployerPageHeader';
+import Loader from '@/app/loading';
+import QueryError from '@/app/error';
 
 export default function EmployerDashboard() {
   const {
@@ -32,19 +32,11 @@ export default function EmployerDashboard() {
   const [openjobModal, setOpenJobModal] = useState(false);
 
   if (isCompanyPending || isAnalyticsPending) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isCompanyError || isAnalyticsError) {
-    return (
-      <p className="text-text-muted text-center text-sm">
-        {getApiErrorMessage(companyError || analyticsError)}
-      </p>
-    );
+    return <QueryError error={companyError || analyticsError} />;
   }
 
   return (

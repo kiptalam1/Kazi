@@ -15,6 +15,7 @@ import Spinner from '@/components/ui/Spinner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLogin } from '../hooks/useLogin';
 import { useAuth } from '../hooks/useAuth';
+import Loader from '@/app/loading';
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
@@ -53,14 +54,7 @@ export default function LoginForm() {
   }, [authData, callbackUrl, router]);
 
   if (isAuthPending || authData?.data) {
-    return (
-      <div
-        className="flex items-center justify-center p-8"
-        aria-label="Loading"
-      >
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {

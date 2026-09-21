@@ -6,13 +6,14 @@ import type { AppsParams } from '@/features/applications/types/get-my-applicatio
 import type { ApplicationStatus } from '@/features/common/types/common.types';
 import { CompanyLogo } from '@/components/ui/CompanyLogo';
 import Spinner from '@/components/ui/Spinner';
-import { getApiErrorMessage } from '@/lib/api/error';
 import formattedDate from '@/lib/utils/formattedDate';
 import { getInitials } from '@/lib/utils/getInitials';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Loader from '@/app/loading';
+import QueryError from '@/app/error';
 
 const statusOptions: { value: ApplicationStatus | ''; label: string }[] = [
   { value: '', label: 'All applications' },
@@ -41,19 +42,11 @@ function ApplicationsContent() {
   const { data, isError, isPending, error } = useMyApplications(params);
 
   if (isPending) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isError) {
-    return (
-      <p className="text-danger mx-auto p-6 text-center text-sm">
-        {getApiErrorMessage(error)}
-      </p>
-    );
+    return <QueryError error={error} />;
   }
 
   const applications = data?.data ?? [];

@@ -11,6 +11,7 @@ import { useRegister } from '../hooks/useRegister';
 import Spinner from '@/components/ui/Spinner';
 import { toast } from 'sonner';
 import { useAuth } from '../hooks/useAuth';
+import Loader from '@/app/loading';
 
 type RegisterBody = {
   firstName: string;
@@ -43,14 +44,7 @@ export default function RegisterForm() {
   }, [authData, router]);
 
   if (isAuthPending || authData?.data) {
-    return (
-      <div
-        className="flex items-center justify-center p-8"
-        aria-label="Loading"
-      >
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {

@@ -1,5 +1,7 @@
 'use client';
 
+import QueryError from '@/app/error';
+import Loader from '@/app/loading';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
 import NavLink from '@/components/ui/NavLink';
@@ -33,19 +35,11 @@ export default function JobPage() {
   const { mutate: updateJob, isPending: isUpdatingJob } = useUpdateJob();
 
   if (isPending) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isError) {
-    return (
-      <p className="text-danger p-6 text-center text-sm">
-        {getApiErrorMessage(jobError)}
-      </p>
-    );
+    return <QueryError error={jobError} />;
   }
 
   const createdAt = new Date(job.createdAt);

@@ -1,6 +1,4 @@
-import Spinner from '@/components/ui/Spinner';
 import { useCandidateEducation } from '../hooks/useCandidateEducation';
-import { getApiErrorMessage } from '@/lib/api/error';
 import formattedDate from '@/lib/utils/formattedDate';
 import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
@@ -8,6 +6,8 @@ import EducationModal from './modals/EducationModal';
 import type { Education } from '../types/candidate.types';
 import ConfirmModal from '@/components/ui/ConfirmModal';
 import useDeleteCandidateEducation from '../hooks/useDeleteCandidateEducation';
+import Loader from '@/app/loading';
+import QueryError from '@/app/error';
 
 export default function CandidateEducation() {
   const { data, isPending, isError, error } = useCandidateEducation();
@@ -20,17 +20,11 @@ export default function CandidateEducation() {
     useDeleteCandidateEducation();
 
   if (isPending) {
-    return (
-      <div className="flex min-h-[50vh] w-full items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isError) {
-    return (
-      <p className="mx-auto p-6 text-center">{getApiErrorMessage(error)}</p>
-    );
+    return <QueryError error={error} />;
   }
 
   const handleAdd = () => {
@@ -57,6 +51,7 @@ export default function CandidateEducation() {
       },
     });
   };
+
   return (
     <section className="border-border min-h-32 border p-4 sm:p-6">
       <div className="mb-4 flex items-center justify-between">
