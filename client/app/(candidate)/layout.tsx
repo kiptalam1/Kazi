@@ -21,7 +21,7 @@ export default function CandidateLayout({ children }: { children: ReactNode }) {
     }
   }, [isError, error, router]);
 
-  if (isPending || isError) {
+  if (isPending) {
     return <Loader />;
   }
 
