@@ -33,7 +33,7 @@ export default function ApplicantsPage() {
           </span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[700px] border-collapse">
+          <table className="w-full min-w-175 border-collapse">
             <thead className="bg-background-muted border-border border-b text-left">
               <tr>
                 <th className="px-4 py-3 text-sm font-medium">Name</th>
@@ -51,7 +51,7 @@ export default function ApplicantsPage() {
                 <tr>
                   <td
                     colSpan={6}
-                    className="text-text-secondary text-center text-sm"
+                    className="text-text-secondary px-4 py-3 text-center text-sm"
                   >
                     No applicants yet. Candidates will appear here when they
                     apply.
