@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { NotificationsService } from './notifications.service.js';
 import { CreateNotificationDto } from './dto/create-notification.dto.js';
 import { ApiOkResponse, ApiOperation, ApiProperty } from '@nestjs/swagger';
@@ -33,9 +41,21 @@ export class NotificationsController {
     return this.notificationsService.findAll(userId);
   }
 
+  @ApiOperation({
+    summary: 'User fetch one notification.',
+  })
+  @ApiProperty({
+    type: NotificationEntity,
+  })
+  @ApiOkResponse({
+    type: NotificationEntity,
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.notificationsService.findOne(+id);
+  findOne(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser('id') userId: string,
+  ): Promise<NotificationEntity> {
+    return this.notificationsService.findOne(id, userId);
   }
 
   @Delete(':id')

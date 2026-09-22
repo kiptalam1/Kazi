@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { type CreateNotificationInput } from './dto/create-notification.dto.js';
 import { PrismaService } from '../prisma.service.js';
 import type { NotificationEntity } from './entities/notification.entity.js';
@@ -29,8 +29,18 @@ export class NotificationsService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} notification`;
+  async findOne(id: string, userId: string): Promise<NotificationEntity> {
+    const notification = await this.prisma.notification.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+    if (!notification) {
+      throw new NotFoundException('Notification not found');
+    }
+
+    return notification;
   }
 
   remove(id: number) {
