@@ -36,7 +36,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) {}
+  ) { }
 
   // employer fetch all company Applications
   async getAllCompanyApplications(userId: string) {
@@ -455,8 +455,10 @@ export class ApplicationsService {
         },
         candidate: {
           select: {
+            userId: true,
             user: {
               select: {
+                id: true,
                 firstName: true,
                 lastName: true,
               },
@@ -525,10 +527,19 @@ export class ApplicationsService {
 
       await tx.notification.create({
         data: {
+          userId: application.candidate.userId,
+          type: NotificationType.APPLICATION_SUBMITTED,
+          title: 'Your application status was changed',
+          message: `Your application status for ${application.job.title} was updated to ${updateApplicationStatusDto.status}`,
+        },
+      });
+
+      await tx.notification.create({
+        data: {
           userId: member.userId,
           type: NotificationType.APPLICATION_STATUS_CHANGED,
           title: 'Application status was changed',
-          message: `Application status for ${application.candidate.user.firstName} ${application.candidate.user.lastName} has been changed  to ${application.status}.`,
+          message: `Application status for ${application.candidate.user.firstName} ${application.candidate.user.lastName} has been changed  to ${updateApplicationStatusDto.status}.`,
         },
       });
 
