@@ -263,6 +263,7 @@ enum NotificationType {
   NEW_APPLICATION
   INTERVIEW_SCHEDULED
   NEW_MESSAGE
+  JOB_CREATED
 }
 
 enum FileType {
