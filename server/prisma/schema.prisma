@@ -33,6 +33,7 @@ model User {
   candidate      Candidate?
   companyMembers CompanyMember[]
   jobs           Job[]
+  notifications  Notification[]
 }
 
 model Candidate {
@@ -238,6 +239,31 @@ model File {
 
   applicationResumes Application[] @relation("ApplicationResume")
   userAvatar         User?         @relation("UserAvatar")
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  type      NotificationType
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
+}
+
+enum NotificationType {
+  APPLICATION_SUBMITTED
+  APPLICATION_STATUS_CHANGED
+  JOB_STATUS_CHANGED
+  NEW_APPLICATION
+  INTERVIEW_SCHEDULED
+  NEW_MESSAGE
+  JOB_CREATED
 }
 
 enum FileType {

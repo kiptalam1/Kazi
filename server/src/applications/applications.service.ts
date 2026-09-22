@@ -12,7 +12,11 @@ import { PrismaService } from '../prisma.service.js';
 import { UsersService } from '../users/users.service.js';
 import { JobsService } from '../jobs/jobs.service.js';
 import { CompanyMembersService } from '../company-members/company-members.service.js';
-import { ApplicationStatus, FileType } from '../generated/prisma/enums.js';
+import {
+  ApplicationStatus,
+  FileType,
+  NotificationType,
+} from '../generated/prisma/enums.js';
 import { CandidatesService } from '../candidates/candidates.service.js';
 import {
   CandidateApplicationApiResponse,
@@ -311,13 +315,35 @@ export class ApplicationsService {
         throw new BadRequestException('Resume not found.');
       }
     }
-    const application = await this.prisma.application.create({
-      data: {
-        resumeId: createApplicationDto.resumeId || undefined,
-        coverLetter: createApplicationDto.coverLetter || undefined,
-        candidateId: candidate.id,
-        jobId: job.id,
-      },
+    const application = await this.prisma.$transaction(async (tx) => {
+      const application = await tx.application.create({
+        data: {
+          resumeId: createApplicationDto.resumeId || undefined,
+          coverLetter: createApplicationDto.coverLetter || undefined,
+          candidateId: candidate.id,
+          jobId: job.id,
+        },
+      });
+
+      await tx.notification.create({
+        data: {
+          userId: user.id,
+          type: NotificationType.APPLICATION_SUBMITTED,
+          title: 'Application was successful',
+          message: `Application for ${job.title} was submitted successfully.`,
+        },
+      });
+
+      await tx.notification.create({
+        data: {
+          userId: job.createdById,
+          type: NotificationType.NEW_APPLICATION,
+          title: 'New Application',
+          message: `${user.firstName} ${user.lastName} has applied for ${job.title}.`,
+        },
+      });
+
+      return application;
     });
 
     return {
@@ -395,6 +421,13 @@ export class ApplicationsService {
   async findById(applicationId: string) {
     const application = await this.prisma.application.findUnique({
       where: { id: applicationId },
+      include: {
+        job: {
+          select: {
+            title: true,
+          },
+        },
+      },
     });
     if (!application) {
       throw new NotFoundException('Application not found.');
@@ -417,6 +450,17 @@ export class ApplicationsService {
             id: true,
             companyId: true,
             status: true,
+            title: true,
+          },
+        },
+        candidate: {
+          select: {
+            user: {
+              select: {
+                firstName: true,
+                lastName: true,
+              },
+            },
           },
         },
       },
@@ -467,17 +511,29 @@ export class ApplicationsService {
     }
 
     // now update
-    const appUpdated = await this.prisma.application.update({
-      where: {
-        id: applicationId,
-      },
-      data: {
-        status: updateApplicationStatusDto.status,
-        employerNotes: updateApplicationStatusDto.employerNotes,
-        reviewedAt: new Date(),
-      },
-    });
+    const appUpdated = await this.prisma.$transaction(async (tx) => {
+      const appUpdated = await tx.application.update({
+        where: {
+          id: applicationId,
+        },
+        data: {
+          status: updateApplicationStatusDto.status,
+          employerNotes: updateApplicationStatusDto.employerNotes,
+          reviewedAt: new Date(),
+        },
+      });
 
+      await tx.notification.create({
+        data: {
+          userId: member.userId,
+          type: NotificationType.APPLICATION_STATUS_CHANGED,
+          title: 'Application status was changed',
+          message: `Application status for ${application.candidate.user.firstName} ${application.candidate.user.lastName} has been changed  to ${application.status}.`,
+        },
+      });
+
+      return appUpdated;
+    });
     return {
       message: 'Application updated successfully',
       data: {
@@ -494,7 +550,7 @@ export class ApplicationsService {
   async withdraw(userId: string, applicationId: string) {
     const candidate = await this.prisma.candidate.findUnique({
       where: { userId },
-      select: { id: true },
+      select: { id: true, userId: true },
     });
     if (!candidate) {
       throw new NotFoundException('Candidate profile not found.');
@@ -518,11 +574,25 @@ export class ApplicationsService {
         `You have already been ${application.status.toLowerCase()}`,
       );
     }
-    const appWithdrawn = await this.prisma.application.update({
-      where: { id: application.id },
-      data: {
-        status: ApplicationStatus.WITHDRAWN,
-      },
+
+    const appWithdrawn = await this.prisma.$transaction(async (tx) => {
+      const appWithdrawn = await tx.application.update({
+        where: { id: application.id },
+        data: {
+          status: ApplicationStatus.WITHDRAWN,
+        },
+      });
+
+      await tx.notification.create({
+        data: {
+          userId: candidate.userId,
+          type: NotificationType.APPLICATION_STATUS_CHANGED,
+          title: 'Application withdrawn',
+          message: `You have successfully withdrawn the application for ${application.job.title}.`,
+        },
+      });
+
+      return appWithdrawn;
     });
 
     return {

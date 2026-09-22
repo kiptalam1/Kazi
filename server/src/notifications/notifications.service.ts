@@ -1,0 +1,49 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { type CreateNotificationInput } from './dto/create-notification.dto.js';
+import { PrismaService } from '../prisma.service.js';
+import type { NotificationEntity } from './entities/notification.entity.js';
+
+@Injectable()
+export class NotificationsService {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(input: CreateNotificationInput) {
+    return await this.prisma.notification.create({
+      data: input,
+    });
+  }
+
+  async findAll(userId: string): Promise<NotificationEntity[]> {
+    return await this.prisma.notification.findMany({
+      where: { userId },
+      select: {
+        id: true,
+        userId: true,
+        title: true,
+        message: true,
+        type: true,
+        isRead: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  }
+
+  async findOne(id: string, userId: string): Promise<NotificationEntity> {
+    const notification = await this.prisma.notification.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+    if (!notification) {
+      throw new NotFoundException('Notification not found');
+    }
+
+    return notification;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} notification`;
+  }
+}
