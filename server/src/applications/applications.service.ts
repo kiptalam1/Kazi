@@ -36,7 +36,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) {}
+  ) { }
 
   // employer fetch all company Applications
   async getAllCompanyApplications(userId: string) {
@@ -529,7 +529,7 @@ export class ApplicationsService {
         data: {
           userId: application.candidate.userId,
           type: NotificationType.APPLICATION_SUBMITTED,
-          title: 'You application status was changed',
+          title: 'Your application status was changed',
           message: `Your application status for ${application.job.title} was updated to ${updateApplicationStatusDto.status}`,
         },
       });
