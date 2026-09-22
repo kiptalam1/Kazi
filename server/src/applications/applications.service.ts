@@ -450,6 +450,17 @@ export class ApplicationsService {
             id: true,
             companyId: true,
             status: true,
+            title: true,
+          },
+        },
+        candidate: {
+          select: {
+            user: {
+              select: {
+                firstName: true,
+                lastName: true,
+              },
+            },
           },
         },
       },
@@ -500,17 +511,29 @@ export class ApplicationsService {
     }
 
     // now update
-    const appUpdated = await this.prisma.application.update({
-      where: {
-        id: applicationId,
-      },
-      data: {
-        status: updateApplicationStatusDto.status,
-        employerNotes: updateApplicationStatusDto.employerNotes,
-        reviewedAt: new Date(),
-      },
-    });
+    const appUpdated = await this.prisma.$transaction(async (tx) => {
+      const appUpdated = await tx.application.update({
+        where: {
+          id: applicationId,
+        },
+        data: {
+          status: updateApplicationStatusDto.status,
+          employerNotes: updateApplicationStatusDto.employerNotes,
+          reviewedAt: new Date(),
+        },
+      });
 
+      await tx.notification.create({
+        data: {
+          userId: member.userId,
+          type: NotificationType.APPLICATION_STATUS_CHANGED,
+          title: 'Application status was changed',
+          message: `Application status for ${application.candidate.user.firstName} ${application.candidate.user.lastName} has been changed  to ${application.status}.`,
+        },
+      });
+
+      return appUpdated;
+    });
     return {
       message: 'Application updated successfully',
       data: {
@@ -553,7 +576,7 @@ export class ApplicationsService {
     }
 
     const appWithdrawn = await this.prisma.$transaction(async (tx) => {
-      const appWithdrawn = await this.prisma.application.update({
+      const appWithdrawn = await tx.application.update({
         where: { id: application.id },
         data: {
           status: ApplicationStatus.WITHDRAWN,
