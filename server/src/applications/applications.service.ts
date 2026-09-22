@@ -421,6 +421,13 @@ export class ApplicationsService {
   async findById(applicationId: string) {
     const application = await this.prisma.application.findUnique({
       where: { id: applicationId },
+      include: {
+        job: {
+          select: {
+            title: true,
+          },
+        },
+      },
     });
     if (!application) {
       throw new NotFoundException('Application not found.');
@@ -520,7 +527,7 @@ export class ApplicationsService {
   async withdraw(userId: string, applicationId: string) {
     const candidate = await this.prisma.candidate.findUnique({
       where: { userId },
-      select: { id: true },
+      select: { id: true, userId: true },
     });
     if (!candidate) {
       throw new NotFoundException('Candidate profile not found.');
@@ -544,11 +551,25 @@ export class ApplicationsService {
         `You have already been ${application.status.toLowerCase()}`,
       );
     }
-    const appWithdrawn = await this.prisma.application.update({
-      where: { id: application.id },
-      data: {
-        status: ApplicationStatus.WITHDRAWN,
-      },
+
+    const appWithdrawn = await this.prisma.$transaction(async (tx) => {
+      const appWithdrawn = await this.prisma.application.update({
+        where: { id: application.id },
+        data: {
+          status: ApplicationStatus.WITHDRAWN,
+        },
+      });
+
+      await tx.notification.create({
+        data: {
+          userId: candidate.userId,
+          type: NotificationType.APPLICATION_STATUS_CHANGED,
+          title: 'Application withdrawn',
+          message: `You have successfully withdrawn the application for ${application.job.title}.`,
+        },
+      });
+
+      return appWithdrawn;
     });
 
     return {
