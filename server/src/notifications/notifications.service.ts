@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { type CreateNotificationInput } from './dto/create-notification.dto.js';
 import { PrismaService } from '../prisma.service.js';
+import type { NotificationEntity } from './entities/notification.entity.js';
 
 @Injectable()
 export class NotificationsService {
@@ -12,8 +13,20 @@ export class NotificationsService {
     });
   }
 
-  findAll() {
-    return `This action returns all notifications`;
+  async findAll(userId: string): Promise<NotificationEntity[]> {
+    return await this.prisma.notification.findMany({
+      where: { userId },
+      select: {
+        id: true,
+        userId: true,
+        title: true,
+        message: true,
+        type: true,
+        isRead: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 
   findOne(id: number) {
