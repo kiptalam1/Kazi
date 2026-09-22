@@ -12,7 +12,11 @@ import { PrismaService } from '../prisma.service.js';
 import { UsersService } from '../users/users.service.js';
 import { JobsService } from '../jobs/jobs.service.js';
 import { CompanyMembersService } from '../company-members/company-members.service.js';
-import { ApplicationStatus, FileType } from '../generated/prisma/enums.js';
+import {
+  ApplicationStatus,
+  FileType,
+  NotificationType,
+} from '../generated/prisma/enums.js';
 import { CandidatesService } from '../candidates/candidates.service.js';
 import {
   CandidateApplicationApiResponse,
@@ -311,13 +315,35 @@ export class ApplicationsService {
         throw new BadRequestException('Resume not found.');
       }
     }
-    const application = await this.prisma.application.create({
-      data: {
-        resumeId: createApplicationDto.resumeId || undefined,
-        coverLetter: createApplicationDto.coverLetter || undefined,
-        candidateId: candidate.id,
-        jobId: job.id,
-      },
+    const application = await this.prisma.$transaction(async (tx) => {
+      const application = await tx.application.create({
+        data: {
+          resumeId: createApplicationDto.resumeId || undefined,
+          coverLetter: createApplicationDto.coverLetter || undefined,
+          candidateId: candidate.id,
+          jobId: job.id,
+        },
+      });
+
+      await tx.notification.create({
+        data: {
+          userId: user.id,
+          type: NotificationType.APPLICATION_SUBMITTED,
+          title: 'Application was successful',
+          message: `Application for ${job.title} was submitted successfully.`,
+        },
+      });
+
+      await tx.notification.create({
+        data: {
+          userId: job.createdById,
+          type: NotificationType.NEW_APPLICATION,
+          title: 'New Application',
+          message: `${user.firstName} ${user.lastName} has applied for ${job.title}.`,
+        },
+      });
+
+      return application;
     });
 
     return {
