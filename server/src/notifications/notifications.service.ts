@@ -46,6 +46,7 @@ export class NotificationsService {
   }
 
   async remove(id: string, userId: string) {
+    await this.findOne(id, userId);
     await this.prisma.notification.delete({
       where: {
         id,
