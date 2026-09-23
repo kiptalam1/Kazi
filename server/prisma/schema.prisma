@@ -242,15 +242,17 @@ model File {
 }
 
 model Notification {
-  id        String           @id @default(uuid())
-  type      NotificationType
-  userId    String
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title     String
-  message   String
-  isRead    Boolean          @default(false)
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+  id           String           @id @default(uuid())
+  type         NotificationType
+  userId       String
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String
+  message      String
+  isRead       Boolean          @default(false)
+  resourceType ResourceType?
+  resourceId   String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
 
   @@index([userId, isRead])
   @@index([userId, createdAt])
@@ -264,6 +266,12 @@ enum NotificationType {
   INTERVIEW_SCHEDULED
   NEW_MESSAGE
   JOB_CREATED
+}
+
+enum ResourceType {
+  JOB
+  PROFILE
+  APPLICATION
 }
 
 enum FileType {

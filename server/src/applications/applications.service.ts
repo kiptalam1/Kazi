@@ -16,6 +16,7 @@ import {
   ApplicationStatus,
   FileType,
   NotificationType,
+  ResourceType,
 } from '../generated/prisma/enums.js';
 import { CandidatesService } from '../candidates/candidates.service.js';
 import {
@@ -36,7 +37,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) { }
+  ) {}
 
   // employer fetch all company Applications
   async getAllCompanyApplications(userId: string) {
@@ -331,6 +332,8 @@ export class ApplicationsService {
           type: NotificationType.APPLICATION_SUBMITTED,
           title: 'Application was successful',
           message: `Application for ${job.title} was submitted successfully.`,
+          resourceType: ResourceType.APPLICATION,
+          resourceId: application.id,
         },
       });
 
@@ -340,6 +343,8 @@ export class ApplicationsService {
           type: NotificationType.NEW_APPLICATION,
           title: 'New Application',
           message: `${user.firstName} ${user.lastName} has applied for ${job.title}.`,
+          resourceType: ResourceType.APPLICATION,
+          resourceId: application.id,
         },
       });
 
@@ -531,6 +536,8 @@ export class ApplicationsService {
           type: NotificationType.APPLICATION_SUBMITTED,
           title: 'Your application status was changed',
           message: `Your application status for ${application.job.title} was updated to ${updateApplicationStatusDto.status}`,
+          resourceType: ResourceType.APPLICATION,
+          resourceId: application.id,
         },
       });
 
@@ -540,6 +547,8 @@ export class ApplicationsService {
           type: NotificationType.APPLICATION_STATUS_CHANGED,
           title: 'Application status was changed',
           message: `Application status for ${application.candidate.user.firstName} ${application.candidate.user.lastName} has been changed  to ${updateApplicationStatusDto.status}.`,
+          resourceType: ResourceType.APPLICATION,
+          resourceId: application.id,
         },
       });
 
@@ -600,6 +609,8 @@ export class ApplicationsService {
           type: NotificationType.APPLICATION_STATUS_CHANGED,
           title: 'Application withdrawn',
           message: `You have successfully withdrawn the application for ${application.job.title}.`,
+          resourceType: ResourceType.APPLICATION,
+          resourceId: application.id,
         },
       });
 

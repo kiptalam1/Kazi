@@ -5,7 +5,11 @@ import {
 } from '@nestjs/common';
 import { CreateJobDto } from './dto/create-job.dto.js';
 import { UpdateJobDto } from './dto/update-job.dto.js';
-import { JobStatus, NotificationType } from '../generated/prisma/enums.js';
+import {
+  JobStatus,
+  NotificationType,
+  ResourceType,
+} from '../generated/prisma/enums.js';
 import { CompaniesService } from '../companies/companies.service.js';
 import { PrismaService } from '../prisma.service.js';
 import { GetQueryDto } from '../common/dto/query.dto.js';
@@ -52,6 +56,8 @@ export class JobsService {
           type: NotificationType.JOB_CREATED,
           title: 'New job was created successfully',
           message: `${createJobDto.title} job has been created successfully.`,
+          resourceType: ResourceType.JOB,
+          resourceId: jobCreated.id,
         },
       });
 

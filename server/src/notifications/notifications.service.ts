@@ -23,6 +23,8 @@ export class NotificationsService {
         message: true,
         type: true,
         isRead: true,
+        resourceId: true,
+        resourceType: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -43,7 +45,31 @@ export class NotificationsService {
     return notification;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} notification`;
+  async remove(id: string, userId: string) {
+    await this.findOne(id, userId);
+    await this.prisma.notification.delete({
+      where: {
+        id,
+        userId,
+      },
+    });
+    return {
+      message: 'Notification deleted successfully.',
+    };
+  }
+
+  async markRead(id: string, userId: string) {
+    const notification = await this.findOne(id, userId);
+    if (notification.isRead) return;
+
+    await this.prisma.notification.update({
+      where: {
+        id: notification.id,
+        userId: notification.userId,
+      },
+      data: {
+        isRead: true,
+      },
+    });
   }
 }
