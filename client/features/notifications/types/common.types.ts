@@ -14,9 +14,9 @@ export type Notification = {
   type: NotificationType;
   title: string;
   message: string;
-  resourceType: ResourceType;
-  resourceId: string;
+  resourceType: ResourceType | null;
+  resourceId: string | null;
   isRead: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };

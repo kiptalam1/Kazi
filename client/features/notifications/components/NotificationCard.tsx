@@ -1,5 +1,6 @@
 import { Circle, Mail } from 'lucide-react';
 import { Notification } from '../types/common.types';
+import formatRelativeTime from '@/lib/utils/relativeFormattedTime';
 
 type Props = {
   notification: Notification;
@@ -19,18 +20,23 @@ export default function NotificationCard({ notification }: Props) {
             {notification.message}
           </p>
         </div>
-        {!notification.isRead && (
-          <button
-            type="button"
-            aria-label="Mark notification as read"
-            className="shrink-0 rounded-full p-2"
-          >
-            <span className="text-brand-active hover:text-brand-hover hidden cursor-pointer text-sm sm:block">
-              Mark as Read
-            </span>
-            <Mail className="text-text-muted size-4 sm:hidden" />
-          </button>
-        )}
+        <div className="flex flex-col items-end gap-2 sm:flex-row sm:items-center">
+          {!notification.isRead && (
+            <button
+              type="button"
+              aria-label="Mark notification as read"
+              className="shrink-0 cursor-pointer rounded-full p-2"
+            >
+              <span className="text-brand-active hover:text-brand-hover hidden text-sm sm:block">
+                Mark as Read
+              </span>
+              <Mail className="text-text-muted size-4 sm:hidden" />
+            </button>
+          )}
+          <p className="text-text-muted text-right text-xs sm:w-20">
+            {formatRelativeTime(notification.createdAt)}
+          </p>
+        </div>
       </div>
     </article>
   );

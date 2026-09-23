@@ -13,7 +13,7 @@ export default function CandidateNotificationsPage() {
   }
 
   if (isError) {
-    <QueryError error={error} />;
+    return <QueryError error={error} />;
   }
 
   const notifications = data ?? [];
