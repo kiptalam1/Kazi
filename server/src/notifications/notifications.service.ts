@@ -23,6 +23,8 @@ export class NotificationsService {
         message: true,
         type: true,
         isRead: true,
+        resourceId: true,
+        resourceType: true,
         createdAt: true,
         updatedAt: true,
       },
