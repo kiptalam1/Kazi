@@ -20,9 +20,13 @@ async function bootstrap() {
   );
 
   app.use(cookieParser());
+
+  const frontendUrl = process.env.FRONTEND_URL;
+  if (!frontendUrl) {
+    throw new Error('FRONTEND_URL is not defined');
+  }
   app.enableCors({
-    // origin: 'http://localhost:3000',
-    origin: process.env.FRONTEND_URL,
+    origin: frontendUrl,
     credentials: true,
   });
 

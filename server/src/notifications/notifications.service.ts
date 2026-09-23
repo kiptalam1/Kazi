@@ -28,6 +28,9 @@ export class NotificationsService {
         createdAt: true,
         updatedAt: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
