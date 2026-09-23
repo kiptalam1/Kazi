@@ -43,7 +43,15 @@ export class NotificationsService {
     return notification;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} notification`;
+  async remove(id: string, userId: string) {
+    await this.prisma.notification.delete({
+      where: {
+        id,
+        userId,
+      },
+    });
+    return {
+      message: 'Notification deleted successfully.',
+    };
   }
 }

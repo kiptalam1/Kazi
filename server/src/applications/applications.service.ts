@@ -36,7 +36,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) { }
+  ) {}
 
   // employer fetch all company Applications
   async getAllCompanyApplications(userId: string) {
