@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import getAllNotifications from "../api/get-all-notifications";
+import { useQuery } from '@tanstack/react-query';
+import getAllNotifications from '../api/get-all-notifications';
 
 export default function useAllNotifications() {
   return useQuery({
@@ -7,4 +7,4 @@ export default function useAllNotifications() {
     queryFn: getAllNotifications,
     retry: 3,
   });
-} 
+}

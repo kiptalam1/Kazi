@@ -7,10 +7,7 @@ type NotificationType =
   | 'INTERVIEW_SCHEDULED'
   | 'JOB_CREATED';
 
-type ResourceType =
-  | 'JOB'
-  | 'PROFILE'
-  | 'APPLICATION';
+type ResourceType = 'JOB' | 'PROFILE' | 'APPLICATION';
 
 export type Notification = {
   id: string;
@@ -22,4 +19,4 @@ export type Notification = {
   isRead: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
+};
