@@ -54,4 +54,19 @@ export class NotificationsService {
       message: 'Notification deleted successfully.',
     };
   }
+
+  async markRead(id: string, userId: string) {
+    const notification = await this.findOne(id, userId);
+    if (notification.isRead) return;
+
+    await this.prisma.notification.update({
+      where: {
+        id: notification.id,
+        userId: notification.userId,
+      },
+      data: {
+        isRead: true,
+      },
+    });
+  }
 }

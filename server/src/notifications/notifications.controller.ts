@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Patch,
 } from '@nestjs/common';
 import { NotificationsService } from './notifications.service.js';
 import { CreateNotificationDto } from './dto/create-notification.dto.js';
@@ -61,5 +62,13 @@ export class NotificationsController {
   @Delete(':id')
   async remove(@Param('id') id: string, @CurrentUser('id') userId: string) {
     return await this.notificationsService.remove(id, userId);
+  }
+
+  @Patch(':id/read')
+  async markRead(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser('id') userId: string,
+  ) {
+    await this.notificationsService.markRead(id, userId);
   }
 }
