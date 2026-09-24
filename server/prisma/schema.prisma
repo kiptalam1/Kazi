@@ -251,6 +251,7 @@ model Notification {
   isRead       Boolean          @default(false)
   resourceType ResourceType?
   resourceId   String?
+  jobId        String?
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 

@@ -37,7 +37,7 @@ export class ApplicationsService {
     private readonly jobsService: JobsService,
     private readonly companyMembersService: CompanyMembersService,
     private readonly candidatesService: CandidatesService,
-  ) {}
+  ) { }
 
   // employer fetch all company Applications
   async getAllCompanyApplications(userId: string) {
@@ -334,6 +334,7 @@ export class ApplicationsService {
           message: `Application for ${job.title} was submitted successfully.`,
           resourceType: ResourceType.APPLICATION,
           resourceId: application.id,
+          jobId: job.id,
         },
       });
 
@@ -345,6 +346,7 @@ export class ApplicationsService {
           message: `${user.firstName} ${user.lastName} has applied for ${job.title}.`,
           resourceType: ResourceType.APPLICATION,
           resourceId: application.id,
+          jobId: job.id,
         },
       });
 
@@ -538,6 +540,7 @@ export class ApplicationsService {
           message: `Your application status for ${application.job.title} was updated to ${updateApplicationStatusDto.status}`,
           resourceType: ResourceType.APPLICATION,
           resourceId: application.id,
+          jobId: application.jobId,
         },
       });
 
@@ -549,6 +552,7 @@ export class ApplicationsService {
           message: `Application status for ${application.candidate.user.firstName} ${application.candidate.user.lastName} has been changed  to ${updateApplicationStatusDto.status}.`,
           resourceType: ResourceType.APPLICATION,
           resourceId: application.id,
+          jobId: application.jobId,
         },
       });
 
@@ -611,6 +615,7 @@ export class ApplicationsService {
           message: `You have successfully withdrawn the application for ${application.job.title}.`,
           resourceType: ResourceType.APPLICATION,
           resourceId: application.id,
+          jobId: application.jobId,
         },
       });
 

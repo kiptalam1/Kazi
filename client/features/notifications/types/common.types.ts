@@ -1,4 +1,4 @@
-type NotificationType =
+export type NotificationType =
   | 'APPLICATION_SUBMITTED'
   | 'NEW_MESSAGE'
   | 'APPLICATION_STATUS_CHANGED'
@@ -16,6 +16,7 @@ export type Notification = {
   message: string;
   resourceType: ResourceType | null;
   resourceId: string | null;
+  jobId: string | null;
   isRead: boolean;
   createdAt: string;
   updatedAt: string;

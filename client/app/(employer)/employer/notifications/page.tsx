@@ -7,7 +7,7 @@ import useAllNotifications from '@/features/notifications/hooks/useAllNotificati
 import { Notification } from '@/features/notifications/types/common.types';
 import { useRouter } from 'next/navigation';
 
-export default function CandidateNotificationsPage() {
+export default function EmployerNotificationsPage() {
   const { data, isPending, isError, error } = useAllNotifications();
   const router = useRouter();
 
@@ -20,11 +20,7 @@ export default function CandidateNotificationsPage() {
   }
 
   let notifications = data ?? [];
-  const forbidden = [
-    'NEW_APPLICATION',
-    'JOB_CREATED',
-    'APPLICATION_STATUS_CHANGED',
-  ];
+  const forbidden = ['APPLICATION_SUBMITTED'];
   notifications = notifications.filter(
     (notif) => !forbidden.includes(notif.type),
   );
@@ -32,9 +28,11 @@ export default function CandidateNotificationsPage() {
   function handleNavigation(notification: Notification) {
     switch (notification.resourceType) {
       case 'APPLICATION':
-        return router.push(`/applications/${notification.resourceId}`);
+        return router.push(
+          `/employer/jobs/${notification.jobId}/applicants/${notification.resourceId}`,
+        );
       case 'JOB':
-        return router.push(`/jobs/${notification.resourceId}`);
+        return router.push(`/employer/jobs/${notification.resourceId}`);
       case 'PROFILE':
         return router.push('/profile');
       default:

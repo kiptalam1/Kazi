@@ -4,6 +4,7 @@ import NavLink from '@/components/ui/NavLink';
 import {
   Bell,
   BriefcaseBusiness,
+  Circle,
   FileText,
   LayoutGrid,
   User,
@@ -13,11 +14,13 @@ import FallbackAvatar from '@/components/ui/FallbackAvatar';
 import { useEffect, useRef, useState } from 'react';
 import ProfileDropdown from '@/components/ui/ProfileDropdown';
 import { usePathname, useRouter } from 'next/navigation';
+import useAllNotifications from '@/features/notifications/hooks/useAllNotifications';
 
 export default function EmployerTopbar() {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
   const { data: company } = useMyCompany();
+  let { data: notifications } = useAllNotifications();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -37,6 +40,12 @@ export default function EmployerTopbar() {
 
     return () => document.removeEventListener('pointerdown', handlePointerDown);
   }, [isOpenDropdown]);
+
+  const forbidden = ['APPLICATION_SUBMITTED'];
+  notifications = notifications ?? [];
+  notifications = notifications.filter(
+    (notif) => !forbidden.includes(notif.type),
+  );
 
   if (pathname === '/employer/onboarding') {
     return (
@@ -104,7 +113,12 @@ export default function EmployerTopbar() {
             href={'/employer/notifications'}
             className="flex flex-1 flex-col items-center justify-center gap-1 sm:flex-none sm:flex-row sm:justify-start"
           >
-            <Bell size={20} />
+            <span className="relative">
+              <Bell size={20} />
+              {notifications?.some((notif) => !notif.isRead) && (
+                <Circle className="fill-brand-active absolute -top-1 -right-1 size-2" />
+              )}
+            </span>
             <span className="text-[9px] sm:text-sm">Notifications</span>
           </NavLink>
           <NavLink
