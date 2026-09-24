@@ -32,7 +32,7 @@ export default function NotificationCard({ notification, onNavigate }: Props) {
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h2 className="flex items-center gap-2 font-medium">
+          <h2 className="flex items-baseline gap-2 font-medium sm:items-center">
             {notification.title}
             {!notification.isRead && (
               <Circle className="text-brand-active size-2 fill-current" />

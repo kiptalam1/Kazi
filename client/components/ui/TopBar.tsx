@@ -2,16 +2,18 @@
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { CompanyLogo } from './CompanyLogo';
 import { Avatar } from './Avatar';
-import { Bell, BriefcaseBusiness, FileText, User } from 'lucide-react';
+import { Bell, BriefcaseBusiness, Circle, FileText, User } from 'lucide-react';
 import NavLink from './NavLink';
 import FallbackAvatar from './FallbackAvatar';
 import { useEffect, useRef, useState } from 'react';
 import ProfileDropdown from './ProfileDropdown';
+import useAllNotifications from '@/features/notifications/hooks/useAllNotifications';
 
 export default function TopBar() {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
   const { data, isPending, isError } = useAuth();
+  let { data: notifications } = useAllNotifications();
 
   useEffect(() => {
     function handlePointerDown(event: PointerEvent) {
@@ -36,6 +38,15 @@ export default function TopBar() {
     return null;
   }
   const user = data.data;
+  const forbidden = [
+    'NEW_APPLICATION',
+    'JOB_CREATED',
+    'APPLICATION_STATUS_CHANGED',
+  ];
+  notifications = notifications ?? [];
+  notifications = notifications.filter(
+    (notif) => !forbidden.includes(notif.type),
+  );
 
   return (
     <nav className="border-border-muted flex items-center justify-between gap-4 border-b px-6 py-4 text-sm sm:px-8 sm:py-6">
@@ -65,7 +76,12 @@ export default function TopBar() {
           href={'/notifications'}
           className="flex flex-col items-center gap-1 sm:flex-row"
         >
-          <Bell size={20} className="" />
+          <span className="relative">
+            <Bell size={20} />
+            {notifications?.some((notif) => !notif.isRead) && (
+              <Circle className="fill-brand-active absolute -top-1 -right-1 size-2" />
+            )}
+          </span>
           <span className="text-[9px] sm:text-sm">Notifications</span>
         </NavLink>
         <NavLink

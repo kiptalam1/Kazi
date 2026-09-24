@@ -20,7 +20,11 @@ export default function CandidateNotificationsPage() {
   }
 
   let notifications = data ?? [];
-  const forbidden = ['NEW_APPLICATION', 'JOB_CREATED'];
+  const forbidden = [
+    'NEW_APPLICATION',
+    'JOB_CREATED',
+    'APPLICATION_STATUS_CHANGED',
+  ];
   notifications = notifications.filter(
     (notif) => !forbidden.includes(notif.type),
   );
