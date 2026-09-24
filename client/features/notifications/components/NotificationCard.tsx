@@ -3,27 +3,32 @@ import { Notification } from '../types/common.types';
 import formatRelativeTime from '@/lib/utils/relativeFormattedTime';
 import useMarkReadNotification from '../hooks/useMarkReadNotification';
 import useDeleteNotification from '../hooks/useDeleteNotification';
+import { MouseEvent } from 'react';
 
 type Props = {
   notification: Notification;
+  onNavigate: (notification: Notification) => void;
 };
 
-export default function NotificationCard({ notification }: Props) {
+export default function NotificationCard({ notification, onNavigate }: Props) {
   const { mutate: markRead, isPending: isReading } = useMarkReadNotification();
   const { mutate: deleteNotification, isPending: isDeleting } =
     useDeleteNotification();
 
-  function handleMarkRead() {
+  function handleMarkRead(event: MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation();
     markRead(notification.id);
   }
 
-  function handleDeleteNotification() {
+  function handleDeleteNotification(event: MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation();
     deleteNotification(notification.id);
   }
 
   return (
     <article
-      className={`border-border space-y-2 border p-4 ${!notification.isRead && 'bg-background-muted'}`}
+      onClick={() => onNavigate(notification)}
+      className={`border-border hover:border-brand-hover space-y-2 border p-4 ${!notification.isRead && 'bg-background-muted'}`}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">

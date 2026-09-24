@@ -4,9 +4,12 @@ import QueryError from '@/app/error';
 import Loader from '@/app/loading';
 import NotificationCard from '@/features/notifications/components/NotificationCard';
 import useAllNotifications from '@/features/notifications/hooks/useAllNotifications';
+import { Notification } from '@/features/notifications/types/common.types';
+import { useRouter } from 'next/navigation';
 
 export default function CandidateNotificationsPage() {
   const { data, isPending, isError, error } = useAllNotifications();
+  const router = useRouter();
 
   if (isPending) {
     return <Loader />;
@@ -21,6 +24,19 @@ export default function CandidateNotificationsPage() {
   notifications = notifications.filter(
     (notif) => !forbidden.includes(notif.type),
   );
+
+  function handleNavigation(notification: Notification) {
+    switch (notification.resourceType) {
+      case 'APPLICATION':
+        return router.push(`/applications/${notification.resourceId}`);
+      case 'JOB':
+        return router.push(`/jobs/${notification.resourceId}`);
+      case 'PROFILE':
+        return router.push('/profile');
+      default:
+        return;
+    }
+  }
 
   return (
     <main className="mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
@@ -45,7 +61,11 @@ export default function CandidateNotificationsPage() {
           </div>
         )}
         {notifications.map((notification) => (
-          <NotificationCard key={notification.id} notification={notification} />
+          <NotificationCard
+            key={notification.id}
+            notification={notification}
+            onNavigate={() => handleNavigation(notification)}
+          />
         ))}
       </section>
     </main>
