@@ -1,21 +1,30 @@
-import { Circle, Mail } from 'lucide-react';
+import { Circle, Mail, Trash2 } from 'lucide-react';
 import { Notification } from '../types/common.types';
 import formatRelativeTime from '@/lib/utils/relativeFormattedTime';
 import useMarkReadNotification from '../hooks/useMarkReadNotification';
+import useDeleteNotification from '../hooks/useDeleteNotification';
 
 type Props = {
   notification: Notification;
 };
 
 export default function NotificationCard({ notification }: Props) {
-  const { mutate, isPending } = useMarkReadNotification();
+  const { mutate: markRead, isPending: isReading } = useMarkReadNotification();
+  const { mutate: deleteNotification, isPending: isDeleting } =
+    useDeleteNotification();
 
   function handleMarkRead() {
-    mutate(notification.id);
+    markRead(notification.id);
+  }
+
+  function handleDeleteNotification() {
+    deleteNotification(notification.id);
   }
 
   return (
-    <article className="border-border space-y-2 border p-4">
+    <article
+      className={`border-border space-y-2 border p-4 ${!notification.isRead && 'bg-background-muted'}`}
+    >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <h2 className="flex items-center gap-2 font-medium">
@@ -28,14 +37,14 @@ export default function NotificationCard({ notification }: Props) {
             {notification.message}
           </p>
         </div>
-        <div className="flex flex-col items-end gap-2 sm:flex-row sm:items-center">
+        <div className="flex flex-col-reverse items-center gap-1 sm:flex-row sm:items-center">
           {!notification.isRead && (
             <button
               type="button"
-              disabled={isPending}
+              disabled={isReading}
               onClick={handleMarkRead}
               aria-label="Mark notification as read"
-              className="shrink-0 cursor-pointer rounded-full p-2"
+              className="shrink-0 cursor-pointer rounded-full p-3"
             >
               <span className="text-brand-active hover:text-brand-hover disabled:text-text-disabled hidden text-sm sm:block">
                 Mark as Read
@@ -43,7 +52,15 @@ export default function NotificationCard({ notification }: Props) {
               <Mail className="text-text-muted size-4 sm:hidden" />
             </button>
           )}
-          <p className="text-text-muted text-right text-xs sm:w-20">
+          <button
+            type="button"
+            onClick={handleDeleteNotification}
+            disabled={isDeleting}
+            className="hover:bg-background-contrast hover:text-danger disabled:text-text-disabled shrink-0 rounded-full p-3"
+          >
+            <Trash2 className="text-text-muted hover:text-danger disabled:text-text-disabled size-4" />
+          </button>
+          <p className="text-text-muted text-center text-xs sm:w-16 sm:text-right">
             {formatRelativeTime(notification.createdAt)}
           </p>
         </div>
