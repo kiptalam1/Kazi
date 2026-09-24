@@ -1,4 +1,4 @@
-type NotificationType =
+export type NotificationType =
   | 'APPLICATION_SUBMITTED'
   | 'NEW_MESSAGE'
   | 'APPLICATION_STATUS_CHANGED'
