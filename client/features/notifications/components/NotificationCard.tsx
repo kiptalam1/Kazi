@@ -1,11 +1,19 @@
 import { Circle, Mail } from 'lucide-react';
 import { Notification } from '../types/common.types';
 import formatRelativeTime from '@/lib/utils/relativeFormattedTime';
+import useMarkReadNotification from '../hooks/useMarkReadNotification';
 
 type Props = {
   notification: Notification;
 };
+
 export default function NotificationCard({ notification }: Props) {
+  const { mutate, isPending } = useMarkReadNotification();
+
+  function handleMarkRead() {
+    mutate(notification.id);
+  }
+
   return (
     <article className="border-border space-y-2 border p-4">
       <div className="flex items-start justify-between gap-4">
@@ -24,10 +32,12 @@ export default function NotificationCard({ notification }: Props) {
           {!notification.isRead && (
             <button
               type="button"
+              disabled={isPending}
+              onClick={handleMarkRead}
               aria-label="Mark notification as read"
               className="shrink-0 cursor-pointer rounded-full p-2"
             >
-              <span className="text-brand-active hover:text-brand-hover hidden text-sm sm:block">
+              <span className="text-brand-active hover:text-brand-hover disabled:text-text-disabled hidden text-sm sm:block">
                 Mark as Read
               </span>
               <Mail className="text-text-muted size-4 sm:hidden" />
