@@ -1,0 +1,75 @@
+'use client';
+
+import QueryError from '@/app/error';
+import Loader from '@/app/loading';
+import NotificationCard from '@/features/notifications/components/NotificationCard';
+import useAllNotifications from '@/features/notifications/hooks/useAllNotifications';
+import { Notification } from '@/features/notifications/types/common.types';
+import { useRouter } from 'next/navigation';
+
+export default function EmployerNotificationsPage() {
+  const { data, isPending, isError, error } = useAllNotifications();
+  const router = useRouter();
+
+  if (isPending) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <QueryError error={error} />;
+  }
+
+  let notifications = data ?? [];
+  const forbidden = ['APPLICATION_SUBMITTED'];
+  notifications = notifications.filter(
+    (notif) => !forbidden.includes(notif.type),
+  );
+
+  function handleNavigation(notification: Notification) {
+    switch (notification.resourceType) {
+      case 'APPLICATION':
+        return router.push(
+          `/employer/jobs/${notification.jobId}/applicants/${notification.resourceId}`,
+        );
+      case 'JOB':
+        return router.push(`/employer/jobs/${notification.resourceId}`);
+      case 'PROFILE':
+        return router.push('/profile');
+      default:
+        return;
+    }
+  }
+
+  return (
+    <main className="mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
+      <div className="border-border-muted flex items-center justify-between gap-5 border-b pb-6 sm:items-start">
+        <h1 className="text-text-primary text-2xl font-semibold tracking-tight">
+          My Notifications
+        </h1>
+        {
+          <p className="text-text-muted text-sm">
+            {notifications.length}{' '}
+            {notifications.length === 1 ? 'notification' : 'notifications'}
+          </p>
+        }
+      </div>
+
+      <section className="space-y-3">
+        {notifications.length === 0 && (
+          <div className="py-8">
+            <p className="text-text-secondary text-center text-sm">
+              Your Notifications will appear here.
+            </p>
+          </div>
+        )}
+        {notifications.map((notification) => (
+          <NotificationCard
+            key={notification.id}
+            notification={notification}
+            onNavigate={() => handleNavigation(notification)}
+          />
+        ))}
+      </section>
+    </main>
+  );
+}
