@@ -1,5 +1,10 @@
 import { Loader2 } from 'lucide-react';
+import { twMerge } from 'tailwind-merge';
 
-export default function Spinner() {
-  return <Loader2 className="size-5 animate-spin" />;
+type Props = {
+  className?: string;
+};
+export default function Spinner({ className }: Props) {
+  const baseStyles = 'size-5 animate-spin text-brand-active';
+  return <Loader2 className={twMerge(baseStyles, className)} />;
 }
