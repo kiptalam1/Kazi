@@ -94,7 +94,7 @@ export default function RegisterForm() {
     } else if (lastName.length < 2) {
       errors.lastName = 'Last name must be at least 2 characters.';
     } else if (lastName.length > 32) {
-      errors.firstName = 'Last name cannot exceed 32 characters.';
+      errors.lastName = 'Last name cannot exceed 32 characters.';
     }
 
     if (!email) {
