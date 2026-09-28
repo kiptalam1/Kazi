@@ -22,7 +22,7 @@ export class JobsService {
     private prisma: PrismaService,
     private companyService: CompaniesService,
     private readonly companyMembersService: CompanyMembersService,
-  ) { }
+  ) {}
 
   // create a new job;
   async create(userId: string, slug: string, createJobDto: CreateJobDto) {
