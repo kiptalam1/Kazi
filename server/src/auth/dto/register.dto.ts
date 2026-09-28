@@ -12,7 +12,7 @@ export class RegisterDto {
   @IsString({
     message: 'First name must include letters',
   })
-  @MinLength(3, { message: 'First name must be at least 3 characters long' })
+  @MinLength(2, { message: 'First name must be at least 2 characters long' })
   @MaxLength(32, { message: 'First name is too long' })
   firstName!: string;
 
@@ -20,7 +20,7 @@ export class RegisterDto {
   @IsString({
     message: 'Last name must include letters',
   })
-  @MinLength(3, { message: 'Last name must be at least 3 characters long' })
+  @MinLength(2, { message: 'Last name must be at least 2 characters long' })
   @MaxLength(32, { message: 'Last name is too long' })
   lastName!: string;
 

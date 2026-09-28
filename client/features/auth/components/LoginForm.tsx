@@ -67,7 +67,7 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border-border bg-background flex w-full max-w-lg flex-col gap-6 border p-6 shadow-sm sm:p-8"
+      className="border-border bg-background flex w-full max-w-xl flex-col gap-6 border p-6 shadow-sm sm:p-8"
     >
       <div className="flex flex-col items-center gap-4">
         <Image
