@@ -161,6 +161,7 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit}
+      noValidate
       aria-labelledby="register-heading"
       className="border-border bg-background flex w-full max-w-xl flex-col gap-3 border p-6 shadow-sm sm:p-8"
     >
