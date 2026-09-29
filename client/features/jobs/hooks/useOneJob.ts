@@ -5,5 +5,6 @@ export function useOneJob(id: string) {
   return useQuery({
     queryKey: ['job', id],
     queryFn: () => getOneJob(id),
+    staleTime: 2 * 60 * 1000,
   });
 }

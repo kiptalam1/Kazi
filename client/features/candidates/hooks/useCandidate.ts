@@ -5,5 +5,6 @@ export function useCandidate() {
   return useQuery({
     queryKey: ['candidate', 'me'],
     queryFn: getMyCandidateProfile,
+    staleTime: 5 * 60 * 1000,
   });
 }

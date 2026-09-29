@@ -6,5 +6,6 @@ export function useJobs(params: JobsParams = {}) {
   return useQuery({
     queryKey: ['jobs', params],
     queryFn: () => getJobs(params),
+    staleTime: 2 * 60 * 1000,
   });
 }

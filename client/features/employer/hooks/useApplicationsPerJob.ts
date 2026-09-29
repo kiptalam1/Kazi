@@ -5,5 +5,6 @@ export default function useApplicationsPerJob(jobId: string) {
   return useQuery({
     queryKey: ['apps', jobId],
     queryFn: () => getApplicationsPerJob(jobId),
+    staleTime: 2 * 60 * 1000,
   });
 }

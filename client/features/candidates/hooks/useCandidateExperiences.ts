@@ -5,5 +5,6 @@ export function useCandidateExperiences() {
   return useQuery({
     queryKey: ['myexperiences'],
     queryFn: getCandidateExperiences,
+    staleTime: 5 * 60 * 1000,
   });
 }

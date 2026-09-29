@@ -67,7 +67,7 @@ export default function RegisterForm() {
   }
 
   function validateInput() {
-    let errors: RegisterBody = {
+    const errors: RegisterBody = {
       email: '',
       firstName: '',
       lastName: '',

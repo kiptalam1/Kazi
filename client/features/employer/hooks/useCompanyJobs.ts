@@ -5,5 +5,6 @@ export default function useCompanyJobs() {
   return useQuery({
     queryKey: ['company-jobs'],
     queryFn: getCompanyJobs,
+    staleTime: 5 * 60 * 1000,
   });
 }

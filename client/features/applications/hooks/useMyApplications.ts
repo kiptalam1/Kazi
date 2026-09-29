@@ -6,5 +6,6 @@ export default function useMyApplications(params: AppsParams = {}) {
   return useQuery({
     queryKey: ['myapps', params],
     queryFn: () => getMyApplications(params),
+    staleTime: 2 * 60 * 1000,
   });
 }

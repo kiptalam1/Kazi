@@ -6,5 +6,6 @@ export default function useMyCompany() {
     queryKey: ['mycompanies'],
     queryFn: getEmployerCompany,
     retry: false,
+    staleTime: 5 * 60 * 1000,
   });
 }

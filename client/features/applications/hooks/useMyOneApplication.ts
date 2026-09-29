@@ -5,5 +5,6 @@ export default function useMyOneApplication(applicationId: string) {
   return useQuery({
     queryKey: ['applications', applicationId],
     queryFn: () => getMyOneApplication(applicationId),
+    staleTime: 2 * 60 * 1000,
   });
 }

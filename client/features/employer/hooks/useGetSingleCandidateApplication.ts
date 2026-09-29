@@ -7,5 +7,6 @@ export default function useGetSingleCandidateApplication(
   return useQuery({
     queryKey: ['candidate-application', applicationId],
     queryFn: () => getSingleCandidateApplication(applicationId),
+    staleTime: 5 * 60 * 1000,
   });
 }

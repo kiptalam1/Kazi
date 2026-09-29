@@ -5,5 +5,6 @@ export default function useAnalytics() {
   return useQuery({
     queryKey: ['dashboard-analytics'],
     queryFn: getAnalytics,
+    staleTime: 2 * 60 * 1000,
   });
 }

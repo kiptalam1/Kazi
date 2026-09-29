@@ -6,5 +6,6 @@ export default function useAllNotifications() {
     queryKey: ['notifications'],
     queryFn: getAllNotifications,
     retry: 3,
+    staleTime: 2 * 60 * 1000,
   });
 }

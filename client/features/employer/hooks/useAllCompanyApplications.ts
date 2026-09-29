@@ -5,5 +5,6 @@ export default function useAllCompanyApplications() {
   return useQuery({
     queryKey: ['company-applications'],
     queryFn: getAllCompanyApplications,
+    staleTime: 2 * 60 * 1000,
   });
 }

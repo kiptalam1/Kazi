@@ -5,5 +5,6 @@ export function useCandidateEducation() {
   return useQuery({
     queryKey: ['myeducation'],
     queryFn: getCandidateExperience,
+    staleTime: 5 * 60 * 1000,
   });
 }
